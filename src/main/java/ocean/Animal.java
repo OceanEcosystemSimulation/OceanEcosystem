@@ -1,0 +1,41 @@
+package ocean;
+
+import java.util.*;
+
+public abstract class Animal {
+    protected Coord position; //aktualne współrzędne w świecie
+    protected int foodLevel, age, maxAge, loneliness, maxLoneliness;
+    protected boolean alive = true;
+    protected Genes genes; //przechowuje geny
+    protected Gender gender;
+
+    protected Random rand = new Random();
+
+    // konstruktor dla zwierząt startowych
+    public Animal(Coord position) {
+        this.position = position;
+        this.genes = Genes.randomGenes();
+        this.gender = rand.nextBoolean() ? Gender.MALE : Gender.FEMALE;
+        this.age = 0;
+        this.foodLevel = 100;
+        this.maxAge = 0; //losowanie w zwierzętach poszczególnych
+        this.maxLoneliness = 0; //losowanie w zwierzętach poszczególnych
+    }
+
+    // konstruktor dla dzieci
+    public Animal(Coord position, Animal parent1, Animal parent2) {
+        this.position = position;
+        this.genes = Genes.inherit(parent1.genes, parent2.genes);
+        this.gender = rand.nextBoolean() ? Gender.MALE : Gender.FEMALE;
+        this.age = 0;
+        this.foodLevel = 100;
+        this.maxAge = (parent1.maxAge + parent2.maxAge) / 2; // dziedziczenie średnich wartości od rodziców
+        this.maxLoneliness = (parent1.maxLoneliness + parent2.maxLoneliness) / 2; // dziedziczenie średnich wartości od rodziców
+    }
+
+
+    public abstract void update(World world); //zachowanie w każdym kroku
+    public abstract boolean canEat(Tile tile); //czy może jeść dane pole
+    public abstract boolean canAttack(Animal other); //czy może zaatakować
+}
+
