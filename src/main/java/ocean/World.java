@@ -51,7 +51,7 @@ public class World {
             if (tile != null) {
                 // Losowanie typu jedzenia na kafelku
                 int foodTypeRoll = random.nextInt(3); //losuje wartość (0,1,2)
-                if (foodTypeRoll==0) { //chyba bym zrobiła to switch case ale idk cyba nie ma znaczenia poza wyglądem
+                if (foodTypeRoll==0) { //chyba bym zrobiła to switch case ale idk chyba nie ma znaczenia poza wyglądem
                     // szczerze zrobiła bym to switch case bo z if else się pruje że ==2 bedzie zawsze prawdziwe a ja nie widzę czemu
                     // jak próbowałam switch case to tak nie było więc idk gdzie problem
                     tile.foodType = FoodType.NONE;
@@ -59,7 +59,7 @@ public class World {
                     tile.foodType = FoodType.PLANKTON;
                 } else if (foodTypeRoll==2) {
                     tile.foodType = FoodType.ALGAE;
-                }
+                } else {tile.foodType = FoodType.NONE;} //tak na wszelki bo nie ufam brakowi błędów
             }
         }
     }

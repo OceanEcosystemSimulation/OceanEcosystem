@@ -2,7 +2,8 @@ package ocean;
 
 import java.util.List;
 
-public class Shark extends Animal implements IMove, IFight, IEat {
+//znowu - IMove można przenieść jak potrzeba
+public class Shark extends Carnivorous implements IMove, IEat {
 
     public Shark(Coord position) {
         super(position);
@@ -40,6 +41,13 @@ public class Shark extends Animal implements IMove, IFight, IEat {
     }
 
     @Override
+    public boolean canAttack(Animal other) { //przykładowe że może atakować tylko Fish
+        return other instanceof Fish; //albo dać instance od Herbivorous jak będziemy potrzebować
+        // albo jest opcja jeszcze && other.genes.strenght < ... - jaki przykład używania po prostu
+        //ogólnie to zależy jak to ułożymy - czy atakuje też inne zwierzęta czy tylko te co je
+    }
+
+    @Override
     public boolean canEat(Tile tile) { //also przykładowe
         return foodLevel <= 30 &&
                 (tile.foodType == FoodType.PLANKTON || tile.foodType == FoodType.ALGAE);
@@ -53,24 +61,5 @@ public class Shark extends Animal implements IMove, IFight, IEat {
         tile.clearFood();
     }
 
-
-    @Override
-    public boolean canAttack(Animal other) { //przykładowe że może atakować tylko Fish
-        return other instanceof Fish;
-    }
-
-    @Override
-    public boolean attack(Animal target) { //oblicza atak swój i defence celu ale to przykład więc do zmiany trch
-        int attackerScore = genes.strength + genes.speed;
-        int defenderScore = target.genes.strength + target.genes.speed;
-
-        if (attackerScore >= defenderScore) {
-            target.alive = false;
-            return true;
-        } else {
-            genes.strength = Math.max(genes.strength - 1, 1); //porażka i zmniejszenie siły - do zmiany
-            return false;
-        }
-    }
 }
 
