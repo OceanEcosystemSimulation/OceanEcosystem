@@ -1,7 +1,6 @@
 package ocean;
 
-//zostawiam IMove jakby trzeba było dać różne rodzaje chodzenia dla nich, jak coś to się przeniesie też do herbivorous
-public class Fish extends Herbivorous implements IMove {
+public class Fish extends Herbivorous {
     public Fish(Coord position) {
         super(position);
         this.maxAge = 100 + rand.nextInt(50);  //random max age - do ustawienia
@@ -9,14 +8,9 @@ public class Fish extends Herbivorous implements IMove {
     }
 
     public void update(World world) {
-        age++;
-        foodLevel--;
-        loneliness++;
+        processLifeCycle(); //duperele o życiu
+        if (!alive) {return;}
 
-        if (foodLevel <= 0 || age > maxAge || loneliness > maxLoneliness) {
-            alive = false;
-            return; //zatrzymuje wykonywanie metody dla tego zwierzęcia, żadne dalsze działania, takie jak poruszanie się lub jedzenie, nie zostaną wykonane, ponieważ zwierzę jest martwe.
-        }
         move(world); //wywołanie mechaniki ruchu
 
         Tile tile = world.getTile(position); //pobiera pole na którym znajduje się ryba
@@ -25,11 +19,23 @@ public class Fish extends Herbivorous implements IMove {
         }
     }
 
+
+    //zjada o ile nie byłoby ponad 100 napchane
     @Override
-    public void move(World world) {
-        Coord newPos = position.randomAdjacent(world.getWidth(), world.getHeight());
-        position = newPos; //update do nowych koordynatów
+    public void eat(Tile tile) { //przykładowe jak pisać
+        //sorry za switch case ale tak mi się to cholernie podoba zawsze że nie mogłam się oprzeć by nie użyć
+        //troche dziwne to ale wydaje mi się że ładne czytelne :>
+        int gain = switch (tile.foodType) {
+            case PLANKTON -> 10;
+            case ALGAE -> 15;
+            default -> 0; //NONE
+        };
+        if (foodLevel+gain <= 100){
+            tile.clearFood();
+        }
     }
+
+
 
 
 }

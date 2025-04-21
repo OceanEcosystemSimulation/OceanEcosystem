@@ -33,6 +33,16 @@ public abstract class Animal {
         this.maxLoneliness = (parent1.maxLoneliness + parent2.maxLoneliness) / 2; // dziedziczenie średnich wartości od rodziców
     }
 
+    public void processLifeCycle() {
+        age++;
+        foodLevel--;
+        loneliness++;
+
+        if (foodLevel <= 0 || age > maxAge || loneliness > maxLoneliness) {
+            alive = false;
+        }
+    }
+
     public abstract void update(World world);
 
     public Coord getPosition() {

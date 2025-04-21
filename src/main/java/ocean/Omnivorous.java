@@ -1,5 +1,6 @@
 package ocean;
 
+// DO ZMIANY CAŁE - i to mocno bo pogubiłam się co i jak z nimi
 public abstract class Omnivorous extends Animal implements IEat, IFight {
     public Omnivorous(Coord position) {
         super(position);
@@ -23,7 +24,8 @@ public abstract class Omnivorous extends Animal implements IEat, IFight {
     }
 
 
-    // do omnivora jakiegoś trzeba dać to samo co w canAttack w np Sharku
+    // do omnivore jakiegoś trzeba dać to samo w canAttack co w np Shark jest, znaczy tego typu
+
 
     @Override
     public boolean attack(Animal other) {

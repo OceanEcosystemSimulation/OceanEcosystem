@@ -1,23 +1,22 @@
 package ocean;
 
 //abstract bo nie ma dalej update
-public abstract class Herbivorous extends Animal implements IEat {
+public abstract class Herbivorous extends Animal implements IEat, IMove {
     public Herbivorous(Coord position) {
         super(position);
     }
 
     @Override
-    public boolean canEat(Tile tile) { //whatever, przykład
+    public boolean canEat(Tile tile) { //whatever, przykład, chociaż tak bym zostawiła bo to herbivore
         return tile.foodType == FoodType.PLANKTON || tile.foodType == FoodType.ALGAE;
     }
 
+    //myślę że ruch bedą mieli taki sam, idą do roślinek - jak coś to się przeniesie
+    //chociaż ruch do zmiany bo aktualnie idzie losowo a raczej da mu się half losowo half do jedzenia w zależności od poziomu głodu
     @Override
-    public void eat(Tile tile) { //przykładowe jak pisać
-        switch (tile.foodType) { //sorry za switch case ale tak mi się to cholernie podoba zawsze że nie mogłam się oprzeć by nie użyć
-            case PLANKTON -> foodLevel = Math.min(100, foodLevel + 10); //mniej daje
-            case ALGAE -> foodLevel = Math.min(100, foodLevel + 20); //ryba lubi glony więc wiecej XD
-        }
-        tile.clearFood();
+    public void move(World world) {
+        Coord newPos = position.randomAdjacent(world.getWidth(), world.getHeight());
+        position = newPos; //update do nowych koordynatów
     }
 }
 
