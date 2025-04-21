@@ -33,9 +33,10 @@ public abstract class Animal {
         this.maxLoneliness = (parent1.maxLoneliness + parent2.maxLoneliness) / 2; // dziedziczenie średnich wartości od rodziców
     }
 
+    public abstract void update(World world);
 
-    public abstract void update(World world); //zachowanie w każdym kroku
-    public abstract boolean canEat(Tile tile); //czy może jeść dane pole
-    public abstract boolean canAttack(Animal other); //czy może zaatakować
+    public Coord getPosition() {
+        return position;
+    }
 }
 

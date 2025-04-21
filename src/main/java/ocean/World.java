@@ -39,15 +39,28 @@ public class World {
     private void spawnAnimals(int noFish, int noSharks, int noWhales) {
         for (int i = 0; i < noFish; i++) animals.add(new Fish(randomCoord()));
         for (int i = 0; i < noSharks; i++) animals.add(new Shark(randomCoord()));
-        for (int i = 0; i < noWhales; i++) animals.add(new Whale(randomCoord()));
-        //przykłady ile to idzie dalej jak więcej dodamy
+        //for (int i = 0; i < noWhales; i++) animals.add(new Whale(randomCoord()));
+        //przykłady ale to idzie dalej jak więcej dodamy
     }
 
     //losowo rozmieszcza jedzenie
     private void spawnFood(int noFood) {
-        for (int i = 0; i < noFood; i++) { //iteracja po ilosci jedzenia
-            Coord c = randomCoord(); // generuje losowe współrzedne
-            grid[c.x][c.y].food = true; //wartość food w danym polu siatki na true
+        for (int i = 0; i < noFood; i++) {
+            Coord c = randomCoord(); //generuje losowe współrzędne
+            Tile tile = grid[c.x][c.y]; //pobiera dane pole
+            if (tile != null) {
+                // Losowanie typu jedzenia na kafelku
+                int foodTypeRoll = random.nextInt(3); //losuje wartość (0,1,2)
+                if (foodTypeRoll==0) { //chyba bym zrobiła to switch case ale idk cyba nie ma znaczenia poza wyglądem
+                    // szczerze zrobiła bym to switch case bo z if else się pruje że ==2 bedzie zawsze prawdziwe a ja nie widzę czemu
+                    // jak próbowałam switch case to tak nie było więc idk gdzie problem
+                    tile.foodType = FoodType.NONE;
+                } else if (foodTypeRoll==1) {
+                    tile.foodType = FoodType.PLANKTON;
+                } else if (foodTypeRoll==2) {
+                    tile.foodType = FoodType.ALGAE;
+                }
+            }
         }
     }
 

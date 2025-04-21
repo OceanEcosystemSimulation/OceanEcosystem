@@ -1,43 +1,47 @@
 package ocean;
 
-public class Fish extends Animal {
+
+public class Fish extends Animal implements IEat, IMove {
     public Fish(Coord position) {
-        super(position); //przepisanie z Animal
-        this.maxAge = 100 + rand.nextInt(50); //losowanie jakieś wartości
-        this.maxLoneliness = 40 + rand.nextInt(20); //losowanie jakieś wartości
+        super(position);
+        this.maxAge = 100 + rand.nextInt(50);  //random max age - do ustawienia
+        this.maxLoneliness = 40 + rand.nextInt(20); //random max loneliness - do ustawienia
     }
 
-    @Override
     public void update(World world) {
         age++;
         foodLevel--;
         loneliness++;
 
-        //sprawdza czy martwa z głodu, samotności, wieku
         if (foodLevel <= 0 || age > maxAge || loneliness > maxLoneliness) {
             alive = false;
-            return;
+            return; //zatrzymuje wykonywanie metody dla tego zwierzęcia, żadne dalsze działania, takie jak poruszanie się lub jedzenie, nie zostaną wykonane, ponieważ zwierzę jest martwe.
         }
+        move(world); //wywołanie mechaniki ruchu
 
-        //proste poruszanie się - do zmiany napewno
-        Coord newPos = position.randomAdjacent(world.getWidth(), world.getHeight()); //losowa pozycja
-        Tile tile = world.getTile(newPos); //pole nowej pozycji
-
-        if (tile != null && tile.food && canEat(tile)) { //jeśli jest jedzenie i jeśli może zjeść
-            foodLevel = Math.min(100, foodLevel + 20); //foodLevel up chyba że więcej niż 100 to tylko 100
-            tile.food = false; //pole już nie ma jedzenia
+        Tile tile = world.getTile(position); //pobiera pole na którym znajduje się ryba
+        if (tile != null && tile.hasFood() && canEat(tile)) { //sprawdza jest jedzenie i czy ryba może je zjeść
+            eat(tile); //wywołanie mechaniki jedzenia
         }
-        position = newPos;
     }
 
     @Override
-    public boolean canEat(Tile tile) { //zwraca true jeśli jest jedzenie
-        return tile.food;
+    public void move(World world) {
+        Coord newPos = position.randomAdjacent(world.getWidth(), world.getHeight());
+        position = newPos; //update do nowych koordynatów
     }
 
     @Override
-    public boolean canAttack(Animal other) { //ryby nie atakują
-        return false;
+    public boolean canEat(Tile tile) {
+        return tile.foodType == FoodType.PLANKTON || tile.foodType == FoodType.ALGAE;
+    }
+
+    @Override
+    public void eat(Tile tile) { //przykładowe jak pisać
+        switch (tile.foodType) { //sorry za switch case ale tak mi się to cholernie podoba zawsze że nie mogłam się oprzeć by nie użyć
+            case PLANKTON -> foodLevel = Math.min(100, foodLevel + 10); //mniej daje
+            case ALGAE -> foodLevel = Math.min(100, foodLevel + 20); //ryba lubi glony więc wiecej XD
+        }
+        tile.clearFood();
     }
 }
-
