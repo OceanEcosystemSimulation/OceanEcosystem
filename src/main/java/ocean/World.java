@@ -1,5 +1,8 @@
 package ocean;
 
+import allAnimals.Fish;
+import allAnimals.Shark;
+
 import java.util.*;
 
 public class World {

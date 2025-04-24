@@ -8,6 +8,8 @@ public abstract class Animal {
     protected boolean alive = true;
     protected Genes genes; //przechowuje geny
     protected Gender gender;
+    protected String name;
+    protected Rarity rarity;
 
     protected Random rand = new Random();
 
@@ -33,6 +35,11 @@ public abstract class Animal {
         this.maxLoneliness = (parent1.maxLoneliness + parent2.maxLoneliness) / 2; // dziedziczenie średnich wartości od rodziców
     }
 
+    public Animal (String name, Rarity rarity) {
+        this.name = name;
+        this.rarity = rarity;
+    }
+
     public void processLifeCycle() {
         age++;
         foodLevel--;
@@ -42,6 +49,8 @@ public abstract class Animal {
             alive = false;
         }
     }
+
+
 
     public abstract void update(World world);
 

@@ -1,4 +1,6 @@
-package ocean;
+package allAnimals;
+
+import ocean.*;
 
 import java.util.List;
 

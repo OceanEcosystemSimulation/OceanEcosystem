@@ -1,4 +1,9 @@
-package ocean;
+package allAnimals;
+
+import ocean.Coord;
+import ocean.Herbivorous;
+import ocean.Tile;
+import ocean.World;
 
 public class Fish extends Herbivorous {
     public Fish(Coord position) {
