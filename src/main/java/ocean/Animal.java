@@ -35,11 +35,6 @@ public abstract class Animal {
         this.maxLoneliness = (parent1.maxLoneliness + parent2.maxLoneliness) / 2; // dziedziczenie średnich wartości od rodziców
     }
 
-    public Animal (String name, Rarity rarity) {
-        this.name = name;
-        this.rarity = rarity;
-    }
-
     public void processLifeCycle() {
         age++;
         foodLevel--;
