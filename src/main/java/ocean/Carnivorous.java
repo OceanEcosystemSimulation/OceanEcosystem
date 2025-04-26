@@ -36,19 +36,37 @@ public abstract class Carnivorous extends Animal implements IFight, IMove {
     }
 
 
-    //mechanika ataku - do zmiany
-    @Override
-    public boolean attack(Animal target) { //oblicza atak swój i defence celu ale to przykład więc do zmiany trch
-        int attackerScore = getGenes().getStrength() + getGenes().getSpeed();
-        int defenderScore = target.getGenes().getStrength() + target.getGenes().getSpeed();
 
-        if (attackerScore >= defenderScore) {
-            target.die();
-            return true;
-        } else {
-            getGenes().setStrength(Math.max(getGenes().getStrength() - 1, 1)); //porażka i zmniejszenie siły - do zmiany
-            return false;
+    public boolean attack(Animal prey, World world) {
+        double attackerSpeed = this.getEffectiveSpeed(); //predator speed
+        double preySpeed = prey.getEffectiveSpeed(); //prey speed
+
+        //próba ucieczki ofiary
+        if (attackerSpeed < preySpeed*1.2) { //liczba do zmiany można
+            prey.escape(this, world);
+            return false; //ucieczka udana - brak walki
         }
+
+        //walka
+        double attackerPower = this.getCombatPower();
+        double preyPower = prey.getCombatPower();
+
+        int rounds = 2; //maksymalnie 2 wymiany ciosów - do możliwej zmiany
+        for (int i = 0; i < rounds; i++) {
+            prey.takeDamage(attackerPower);
+            if (!prey.isAlive()) return true; //prey padł
+
+            this.takeDamage(preyPower);
+            if (!this.isAlive()) return false; //predator padł
+        }
+
+        //jeśli po 2 rundach nikt nie padł
+        if (this.getCombatPower() > prey.getCombatPower()) { //kto ucieka (przegryw - słabszy)
+            prey.escape(this, world);
+        } else {
+            this.escape(prey, world);
+        }
+        return false; //nikt nie został zabity w walce
     }
 }
 

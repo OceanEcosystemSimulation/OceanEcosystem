@@ -4,7 +4,6 @@ import ocean.*;
 
 import java.util.List;
 
-//znowu - IMove można przenieść jak potrzeba
 public class Shark extends Carnivorous implements IEat {
 
     public Shark(Coord position) {
@@ -35,7 +34,7 @@ public class Shark extends Carnivorous implements IEat {
         List<Animal> nearbyAnimals = world.getNearbyAnimals(getPosition(), 0); //pobiera zwierzęta na aktualnym polu
         for (Animal animal : nearbyAnimals) {
             if (animal!=this && canAttack(animal)) { //nie zjada sam siebie
-                if (attack(animal)) { //udany atak
+                if (attack(animal, world)) { //udany atak
                     int gain = calculateGain(animal); //obliczanie gain z ataku na zwierzę
                     setFoodLevel(getFoodLevel() + gain); //aktualizacja poziomu jedzenia
                     return; //koniec akcji
@@ -49,7 +48,6 @@ public class Shark extends Carnivorous implements IEat {
             eat(currentTile); //je
         }
     }
-
 
 
 
