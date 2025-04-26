@@ -18,11 +18,16 @@ public class Coord {
         return Math.sqrt(Math.pow(x - other.x, 2) + Math.pow(y - other.y, 2));
     }
 
-    //losuje nowe sąsiednie współrzędne (ofc w granicach świata)
-    public Coord randomAdjacent(int width, int height) {
-        int nx = Math.max(0, Math.min(width - 1, x + random.nextInt(3) - 1));
-        int ny = Math.max(0, Math.min(height - 1, y + random.nextInt(3) - 1));
-        return new Coord(nx, ny);
+    //losuje nowe współrzędne od -speed do +speed (ofc w granicach świata)
+    public Coord randomAdjacent(int width, int height, int speed) {
+        int moveX = random.nextInt(speed * 2 + 1) - speed; //od 0 do speed*2 i odejmując speed daje to +- speed
+        int moveY = random.nextInt(speed * 2 + 1) - speed;
+
+        int newX = Math.max(0, Math.min(width - 1, x + moveX)); //w granicach mapy (nie mniejsze od 0 i nie wieksze od granicy)
+        int newY = Math.max(0, Math.min(height - 1, y + moveY)); //albo granica albo wartość losowana
+
+        return new Coord(newX, newY);
     }
+
 }
 

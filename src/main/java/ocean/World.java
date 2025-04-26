@@ -69,7 +69,6 @@ public class World {
     }
 
 
-
     //losowo rozmieszcza jedzenie
     private void spawnFood(int noFood) {
         for (int i = 0; i < noFood; i++) {
@@ -123,14 +122,15 @@ public class World {
 
 
     //zwraca listę zwierząt które znajdują się w pobliżu określonych współrzędnych Coord
-    public List<Animal> getNearbyAnimals(Coord c, int radius) {
+    public List<Animal> getNearbyAnimals(Coord coord, int radius) {
         List<Animal> result = new ArrayList<>(); //lista do przechowywania zwierzat w okolicy
         for (Animal animal : animals) {
-            if (animal.getPosition().distance(c) <= radius && animal.isAlive()) //odległośc między zwierżeciem a c <= promień i czy żyje
+            if (animal.getPosition().distance(coord) <= radius && animal.isAlive()) //odległośc między zwierżeciem a c <= promień i czy żyje
                 result.add(animal); //jeśli tak to dodaje do listy
         }
         return result;
     }
+
 
 
     public int getWidth() {

@@ -1,5 +1,8 @@
 package ocean;
 
+import java.util.ArrayList;
+import java.util.List;
+
 //abstract bo nie ma dalej update
 public abstract class Herbivorous extends Animal implements IEat, IMove {
     public Herbivorous(Coord position) {
@@ -13,10 +16,14 @@ public abstract class Herbivorous extends Animal implements IEat, IMove {
 
     //myślę że ruch bedą mieli taki sam, idą do roślinek - jak coś to się przeniesie
     //chociaż ruch do zmiany bo aktualnie idzie losowo a raczej da mu się half losowo half do jedzenia w zależności od poziomu głodu
+
     @Override
     public void move(World world) {
-        Coord newPos = getPosition().randomAdjacent(world.getWidth(), world.getHeight()); //generuje nową losową pozycję sąsiednią
-        setPosition(newPos); //update do nowych koordynatów
+        Coord newPos = getPosition().randomAdjacent(world.getWidth(), world.getHeight(), getGenes().getSpeed()); //generuje nową losową pozycję sąsiednią
+        setPosition(newPos);  //update pozycji
     }
+
+
+
 }
 

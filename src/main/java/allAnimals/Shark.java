@@ -9,8 +9,19 @@ public class Shark extends Carnivorous implements IMove, IEat {
 
     public Shark(Coord position) {
         super(position);
+        setGenes(generateGenes());
         setMaxAge(150 + rand.nextInt(30)); //do zmiany
         setMaxLoneliness(70); //do zmiany
+    }
+
+
+    //do tworzenia genów w nowych - zakresy w losowych wartościah do zmiany
+    private Genes generateGenes() {
+        Genes g = new Genes();
+        g.setStrength(5 + rand.nextInt(5));
+        g.setSpeed(10 + rand.nextInt(10));
+        g.setFertility(20 + rand.nextInt(10));
+        return g;
     }
 
     @Override
@@ -44,7 +55,7 @@ public class Shark extends Carnivorous implements IMove, IEat {
 
     @Override
     public void move(World world){
-        setPosition(getPosition().randomAdjacent(world.getWidth(), world.getHeight()));
+        setPosition(getPosition().randomAdjacent(world.getWidth(), world.getHeight(), getGenes().getSpeed()));
     }
 
 

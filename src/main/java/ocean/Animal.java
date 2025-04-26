@@ -15,7 +15,6 @@ public abstract class Animal {
     // konstruktor dla zwierząt startowych
     public Animal(Coord position) {
         this.position = position;
-        this.genes = Genes.randomGenes();
         this.gender = rand.nextBoolean() ? Gender.MALE : Gender.FEMALE;
         this.age = 0;
         this.foodLevel = 100;
@@ -45,10 +44,10 @@ public abstract class Animal {
     }
 
 
-
     public abstract void update(World world);
 
     public void die() {alive = false;}
+
 
     public Coord getPosition() {return position;}
     public int getAge() {return age;}
@@ -62,10 +61,7 @@ public abstract class Animal {
     public void setFoodLevel(int foodLevel) {this.foodLevel = foodLevel;} //setter a nie add bo może będziemy chcieli coś więcej niż add
     public void setMaxAge(int maxAge) {this.maxAge = maxAge;}
     public void setMaxLoneliness(int maxLoneliness) {this.maxLoneliness = maxLoneliness;}
-
-
-
-
+    public void setGenes(Genes genes) {this.genes = genes;}
 
 }
 

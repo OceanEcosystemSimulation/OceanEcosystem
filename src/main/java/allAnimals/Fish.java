@@ -1,15 +1,23 @@
 package allAnimals;
 
-import ocean.Coord;
-import ocean.Herbivorous;
-import ocean.Tile;
-import ocean.World;
+import ocean.*;
 
 public class Fish extends Herbivorous {
     public Fish(Coord position) {
         super(position);
+        setGenes(generateGenes());
         setMaxAge(100 + rand.nextInt(50)); //random max age - do ustawienia
         setMaxLoneliness(40 + rand.nextInt(20)); //random max loneliness - do ustawienia
+    }
+
+
+    //do tworzenia genów w nowych - zakresy w losowych wartościah do zmiany
+    private Genes generateGenes() {
+        Genes g = new Genes();
+        g.setStrength(5 + rand.nextInt(5));
+        g.setSpeed(10 + rand.nextInt(10));
+        g.setFertility(20 + rand.nextInt(10));
+        return g;
     }
 
     public void update(World world) {
@@ -38,8 +46,4 @@ public class Fish extends Herbivorous {
             tile.clearFood();
         }
     }
-
-
-
-
 }
