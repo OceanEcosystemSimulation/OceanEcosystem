@@ -15,8 +15,8 @@ public abstract class Herbivorous extends Animal implements IEat, IMove {
     //chociaż ruch do zmiany bo aktualnie idzie losowo a raczej da mu się half losowo half do jedzenia w zależności od poziomu głodu
     @Override
     public void move(World world) {
-        Coord newPos = position.randomAdjacent(world.getWidth(), world.getHeight());
-        position = newPos; //update do nowych koordynatów
+        Coord newPos = getPosition().randomAdjacent(world.getWidth(), world.getHeight()); //generuje nową losową pozycję sąsiednią
+        setPosition(newPos); //update do nowych koordynatów
     }
 }
 

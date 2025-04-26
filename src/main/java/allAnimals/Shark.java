@@ -9,27 +9,27 @@ public class Shark extends Carnivorous implements IMove, IEat {
 
     public Shark(Coord position) {
         super(position);
-        this.maxAge = 150 + rand.nextInt(30); //do zmiany
-        this.maxLoneliness = 70; //do zmiany
+        setMaxAge(150 + rand.nextInt(30)); //do zmiany
+        setMaxLoneliness(70); //do zmiany
     }
 
     @Override
     public void update(World world) {
         processLifeCycle();
-        if (!alive) {return;}
+        if (!isAlive()) {return;}
 
         move(world);
 
 
         //szukanie organizmu w pobliżu, który nie przekroczy limitu foodLevel
-        List<Animal> nearby = world.getNearbyAnimals(position, 1); //pobiera zwierzęta w zasięgu ataku - zasięg do zmiany
+        List<Animal> nearby = world.getNearbyAnimals(getPosition(), 1); //pobiera zwierzęta w zasięgu ataku - zasięg do zmiany
         Animal bestTarget = null;
         int bestGain = Integer.MIN_VALUE; //najlepszy przyrost jedzenia, zaczynamy od minimalnego
 
         for (Animal a : nearby) {
             if (a != this && canAttack(a)) { //czy można zaatakować
                 int potentialGain = calculateGain(a); //na razie stała bo idk co zakładamy
-                if (foodLevel+potentialGain <= 100 && potentialGain>bestGain) { //sprawdza czy nie przekracza i znajduje największy gain
+                if (getFoodLevel()+potentialGain <= 100 && potentialGain>bestGain) { //sprawdza czy nie przekracza i znajduje największy gain
                     bestTarget = a; //aktualizuje cel na najlepszy możliwy
                     bestGain = potentialGain;
                 }
@@ -38,13 +38,13 @@ public class Shark extends Carnivorous implements IMove, IEat {
 
         //jeśli znaleziono cel spełniający warunki i atakuje (magia licząca czy wygra)
         if (bestTarget != null && attack(bestTarget)) {
-            foodLevel+=bestGain; //aktualizacja foodLevel po sukcesie
+            setFoodLevel(getFoodLevel() + bestGain); //aktualizacja foodLevel po sukcesie
         }
     }
 
     @Override
-    public void move(World world) {
-        position = position.randomAdjacent(world.getWidth(), world.getHeight());
+    public void move(World world){
+        setPosition(getPosition().randomAdjacent(world.getWidth(), world.getHeight()));
     }
 
 
@@ -67,7 +67,7 @@ public class Shark extends Carnivorous implements IMove, IEat {
 
     @Override
     public boolean canEat(Tile tile) { //also przykładowe
-        return foodLevel <= 30 &&
+        return getFoodLevel() <= 30 &&
                 (tile.foodType == FoodType.PLANKTON || tile.foodType == FoodType.ALGAE);
     }
 
@@ -77,7 +77,8 @@ public class Shark extends Carnivorous implements IMove, IEat {
             case PLANKTON, ALGAE -> 5;
             default -> 0; //NONE
         };
-        if (foodLevel+gain <= 100){
+        if (getFoodLevel()+gain <= 100){
+            setFoodLevel(getFoodLevel() + gain);
             tile.clearFood();
         }
     }

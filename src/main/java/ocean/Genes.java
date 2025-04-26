@@ -27,8 +27,6 @@ public class Genes {
     }
 
     //losowa mutacja +-2 do genów
-    private static int mutate(int value) {
-        return value + (int)(Math.random() * 5 - 2);
-    }
+    private static int mutate(int value) {return value + (int)(Math.random() * 5 - 2);}
 }
 

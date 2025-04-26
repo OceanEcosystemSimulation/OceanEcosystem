@@ -3,13 +3,12 @@ package ocean;
 import java.util.*;
 
 public abstract class Animal {
-    protected Coord position; //aktualne współrzędne w świecie
-    protected int foodLevel, age, maxAge, loneliness, maxLoneliness;
-    protected boolean alive = true;
-    protected Genes genes; //przechowuje geny
-    protected Gender gender;
-    protected String name;
-    protected Rarity rarity;
+    private Coord position; //aktualne współrzędne w świecie
+    private int foodLevel, age, maxAge, loneliness, maxLoneliness;
+    private Genes genes; //przechowuje geny
+    private Gender gender;
+    private boolean alive = true;
+    private String name;
 
     protected Random rand = new Random();
 
@@ -49,8 +48,24 @@ public abstract class Animal {
 
     public abstract void update(World world);
 
-    public Coord getPosition() {
-        return position;
-    }
+    public void die() {alive = false;}
+
+    public Coord getPosition() {return position;}
+    public int getAge() {return age;}
+    public int getFoodLevel() {return foodLevel;}
+    public int getLoneliness() {return loneliness;}
+    public Genes getGenes() {return genes;}
+    public Gender getGender() {return gender;}
+    public boolean isAlive() {return alive;}
+
+    public void setPosition(Coord newPosition) {this.position = newPosition;}
+    public void setFoodLevel(int foodLevel) {this.foodLevel = foodLevel;} //setter a nie add bo może będziemy chcieli coś więcej niż add
+    public void setMaxAge(int maxAge) {this.maxAge = maxAge;}
+    public void setMaxLoneliness(int maxLoneliness) {this.maxLoneliness = maxLoneliness;}
+
+
+
+
+
 }
 
