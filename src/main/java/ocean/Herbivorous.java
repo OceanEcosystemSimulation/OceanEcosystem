@@ -1,8 +1,5 @@
 package ocean;
 
-import java.util.ArrayList;
-import java.util.List;
-
 //abstract bo nie ma dalej update
 public abstract class Herbivorous extends Animal implements IEat, IMove {
     public Herbivorous(Coord position) {
@@ -14,16 +11,28 @@ public abstract class Herbivorous extends Animal implements IEat, IMove {
         return tile.foodType == FoodType.PLANKTON || tile.foodType == FoodType.ALGAE;
     }
 
-    //myślę że ruch bedą mieli taki sam, idą do roślinek - jak coś to się przeniesie
-    //chociaż ruch do zmiany bo aktualnie idzie losowo a raczej da mu się half losowo half do jedzenia w zależności od poziomu głodu
 
+    //mechanika ruchu
     @Override
     public void move(World world) {
-        Coord newPos = getPosition().randomAdjacent(world.getWidth(), world.getHeight(), getGenes().getSpeed()); //generuje nową losową pozycję sąsiednią
-        setPosition(newPos);  //update pozycji
+        if (getFoodLevel() < 70) {
+            Tile foodTile = world.nearestFood(getPosition(), getGenes().getSpeed()); //szuka najbliższe jedzenie
+            if (foodTile != null) {
+                Coord foodPos = new Coord(foodTile.x, foodTile.y);
+                setPosition(foodPos); //skok do jedzenia
+                return;
+            }
+        }
+        randomMove(world); //randomowo gdy nie głodny lub brak jedzenia
     }
 
 
+    //losowy ruch w zasięgu speed
+    private void randomMove(World world) {
+        Coord newPos = getPosition().randomAdjacent(world.getWidth(), world.getHeight(), getGenes().getSpeed()); //generuje nową losową pozycję sąsiednią
+        setPosition(newPos); //ustawia pozycję
+    }
 
 }
+
 

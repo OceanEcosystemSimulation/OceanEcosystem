@@ -27,7 +27,7 @@ public class Fish extends Herbivorous {
         move(world); //wywołanie mechaniki ruchu
 
         Tile tile = world.getTile(getPosition()); //pobiera pole na którym znajduje się ryba
-        if (tile != null && tile.hasFood() && canEat(tile)) { //sprawdza jest jedzenie i czy ryba może je zjeść
+        if (tile!=null && tile.hasFood() && canEat(tile)) { //sprawdza czy jest jedzenie (na wszelki?) i czy ryba może je zjeść
             eat(tile); //wywołanie mechaniki jedzenia
         }
     }
@@ -42,7 +42,7 @@ public class Fish extends Herbivorous {
             default -> 0; //NONE
         };
         if (getAge()+gain <= 100){
-            setFoodLevel(getFoodLevel() + gain); //omnomnom ryby
+            setFoodLevel(getFoodLevel() + gain); //je
             tile.clearFood();
         }
     }

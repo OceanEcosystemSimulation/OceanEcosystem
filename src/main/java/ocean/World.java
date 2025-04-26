@@ -24,16 +24,16 @@ public class World {
 
     //inicjuje pola mapy jako NORMAL i losuje miejsca raf
     private void initTiles(int noCoral) {
-        for (int x=0; x<width; x++)
-            for (int y=0; y<height; y++)
+        for (int x = 0; x < width; x++)
+            for (int y = 0; y < height; y++)
                 grid[x][y] = new Tile(x, y, MapType.NORMAL); //ustawia pole na NORMAL
 
         // simple rozmieszczenie raf (otoczenie 3x3 na razie - jeśli dobrze ustawiłąm lol)
         for (int i = 0; i < noCoral; i++) {
             int cx = random.nextInt(width); //losuje centralne pole x rafy
             int cy = random.nextInt(height); //losuje centralne pole y rafy
-            for (int dx=-1; dx<=1; dx++)
-                for (int dy=-1; dy<=1; dy++)
+            for (int dx = -1; dx <= 1; dx++)
+                for (int dy = -1; dy <= 1; dy++)
                     if (inBounds(cx + dx, cy + dy)) //sprawdza czy w zasięgu mapy
                         grid[cx + dx][cy + dy].type = MapType.CORAL; //ustawia pole na CORAL
         }
@@ -62,10 +62,15 @@ public class World {
     //tworzenie zwierząt
     private Animal createAnimalFromName(String name, Coord position) {
         //wywalało żółty że nie == i faktycznie chyba bo == poówbuje chyba adresy a equals wartości wieć zmieniam
-        if (name.equals("Nemo")) {return new Fish(position);}
-        else if (name.equals("Shark")) {return new Shark(position);}
+        if (name.equals("Nemo")) {
+            return new Fish(position);
+        } else if (name.equals("Shark")) {
+            return new Shark(position);
+        }
         // itd
-        else {return null;} // na wypadek błędu
+        else {
+            return null;
+        } // na wypadek błędu
     }
 
 
@@ -96,7 +101,7 @@ public class World {
 
     //główna symulacja świata - w każdym cyklu aktualizuje zwierzęta - dead alive
     public void runSimulation(int ticks) {
-        for (int t=0; t<ticks; t++) {
+        for (int t = 0; t < ticks; t++) {
             List<Animal> newAnimals = new ArrayList<>(); //nowa ze zwierzętami
 
             //iteracja po kopii animals - żeby nie było problemów później bo niektóre rzeczy usuwamy to sie rozwali inaczej
@@ -111,7 +116,7 @@ public class World {
 
     //sprawdza czy dane pole jest w zasięgu mapy
     public boolean inBounds(int x, int y) {
-        return x>=0 && x<width && y>=0 && y<height;
+        return x >= 0 && x < width && y >= 0 && y < height;
     }
 
 
@@ -132,12 +137,53 @@ public class World {
     }
 
 
-
     public int getWidth() {
         return width;
     }
 
     public int getHeight() {
         return height;
+    }
+
+
+    //znajdywanie alg lub planktonu w okreslonym promieniu
+    public Tile nearestFood(Coord position, int radius) {
+        Tile nearestFood = null; //zmenna z najblizszym jedzeniem
+        int minDist = Integer.MAX_VALUE; //najmniejsza odległość od pozycji tego co je
+
+        for (int dx=-radius; dx<=radius; dx++) { //iteracja po promieniu
+            for (int dy=-radius; dy<=radius; dy++) {
+                Coord candidate = new Coord(position.x + dx, position.y + dy); //wspołrzedne kandydata na ofiarę
+                if (inBounds(candidate.x, candidate.y)) { //czy współrzędne w granicach mapy
+                    Tile tile = getTile(candidate); //pobranie pola
+                    if (tile != null && tile.hasFood()) { //sprawdza czy jest na nim jedzenie
+                        int dist = (int) position.distance(candidate); //rzutowanie double z euklidesa na int
+                        if (dist < minDist) { //jeżeli ma mniejszy dystans niż wcześniejsze to bierze to
+                            minDist = dist;
+                            nearestFood = tile;
+                        }
+                    }
+                }
+            }
+        }
+        return nearestFood; //zwaca najbliższe pole z jedzeniem
+    }
+
+
+    //szuka najbliższego organizmu do zjedzenia (ofiarę)
+    public Coord nearestPrey(Coord position, int radius, Carnivorous predator) {
+        Animal nearestPrey = null; //zmenna z najblizszą ofiarą
+        int minDist = Integer.MAX_VALUE; //najmniejsza odległość od pozycji
+
+        for (Animal animal : getNearbyAnimals(position, radius)) { //iteracja po liście zwierząt w promieniu
+            if (predator.canAttack(animal)) { //sprawdzenie czy może zaatakować
+                int dist = (int) position.distance(animal.getPosition());
+                if (dist < minDist) { //jeśli bliżej to bierze
+                    minDist = dist;
+                    nearestPrey = animal;
+                }
+            }
+        }
+        return nearestPrey != null ? nearestPrey.getPosition() : null; //zwraca współrzędne ofiary lub null jak jej nie ma
     }
 }

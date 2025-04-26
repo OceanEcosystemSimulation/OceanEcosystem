@@ -5,7 +5,7 @@ import ocean.*;
 import java.util.List;
 
 //znowu - IMove można przenieść jak potrzeba
-public class Shark extends Carnivorous implements IMove, IEat {
+public class Shark extends Carnivorous implements IEat {
 
     public Shark(Coord position) {
         super(position);
@@ -31,32 +31,26 @@ public class Shark extends Carnivorous implements IMove, IEat {
 
         move(world);
 
-
-        //szukanie organizmu w pobliżu, który nie przekroczy limitu foodLevel
-        List<Animal> nearby = world.getNearbyAnimals(getPosition(), 1); //pobiera zwierzęta w zasięgu ataku - zasięg do zmiany
-        Animal bestTarget = null;
-        int bestGain = Integer.MIN_VALUE; //najlepszy przyrost jedzenia, zaczynamy od minimalnego
-
-        for (Animal a : nearby) {
-            if (a != this && canAttack(a)) { //czy można zaatakować
-                int potentialGain = calculateGain(a); //na razie stała bo idk co zakładamy
-                if (getFoodLevel()+potentialGain <= 100 && potentialGain>bestGain) { //sprawdza czy nie przekracza i znajduje największy gain
-                    bestTarget = a; //aktualizuje cel na najlepszy możliwy
-                    bestGain = potentialGain;
+        //sprawdzenie czy na obecnej pozycji znajduje się ofiara
+        List<Animal> nearbyAnimals = world.getNearbyAnimals(getPosition(), 0); //pobiera zwierzęta na aktualnym polu
+        for (Animal animal : nearbyAnimals) {
+            if (animal!=this && canAttack(animal)) { //nie zjada sam siebie
+                if (attack(animal)) { //udany atak
+                    int gain = calculateGain(animal); //obliczanie gain z ataku na zwierzę
+                    setFoodLevel(getFoodLevel() + gain); //aktualizacja poziomu jedzenia
+                    return; //koniec akcji
                 }
             }
         }
 
-        //jeśli znaleziono cel spełniający warunki i atakuje (magia licząca czy wygra)
-        if (bestTarget != null && attack(bestTarget)) {
-            setFoodLevel(getFoodLevel() + bestGain); //aktualizacja foodLevel po sukcesie
+        //sprawdzenie czy na obecnym kafelku znajduje się jedzenie
+        Tile currentTile = world.getTile(getPosition());
+        if (currentTile != null && canEat(currentTile)) { //jeśli tile zawiera jedzenie i Shark może je jeść
+            eat(currentTile); //je
         }
     }
 
-    @Override
-    public void move(World world){
-        setPosition(getPosition().randomAdjacent(world.getWidth(), world.getHeight(), getGenes().getSpeed()));
-    }
+
 
 
     @Override
@@ -66,9 +60,9 @@ public class Shark extends Carnivorous implements IMove, IEat {
     }
 
     //przykładowe to wpisywania ile jakie jedzenie daje
-    private int calculateGain(Animal a) {
+    private int calculateGain(Animal animal) {
         int baseGain = 0;
-        if (a instanceof Fish) {
+        if (animal instanceof Fish) {
             baseGain = 30;
         }
         // itd
@@ -88,7 +82,7 @@ public class Shark extends Carnivorous implements IMove, IEat {
             case PLANKTON, ALGAE -> 5;
             default -> 0; //NONE
         };
-        if (getFoodLevel()+gain <= 100){
+        if (getFoodLevel()+gain <= 100){ //tak na wszelki
             setFoodLevel(getFoodLevel() + gain);
             tile.clearFood();
         }
