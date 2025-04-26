@@ -21,7 +21,7 @@ public class Fish extends Herbivorous {
     }
 
     public void update(World world) {
-        processLifeCycle(); //duperele o życiu
+        processLifeCycle(world); //duperele o życiu
         if (!isAlive()) {return;}
 
         move(world); //wywołanie mechaniki ruchu

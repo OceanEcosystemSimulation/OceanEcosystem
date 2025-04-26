@@ -38,15 +38,67 @@ public abstract class Animal {
         this.maxLoneliness = (parent1.maxLoneliness + parent2.maxLoneliness) / 2; // dziedziczenie średnich wartości od rodziców
     }
 
-    public void processLifeCycle() {
+
+    public void processLifeCycle(World world) {
         age++;
         foodLevel--;
-        loneliness++;
+        updateEnergy();
 
-        if (foodLevel <= 0 || age > maxAge || loneliness > maxLoneliness) {
+        if (foodLevel <= 0 || energy <= 0 || age > maxAge) {
+            alive = false;
+            return; //koniec
+        }
+
+        updateLoneliness(world);
+        updateHealth();
+
+        if (health <= 0) {
             alive = false;
         }
     }
+
+    //aktualizacja energii - zależna od jedzenia i zdrowia
+    private void updateEnergy() {
+        energy = (int)((foodLevel * 0.7) + (health * 0.3));
+        if (energy < 20) {
+            energy = (int)(energy * 0.6); //zmniejszenie energii przy krytycznym poziomie
+        }
+        energy = Math.max(0, energy); //nie mniej niż 0
+    }
+
+    //sprawdzanie samotności - czy wokół są zwierzęta tego samego gatunku
+    private void updateLoneliness(World world) {
+        List<Animal> nearby = world.getNearbyAnimals(position, (int)(getGenes().getSpeed() * 0.5)); //wartość przeszukiwania do zmiany
+        boolean foundSameSpecies = false;
+        for (Animal other : nearby) {
+            if (this.getClass() == other.getClass()) {
+                foundSameSpecies = true;
+                break;
+            }
+        }
+        if (!foundSameSpecies) {loneliness++;} //nikogo nie ma :((
+        else {loneliness = 0;} //reset samotności jeśli ktoś jest
+    }
+
+    //aktualizacja zdrowia - zależna od jedzenia i samotności
+    private void updateHealth() {
+        if (foodLevel < 40){
+            health = Math.max(health-1, 0); //zdrowie podupada (-1) z każdą turą
+        }
+
+        if (loneliness >= maxLoneliness){ //jeśli samotność osiągnęła max traci zdrowie co turę
+            health = Math.max(health-1, 0);
+        } else if (loneliness>0 && loneliness%3==0){ //normalnie jest co 3 tury - do zmiany chyba bo idk czy matematycznie działa
+            health = Math.max(health-1, 0);
+        }
+
+        if (foodLevel>70 && energy>20) { //zdrowie się odnawia (tak jakies 120% ale do zmiany)
+            health = (int) Math.min(health*1.2, 100);
+        }
+    }
+
+
+
 
 
     public abstract void update(World world);

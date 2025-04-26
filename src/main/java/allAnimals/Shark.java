@@ -25,7 +25,7 @@ public class Shark extends Carnivorous implements IEat {
 
     @Override
     public void update(World world) {
-        processLifeCycle();
+        processLifeCycle(world);
         if (!isAlive()) {return;}
 
         move(world);
