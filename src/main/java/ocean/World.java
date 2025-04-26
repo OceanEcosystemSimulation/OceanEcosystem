@@ -12,14 +12,15 @@ public class World {
     private Random random = new Random(); //do losowań
 
     //rozmieszczenie pól i zwierząt (na razie zawiera liczbę turn konkretną)
-    public World(int width, int height, int noFood, int noCoral, int noFish, int noSharks, int noWhales, int ticks) {
+    public World(int width, int height, int noFood, int noCoral, int noAnimals, int ticks) {
         this.width = width;
         this.height = height;
         this.grid = new Tile[width][height];
         initTiles(noCoral); //określa jakie jest dane pole mapy
-        spawnAnimals(noFish, noSharks, noWhales);
-        spawnFood(noFood);
+        spawnAnimals(noAnimals); //spawn zwierząt randomowych według rarity
+        spawnFood(noFood); //spawn jedzenie randomowo
     }
+
 
     //inicjuje pola mapy jako NORMAL i losuje miejsca raf
     private void initTiles(int noCoral) {
@@ -38,13 +39,34 @@ public class World {
         }
     }
 
-    //dodaje okreslona liczbe danych zwierząt do listy w losowych pozycjach
-    private void spawnAnimals(int noFish, int noSharks, int noWhales) {
-        for (int i = 0; i < noFish; i++) animals.add(new Fish(randomCoord()));
-        for (int i = 0; i < noSharks; i++) animals.add(new Shark(randomCoord()));
-        //for (int i = 0; i < noWhales; i++) animals.add(new Whale(randomCoord()));
-        //przykłady ale to idzie dalej jak więcej dodamy
+
+    //dodaje okreslona liczbe dowolnych (rarity) zwierząt do listy w losowych pozycjach
+    private void spawnAnimals(int count) {
+        RangeOfRarity rarityRange = new RangeOfRarity();
+        DrawningAnimalsByTheirRarity animalDrawer = new DrawningAnimalsByTheirRarity();
+
+        for (int i = 0; i < count; i++) {
+            Rarity rarity = rarityRange.animalsDrawingByRarity(); //losuje rarity
+            String animalType = animalDrawer.drawnAnimalByRarity(rarity); //losuje typ zwierzęcia z tej klasy rarity
+
+            Coord coord = randomCoord(); //losuje pozycję
+
+            Animal animal = createAnimalFromName(animalType, coord); //tworzy zwierzę
+            if (animal != null) {
+                animals.add(animal);
+            }
+        }
     }
+
+
+    //tworzenie zwierząt
+    private Animal createAnimalFromName(String name, Coord position) {
+        if(name=="Nemo") {return new Fish(position);}
+        else if(name=="Shark") {return new Shark(position);}
+        //itd jak bedzie wiecej
+        else {return null;} //na wypadek błędu
+    }
+
 
     //losowo rozmieszcza jedzenie
     private void spawnFood(int noFood) {
@@ -67,6 +89,7 @@ public class World {
         }
     }
 
+
     //generuje losowe współrzedne Coord na swiecie
     private Coord randomCoord() {
         return new Coord(random.nextInt(width), random.nextInt(height));
@@ -86,15 +109,18 @@ public class World {
         }
     }
 
+
     //sprawdza czy dane pole jest w zasięgu mapy
     public boolean inBounds(int x, int y) {
         return x >= 0 && x < width && y >= 0 && y < height;
     }
 
+
     //zwraca komórkę jeśli jest w granicach
     public Tile getTile(Coord c) {
         return inBounds(c.x, c.y) ? grid[c.x][c.y] : null;
     }
+
 
     //zwraca listę zwierząt które znajdują się w pobliżu określonych współrzędnych Coord
     public List<Animal> getNearbyAnimals(Coord c, int radius) {
@@ -105,6 +131,7 @@ public class World {
         }
         return result;
     }
+
 
     public int getWidth() {
         return width;
