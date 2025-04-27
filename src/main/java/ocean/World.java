@@ -176,7 +176,8 @@ public class World {
         int minDist = Integer.MAX_VALUE; //najmniejsza odległość od pozycji
 
         for (Animal animal : getNearbyAnimals(position, radius)) { //iteracja po liście zwierząt w promieniu
-            if (predator.canAttack(animal)) { //sprawdzenie czy może zaatakować
+            Tile preyTile = getTile(animal.getPosition()); //pole na którym jest ofiara
+            if (preyTile!=null && preyTile.type!=MapType.CORAL && predator.canAttack(animal)) { //sprawdzenie czy może zaatakować i czy to nie rafa
                 int dist = (int) position.distance(animal.getPosition());
                 if (dist < minDist) { //jeśli bliżej to bierze
                     minDist = dist;
@@ -186,4 +187,29 @@ public class World {
         }
         return nearestPrey != null ? nearestPrey.getPosition() : null; //zwraca współrzędne ofiary lub null jak jej nie ma
     }
+
+    //szuka najblizszego pola CORAL w promieniu
+    public Coord nearestCoral(Coord position, int radius) {
+        Coord nearestCoral = null; //zmienna do przechowywania coords tego pola
+        int minDist = Integer.MAX_VALUE;
+
+        for (int dx=-radius; dx<=radius; dx++) {
+            for (int dy=-radius; dy<=radius; dy++) {
+                Coord newPos = new Coord(position.x + dx, position.y + dy);
+                if (inBounds(newPos.x, newPos.y)) {
+                    Tile tile = getTile(new Coord(newPos.x, newPos.y));
+                    if (tile!=null && tile.type==MapType.CORAL) { //sprawdza czy to jest coral
+                        int dist = (int) position.distance(newPos);
+                        if (dist < minDist) {
+                            minDist = dist;
+                            nearestCoral = new Coord(newPos.x, newPos.y);
+                        }
+                    }
+                }
+            }
+        }
+        return nearestCoral;
+    }
+
+
 }

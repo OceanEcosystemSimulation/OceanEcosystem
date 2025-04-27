@@ -43,7 +43,7 @@ public abstract class Carnivorous extends Animal implements IFight, IMove {
 
         //próba ucieczki ofiary
         if (attackerSpeed < preySpeed*1.2) { //liczba do zmiany można
-            prey.escape(this, world);
+            prey.escape(world);
             return false; //ucieczka udana - brak walki
         }
 
@@ -62,9 +62,9 @@ public abstract class Carnivorous extends Animal implements IFight, IMove {
 
         //jeśli po 2 rundach nikt nie padł
         if (this.getCombatPower() > prey.getCombatPower()) { //kto ucieka (przegryw - słabszy)
-            prey.escape(this, world);
+            prey.escape(world);
         } else {
-            this.escape(prey, world);
+            this.escape(world);
         }
         return false; //nikt nie został zabity w walce
     }

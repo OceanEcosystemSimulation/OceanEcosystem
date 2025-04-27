@@ -120,23 +120,28 @@ public abstract class Animal {
         return getEffectiveStrength() * 0.7 + getEffectiveSpeed() * 0.3;
     }
 
-    //ucieczka z walki - nie podoba mi się że jest argument world ale idk jak to zrobić
-    public void escape(Animal attacker, World world) {
-        Coord pos = getPosition();
-        int distance = (int) (1.2*getGenes().getSpeed()); //ma większą prędkość w walce minimalnie (adrenalina XD) - do zmiany możliwej
-
-        //losowy kierunek ucieczki na pełną odległość dlatego nie randomMove z wyżej
-        int dx = rand.nextBoolean() ? distance : -distance;
-        int dy = rand.nextBoolean() ? distance : -distance;
-        Coord escapePos = new Coord(pos.x + dx, pos.y + dy);
-        setPosition(world.inBounds(escapePos.x, escapePos.y) ? escapePos //czy poza granice
-                : pos.randomAdjacent(world.getWidth(), world.getHeight(), getGenes().getSpeed()));
-    }
-
     public void takeDamage(double amount) {
         int newHealth = (int)(health - amount);
         health = Math.max(newHealth, 0);
         if (health <= 0) {die();} //nie żyje
+    }
+
+
+    //ucieczka z walki - nie podoba mi się że jest argument world ale idk jak to zrobić
+    public void escape(World world) {
+        Coord pos = getPosition();
+        int distance = (int) (1.2 * getGenes().getSpeed()); //ma większą prędkość w walce minimalnie (adrenalina XD) - do zmiany możliwej
+
+        Coord coralPos = world.nearestCoral(pos, distance);
+        if (coralPos!=null) { //gdy istnieje rafa w zasięgu
+            setPosition(coralPos); //skok na rafę
+        } else { //gdy nie ma rafy to losowy kierunek ucieczki na pełną odległość dlatego nie randomMove
+            int dx = rand.nextBoolean() ? distance : -distance;
+            int dy = rand.nextBoolean() ? distance : -distance;
+            Coord escapePos = new Coord(pos.x + dx, pos.y + dy);
+            setPosition(world.inBounds(escapePos.x, escapePos.y) ? escapePos //czy poza granice
+                    : pos.randomAdjacent(world.getWidth(), world.getHeight(), getGenes().getSpeed()));
+        }
     }
 
 
