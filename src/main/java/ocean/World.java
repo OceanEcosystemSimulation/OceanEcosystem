@@ -185,8 +185,26 @@ public class World {
                 }
             }
         }
-        return nearestPrey != null ? nearestPrey.getPosition() : null; //zwraca współrzędne ofiary lub null jak jej nie ma
+        return nearestPrey!=null ? nearestPrey.getPosition() : null; //zwraca współrzędne ofiary lub null jak jej nie ma
     }
+
+    //znajduje zwierze w pobliżu - prawdopodobnie mozna to połączyć z nearestPrey <-- do zmiany póżniej moze
+    public Animal nearestMate(Coord position, int radius, Animal self) {
+        Animal nearestMate = null; //zmenna z najblizszym mate
+        int minDist = Integer.MAX_VALUE; //najmniejsza odległość od pozycji
+
+        for (Animal animal : getNearbyAnimals(position, radius)) { //iteracja po liście zwierząt w promieniu
+            if (animal != self && animal.isAlive() && animal.getName().equals(self.getName())) { //porównywanie gatunków
+                int dist = (int) position.distance(animal.getPosition()); //odległość ich
+                if (dist < minDist) {
+                    minDist = dist;
+                    nearestMate = animal;
+                }
+            }
+        }
+        return nearestMate; //zwraca mate
+    }
+
 
     //szuka najblizszego pola CORAL w promieniu
     public Coord nearestCoral(Coord position, int radius) {

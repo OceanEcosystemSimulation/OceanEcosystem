@@ -4,10 +4,13 @@ import ocean.*;
 
 import java.util.List;
 
+import static ocean.Coord.meetingAtMiddle;
+
 public class Shark extends Carnivorous implements IEat {
 
     public Shark(Coord position) {
         super(position);
+        setName("Shark");
         setGenes(generateGenes());
         setMaxAge(150 + rand.nextInt(30)); //do zmiany
         setMaxLoneliness(70); //do zmiany
@@ -46,6 +49,16 @@ public class Shark extends Carnivorous implements IEat {
         Tile currentTile = world.getTile(getPosition());
         if (currentTile != null && canEat(currentTile)) { //jeśli tile zawiera jedzenie i Shark może je jeść
             eat(currentTile); //je
+        }
+
+        //jeśli żyje to szuka partnera - chociaż dalej nie wiem czy powinnam sprawdzac czy zyje czy nie
+        if (isAlive()) {
+            Animal mate = world.nearestMate(this.getPosition(), 10, this); //znajduje mate
+            if (mate != null) {
+                Coord target = meetingAtMiddle(world.getWidth(), world.getHeight(), this.getPosition(), mate.getPosition(), rand);
+                //UWAGA!!!!!: ta metoda meetingAtMiddle jest popieprzona, coś mi się rozwaliło i robiłam cokolwiek by nie podkreślało już, ale nwm co się tu stało
+                setPosition(target); //skok
+            }
         }
     }
 

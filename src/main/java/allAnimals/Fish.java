@@ -2,9 +2,12 @@ package allAnimals;
 
 import ocean.*;
 
+import static ocean.Coord.meetingAtMiddle;
+
 public class Fish extends Herbivorous {
     public Fish(Coord position) {
         super(position);
+        setName("Fish");
         setGenes(generateGenes());
         setMaxAge(100 + rand.nextInt(50)); //random max age - do ustawienia
         setMaxLoneliness(40 + rand.nextInt(20)); //random max loneliness - do ustawienia
@@ -29,6 +32,16 @@ public class Fish extends Herbivorous {
         Tile tile = world.getTile(getPosition()); //pobiera pole na którym znajduje się ryba
         if (tile!=null && tile.hasFood() && canEat(tile)) { //sprawdza czy jest jedzenie (na wszelki?) i czy ryba może je zjeść
             eat(tile); //wywołanie mechaniki jedzenia
+        }
+
+        //jeśli żyje to szuka partnera
+        if (isAlive()) {
+            Animal mate = world.nearestMate(this.getPosition(), 10, this); //znajduje mate
+            if (mate != null) {
+                Coord target = meetingAtMiddle(world.getWidth(), world.getHeight(), this.getPosition(), mate.getPosition(), rand);
+                //UWAGA!!!!!: ta metoda meetingAtMiddle jest popieprzona, coś mi się rozwaliło i robiłam cokolwiek by nie podkreślało już, ale nwm co się tu stało
+                setPosition(target); //skok
+            }
         }
     }
 

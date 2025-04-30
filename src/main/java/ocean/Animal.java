@@ -53,7 +53,7 @@ public abstract class Animal {
         updateHealth();
 
         if (health <= 0) {
-            alive = false;
+            die();
         }
     }
 
@@ -155,12 +155,14 @@ public abstract class Animal {
     public boolean isAlive() {return alive;}
     public int getEnergy() {return energy;}
     public int getHealth() {return health;}
+    public String getName(){return name;}
 
     public void setPosition(Coord newPosition) {this.position = newPosition;}
     public void setFoodLevel(int foodLevel) {this.foodLevel = foodLevel;} //setter a nie add bo może będziemy chcieli coś więcej niż add
     public void setMaxAge(int maxAge) {this.maxAge = maxAge;}
     public void setMaxLoneliness(int maxLoneliness) {this.maxLoneliness = maxLoneliness;}
     public void setGenes(Genes genes) {this.genes = genes;}
+    public void setName(String name) {this.name = name;}
 
 }
 
