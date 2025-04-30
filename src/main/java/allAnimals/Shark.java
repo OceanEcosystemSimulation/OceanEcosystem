@@ -64,19 +64,23 @@ public class Shark extends Carnivorous implements IEat {
 
 
 
+
     @Override
-    public boolean canAttack(Animal other) { //przykładowe że może atakować tylko Fish
-        return other instanceof Fish; //albo dać instance od Herbivorous jak będziemy potrzebować
-        // albo jest opcja jeszcze && other.genes.strenght < ... - jaki przykład używania po prostu
+    public boolean canAttack(Animal other) {
+        if (other == null) {return false;}
+        List<String> prey = List.of("Fish"); //lista kogo atakuje - do zmiany wartości
+        return prey.contains(other.getName()); //czy imie gatunku znajduje się na liscie
     }
 
+
     //przykładowe to wpisywania ile jakie jedzenie daje
+    //można zrobić ifem jak wcześniej było jak wam nie pasuje takie
     private int calculateGain(Animal animal) {
-        int baseGain = 0;
-        if (animal instanceof Fish) {
-            baseGain = 30;
-        }
-        // itd
+        int baseGain = switch (animal.getName()) {
+            case "Fish" -> 30;
+            //itd inne
+            default -> 0;
+        };
         return baseGain;
     }
 
