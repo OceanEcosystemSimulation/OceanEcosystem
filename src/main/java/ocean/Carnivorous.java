@@ -2,8 +2,8 @@ package ocean;
 
 //abstract bo nie ma update
 public abstract class Carnivorous extends Animal implements IFight, IMove {
-    public Carnivorous(Coord position) {
-        super(position);
+    public Carnivorous(Coord position, Genes genes, int maxAge, int maxLoneliness) {
+        super(position, genes, maxAge, maxLoneliness);
     }
 
 
@@ -38,33 +38,33 @@ public abstract class Carnivorous extends Animal implements IFight, IMove {
 
 
     public boolean attack(Animal prey, World world) {
-        double attackerSpeed = this.getEffectiveSpeed(); //predator speed
-        double preySpeed = prey.getEffectiveSpeed(); //prey speed
+        double attackerSpeed = AnimalCombatUtils.getEffectiveSpeed(this); //predator speed
+        double preySpeed = AnimalCombatUtils.getEffectiveSpeed(prey); //prey speed
 
         //próba ucieczki ofiary
         if (attackerSpeed < preySpeed*1.2) { //liczba do zmiany można
-            prey.escape(world);
+            AnimalCombatUtils.escape(world, prey);
             return false; //ucieczka udana - brak walki
         }
 
         //walka
-        double attackerPower = this.getCombatPower();
-        double preyPower = prey.getCombatPower();
+        double attackerPower = AnimalCombatUtils.getCombatPower(this);
+        double preyPower = AnimalCombatUtils.getCombatPower(prey);
 
         int rounds = 2; //maksymalnie 2 wymiany ciosów - do możliwej zmiany
         for (int i = 0; i < rounds; i++) {
-            prey.takeDamage(attackerPower);
+            AnimalCombatUtils.takeDamage(attackerPower, prey);
             if (!prey.isAlive()) return true; //prey padł
 
-            this.takeDamage(preyPower);
+            AnimalCombatUtils.takeDamage(preyPower, this);
             if (!this.isAlive()) return false; //predator padł
         }
 
         //jeśli po 2 rundach nikt nie padł
-        if (this.getCombatPower() > prey.getCombatPower()) { //kto ucieka (przegryw - słabszy)
-            prey.escape(world);
+        if (AnimalCombatUtils.getCombatPower(this) > AnimalCombatUtils.getCombatPower(prey)) { //kto ucieka (przegryw - słabszy)
+            AnimalCombatUtils.escape(world, prey);
         } else {
-            this.escape(world);
+            AnimalCombatUtils.escape(world, this);
         }
         return false; //nikt nie został zabity w walce
     }

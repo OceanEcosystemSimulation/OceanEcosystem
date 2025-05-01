@@ -9,16 +9,14 @@ import static ocean.Coord.meetingAtMiddle;
 public class Shark extends Carnivorous implements IEat {
 
     public Shark(Coord position) {
-        super(position);
+        super(position, generateGenes(), 150 + rand.nextInt(30), 70);
+        //wartości maxAge i maxLoneliness do zmiany
         setName("Shark");
-        setGenes(generateGenes());
-        setMaxAge(150 + rand.nextInt(30)); //do zmiany
-        setMaxLoneliness(70); //do zmiany
     }
 
 
     //do tworzenia genów w nowych - zakresy w losowych wartościah do zmiany
-    private Genes generateGenes() {
+    private static Genes generateGenes() {
         Genes g = new Genes();
         g.setStrength(5 + rand.nextInt(5));
         g.setSpeed(10 + rand.nextInt(10));
@@ -33,7 +31,15 @@ public class Shark extends Carnivorous implements IEat {
 
         move(world);
 
-        //sprawdzenie czy na obecnej pozycji znajduje się ofiara
+        tryToAttack(world);
+        tryToEat(world);
+        tryToMate(world);
+    }
+
+
+
+    //sprawdzenie czy na obecnej pozycji znajduje się ofiara
+    private void tryToAttack(World world) {
         List<Animal> nearbyAnimals = world.getNearbyAnimals(getPosition(), 0); //pobiera zwierzęta na aktualnym polu
         for (Animal animal : nearbyAnimals) {
             if (animal!=this && canAttack(animal)) { //nie zjada sam siebie
@@ -44,16 +50,24 @@ public class Shark extends Carnivorous implements IEat {
                 }
             }
         }
+    }
 
-        //sprawdzenie czy na obecnym kafelku znajduje się jedzenie
-        Tile currentTile = world.getTile(getPosition());
-        if (currentTile != null && canEat(currentTile)) { //jeśli tile zawiera jedzenie i Shark może je jeść
-            eat(currentTile); //je
-        }
 
-        //jeśli żyje to szuka partnera - chociaż dalej nie wiem czy powinnam sprawdzac czy zyje czy nie
+    //sprawdzenie czy na obecnym kafelku znajduje się jedzenie
+    private void tryToEat(World world) {
         if (isAlive()) {
-            Animal mate = world.nearestMate(this.getPosition(), 10, this); //znajduje mate
+            Tile currentTile = world.getTile(getPosition());
+            if (currentTile != null && canEat(currentTile)) { //jeśli tile zawiera jedzenie i Shark może je jeść
+                eat(currentTile); //je
+            }
+        }
+    }
+
+
+    //szuka partnera
+    private void tryToMate(World world) {
+        if (isAlive()){  //dalej nie wiem czy powinnam sprawdzac czy zyje czy nie
+            Animal mate = world.nearestMate(this.getPosition(), this.getGenes().getSpeed(), this); //znajduje mate
             if (mate != null) {
                 Coord target = meetingAtMiddle(world.getWidth(), world.getHeight(), this.getPosition(), mate.getPosition(), rand);
                 //UWAGA!!!!!: ta metoda meetingAtMiddle jest popieprzona, coś mi się rozwaliło i robiłam cokolwiek by nie podkreślało już, ale nwm co się tu stało
@@ -65,11 +79,12 @@ public class Shark extends Carnivorous implements IEat {
 
 
 
+    //stwierdziłam że dam tak bo bez sensu sie ma robić ciągle od nowa jak jest niezmienna
+    private static final List<String> preyList = List.of("Fish"); //lista kogo atakuje - do zmiany wartości (dodawane po przecinku jak coś)
+
     @Override
     public boolean canAttack(Animal other) {
-        if (other == null) {return false;}
-        List<String> prey = List.of("Fish"); //lista kogo atakuje - do zmiany wartości
-        return prey.contains(other.getName()); //czy imie gatunku znajduje się na liscie
+        return other != null && preyList.contains(other.getName());  //czy imie gatunku znajduje się na liscie
     }
 
 

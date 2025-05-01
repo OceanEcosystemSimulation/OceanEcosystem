@@ -2,8 +2,8 @@ package ocean;
 
 //abstract bo nie ma dalej update
 public abstract class Herbivorous extends Animal implements IEat, IMove {
-    public Herbivorous(Coord position) {
-        super(position);
+    public Herbivorous(Coord position, Genes genes, int maxAge, int maxLoneliness) {
+        super(position, genes, maxAge, maxLoneliness);
     }
 
     @Override
