@@ -44,7 +44,7 @@ public class Fish extends Herbivorous {
     //szuka partnera
     private void tryToMate(World world) {
         if (isAlive()) {
-            Animal mate = world.nearestMate(this.getPosition(), this.getGenes().getSpeed(), this); //znajduje mate
+            Animal mate = WorldSearch.nearestMate(world, this.getPosition(), this.getGenes().getSpeed(), this); //znajduje mate
             if (mate != null) {
                 Coord target = meetingAtMiddle(world.getWidth(), world.getHeight(), this.getPosition(), mate.getPosition(), rand);
                 //UWAGA!!!!!: ta metoda meetingAtMiddle jest popieprzona, coś mi się rozwaliło i robiłam cokolwiek by nie podkreślało już, ale nwm co się tu stało

@@ -48,7 +48,7 @@ public abstract class Animal {
 
     //zostawiam to tutaj bo za wykładzie było że fajnie robić chyba takie pomiędzy a nie 1 do 1 połączenia
     protected void processLifeCycle(World world) {
-        AnimalLifeManager.lifeCycle(this, world);
+        AnimalLifeManager.lifeCycle(world, this);
     }
 
 

@@ -16,7 +16,7 @@ public abstract class Herbivorous extends Animal implements IEat, IMove {
     @Override
     public void move(World world) {
         if (getFoodLevel() < 70) {
-            Tile foodTile = world.nearestFood(getPosition(), getGenes().getSpeed()); //szuka najbliższe jedzenie
+            Tile foodTile = WorldSearch.nearestFood(world, getPosition(), getGenes().getSpeed()); //szuka najbliższe jedzenie
             if (foodTile != null) {
                 Coord foodPos = new Coord(foodTile.x, foodTile.y);
                 setPosition(foodPos); //skok do jedzenia

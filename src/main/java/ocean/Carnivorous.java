@@ -11,14 +11,14 @@ public abstract class Carnivorous extends Animal implements IFight, IMove {
     @Override
     public void move(World world) {
         if (getFoodLevel() < 70) {
-            Coord preyPos = world.nearestPrey(getPosition(), getGenes().getSpeed(), this); //szuka ofiary najblizszej
+            Coord preyPos = WorldSearch.nearestPrey(world, getPosition(), getGenes().getSpeed(), this); //szuka ofiary najblizszej
             if (preyPos != null) {
                 setPosition(preyPos); //skok do ofiary
                 return;
             }
         }
         if (getFoodLevel() < 30) {
-            Tile foodTile = world.nearestFood(getPosition(), getGenes().getSpeed()); //szuka najbliższe jedzenie
+            Tile foodTile = WorldSearch.nearestFood(world, getPosition(), getGenes().getSpeed()); //szuka najbliższe jedzenie
             if (foodTile != null) {
                 Coord foodPos = new Coord(foodTile.x, foodTile.y);
                 setPosition(foodPos); //skok do jedzenia
@@ -53,10 +53,10 @@ public abstract class Carnivorous extends Animal implements IFight, IMove {
 
         int rounds = 2; //maksymalnie 2 wymiany ciosów - do możliwej zmiany
         for (int i = 0; i < rounds; i++) {
-            AnimalCombatUtils.takeDamage(attackerPower, prey);
+            AnimalCombatUtils.takeDamage(prey, attackerPower);
             if (!prey.isAlive()) return true; //prey padł
 
-            AnimalCombatUtils.takeDamage(preyPower, this);
+            AnimalCombatUtils.takeDamage(this, preyPower);
             if (!this.isAlive()) return false; //predator padł
         }
 

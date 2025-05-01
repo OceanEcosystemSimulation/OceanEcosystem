@@ -67,7 +67,7 @@ public class Shark extends Carnivorous implements IEat {
     //szuka partnera
     private void tryToMate(World world) {
         if (isAlive()){  //dalej nie wiem czy powinnam sprawdzac czy zyje czy nie
-            Animal mate = world.nearestMate(this.getPosition(), this.getGenes().getSpeed(), this); //znajduje mate
+            Animal mate = WorldSearch.nearestMate(world, this.getPosition(), this.getGenes().getSpeed(), this); //znajduje mate
             if (mate != null) {
                 Coord target = meetingAtMiddle(world.getWidth(), world.getHeight(), this.getPosition(), mate.getPosition(), rand);
                 //UWAGA!!!!!: ta metoda meetingAtMiddle jest popieprzona, coś mi się rozwaliło i robiłam cokolwiek by nie podkreślało już, ale nwm co się tu stało

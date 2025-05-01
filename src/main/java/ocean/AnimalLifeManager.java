@@ -4,7 +4,7 @@ import java.util.List;
 
 //obsługuje staty i cykl
 public class AnimalLifeManager {
-    protected static void lifeCycle(Animal animal, World world) {
+    protected static void lifeCycle(World world, Animal animal) {
         animal.setAge(animal.getAge() + 1);
         animal.setFoodLevel(animal.getFoodLevel() - 1);
         updateEnergy(animal);
@@ -14,7 +14,7 @@ public class AnimalLifeManager {
             return; //koniec
         }
 
-        updateLoneliness(animal, world);
+        updateLoneliness(world, animal);
         updateHealth(animal);
 
         if (animal.getHealth() <= 0){
@@ -34,7 +34,7 @@ public class AnimalLifeManager {
 
 
     //sprawdzanie samotności - czy wokół są zwierzęta tego samego gatunku
-    private static void updateLoneliness(Animal animal, World world) {
+    private static void updateLoneliness(World world, Animal animal) {
         List<Animal> nearby = world.getNearbyAnimals(animal.getPosition(), (int)(animal.getGenes().getSpeed() * 0.5)); //wartość przeszukiwania do zmiany
         boolean foundSameSpecies = false;
         for (Animal other : nearby) {

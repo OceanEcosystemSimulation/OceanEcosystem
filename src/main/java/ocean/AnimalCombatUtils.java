@@ -18,7 +18,7 @@ public class AnimalCombatUtils {
     }
 
 
-    protected static void takeDamage(double amount, Animal animal) {
+    protected static void takeDamage(Animal animal, double amount) {
         int newHealth = (int)(animal.getHealth() - amount);
         animal.setHealth(Math.max(newHealth, 0));
 
@@ -33,7 +33,7 @@ public class AnimalCombatUtils {
         Coord pos = animal.getPosition();
         int distance = (int) (1.2 * animal.getGenes().getSpeed()); //ma większą prędkość w walce minimalnie (adrenalina XD) - do zmiany możliwej
 
-        Coord coralPos = world.nearestCoral(pos, distance);
+        Coord coralPos = WorldSearch.nearestCoral(world, pos, distance);
         if (coralPos!=null) { //gdy istnieje rafa w zasięgu
             animal.setPosition(coralPos); //skok na rafę
         } else { //gdy nie ma rafy to losowy kierunek ucieczki na pełną odległość dlatego nie randomMove
