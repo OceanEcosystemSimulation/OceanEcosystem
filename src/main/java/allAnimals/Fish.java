@@ -6,16 +6,15 @@ import static ocean.Coord.meetingAtMiddle;
 
 public class Fish extends Herbivorous {
     public Fish(Coord position) {
-        super(position);
+        super(position, generateGenes(), 100 + rand.nextInt(50), 40 + rand.nextInt(20));
+        //wartości maxAge i maxLoneliness do zmiany
         setName("Fish");
-        setGenes(generateGenes());
-        setMaxAge(100 + rand.nextInt(50)); //random max age - do ustawienia
-        setMaxLoneliness(40 + rand.nextInt(20)); //random max loneliness - do ustawienia
     }
 
 
     //do tworzenia genów w nowych - zakresy w losowych wartościah do zmiany
-    private Genes generateGenes() {
+    //nie może potrzebować objektu by dzialac bo to ma tworzyć konstruktor (objekt) a nie byc uzywanym przez niego wiec static
+    private static Genes generateGenes() {
         Genes g = new Genes();
         g.setStrength(5 + rand.nextInt(5));
         g.setSpeed(10 + rand.nextInt(10));
@@ -29,14 +28,23 @@ public class Fish extends Herbivorous {
 
         move(world); //wywołanie mechaniki ruchu
 
+        tryToEat(world); //wywołanie mechaniki jedzenia
+        tryToMate(world);
+    }
+
+
+    //sprawdzenie czy na obecnym kafelku znajduje się jedzenie
+    private void tryToEat(World world) {
         Tile tile = world.getTile(getPosition()); //pobiera pole na którym znajduje się ryba
         if (tile!=null && tile.hasFood() && canEat(tile)) { //sprawdza czy jest jedzenie (na wszelki?) i czy ryba może je zjeść
             eat(tile); //wywołanie mechaniki jedzenia
         }
+    }
 
-        //jeśli żyje to szuka partnera
+    //szuka partnera
+    private void tryToMate(World world) {
         if (isAlive()) {
-            Animal mate = world.nearestMate(this.getPosition(), 10, this); //znajduje mate
+            Animal mate = WorldSearch.nearestMate(world, this.getPosition(), this.getGenes().getSpeed(), this); //znajduje mate
             if (mate != null) {
                 Coord target = meetingAtMiddle(world.getWidth(), world.getHeight(), this.getPosition(), mate.getPosition(), rand);
                 //UWAGA!!!!!: ta metoda meetingAtMiddle jest popieprzona, coś mi się rozwaliło i robiłam cokolwiek by nie podkreślało już, ale nwm co się tu stało
@@ -44,6 +52,7 @@ public class Fish extends Herbivorous {
             }
         }
     }
+
 
 
     //zjada o ile nie byłoby ponad 100 napchane

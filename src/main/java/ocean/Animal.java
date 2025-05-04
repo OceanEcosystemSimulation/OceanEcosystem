@@ -4,25 +4,27 @@ import java.util.*;
 
 public abstract class Animal {
     private Coord position; //aktualne współrzędne w świecie
-    private int foodLevel, age, maxAge, loneliness, maxLoneliness;
+    private int foodLevel, age, loneliness;
+    private final int  maxAge, maxLoneliness; //niezmienne po ustawieniu
     private int energy, health;
-    private Genes genes; //przechowuje geny
-    private Gender gender;
+    private final Genes genes; //przechowuje geny - także raczej się nie zmienia po ustawieniu
+    private final Gender gender; //niezmienne po ustawieniu
     private boolean alive = true;
     private String name;
 
-    protected Random rand = new Random();
+    protected static final Random rand = new Random();
 
     // konstruktor dla zwierząt startowych
-    public Animal(Coord position) {
+    public Animal(Coord position, Genes genes, int maxAge, int maxLoneliness) {
         this.position = position;
         this.gender = rand.nextBoolean() ? Gender.MALE : Gender.FEMALE;
         this.age = 0;
         this.foodLevel = 100;
         this.energy = 100;
         this.health = 100;
-        this.maxAge = 0; //losowanie w zwierzętach poszczególnych
-        this.maxLoneliness = 0; //losowanie w zwierzętach poszczególnych
+        this.maxAge = maxAge; //losowanie w zwierzętach poszczególnych
+        this.maxLoneliness = maxLoneliness; //losowanie w zwierzętach poszczególnych
+        this.genes = genes; //losowanie w zwierzetach poszczegolnych
     }
 
     // konstruktor dla dzieci
@@ -39,117 +41,25 @@ public abstract class Animal {
     }
 
 
-    public void processLifeCycle(World world) {
-        age++;
-        foodLevel--;
-        updateEnergy();
-
-        if (foodLevel <= 0 || energy <= 0 || age > maxAge) {
-            alive = false;
-            return; //koniec
-        }
-
-        updateLoneliness(world);
-        updateHealth();
-
-        if (health <= 0) {
-            die();
-        }
-    }
-
-    //aktualizacja energii - zależna od jedzenia i zdrowia
-    private void updateEnergy() {
-        energy = (int)((foodLevel * 0.7) + (health * 0.3));
-        if (energy < 20) {
-            energy = (int)(energy * 0.6); //zmniejszenie energii przy krytycznym poziomie
-        }
-        energy = Math.max(0, energy); //nie mniej niż 0
-    }
-
-    //sprawdzanie samotności - czy wokół są zwierzęta tego samego gatunku
-    private void updateLoneliness(World world) {
-        List<Animal> nearby = world.getNearbyAnimals(position, (int)(getGenes().getSpeed() * 0.5)); //wartość przeszukiwania do zmiany
-        boolean foundSameSpecies = false;
-        for (Animal other : nearby) {
-            if (this.getClass() == other.getClass()) {
-                foundSameSpecies = true;
-                break;
-            }
-        }
-        if (!foundSameSpecies) {loneliness++;} //nikogo nie ma :((
-        else {loneliness = 0;} //reset samotności jeśli ktoś jest
-    }
-
-    //aktualizacja zdrowia - zależna od jedzenia i samotności
-    private void updateHealth() {
-        if (foodLevel < 40){
-            health = Math.max(health-1, 0); //zdrowie podupada (-1) z każdą turą
-        }
-
-        if (loneliness >= maxLoneliness){ //jeśli samotność osiągnęła max traci zdrowie co turę
-            health = Math.max(health-1, 0);
-        } else if (loneliness>0 && loneliness%3==0){ //normalnie jest co 3 tury - do zmiany chyba bo idk czy matematycznie działa
-            health = Math.max(health-1, 0);
-        }
-
-        if (foodLevel>70 && energy>20) { //zdrowie się odnawia (tak jakies 120% ale do zmiany)
-            health = (int) Math.min(health*1.2, 100);
-        }
-    }
-
-
-
-
-
-    public abstract void update(World world);
+    protected abstract void update(World world);
 
     public void die() {alive = false;}
 
 
-
-    //idk gdzie to dać szczerze - ew się przeniesie do Genes
-    public double getEffectiveStrength() {
-        return getGenes().getStrength() * (getEnergy()/100.0);
-    }
-
-    public double getEffectiveSpeed() {
-        return getGenes().getSpeed() * (getEnergy()/100.0);
-    }
-
-    public double getCombatPower() {
-        return getEffectiveStrength() * 0.7 + getEffectiveSpeed() * 0.3;
-    }
-
-    public void takeDamage(double amount) {
-        int newHealth = (int)(health - amount);
-        health = Math.max(newHealth, 0);
-        if (health <= 0) {die();} //nie żyje
+    //zostawiam to tutaj bo za wykładzie było że fajnie robić chyba takie pomiędzy a nie 1 do 1 połączenia
+    protected void processLifeCycle(World world) {
+        AnimalLifeManager.lifeCycle(world, this);
     }
 
 
-    //ucieczka z walki - nie podoba mi się że jest argument world ale idk jak to zrobić
-    public void escape(World world) {
-        Coord pos = getPosition();
-        int distance = (int) (1.2 * getGenes().getSpeed()); //ma większą prędkość w walce minimalnie (adrenalina XD) - do zmiany możliwej
-
-        Coord coralPos = world.nearestCoral(pos, distance);
-        if (coralPos!=null) { //gdy istnieje rafa w zasięgu
-            setPosition(coralPos); //skok na rafę
-        } else { //gdy nie ma rafy to losowy kierunek ucieczki na pełną odległość dlatego nie randomMove
-            int dx = rand.nextBoolean() ? distance : -distance;
-            int dy = rand.nextBoolean() ? distance : -distance;
-            Coord escapePos = new Coord(pos.x + dx, pos.y + dy);
-            setPosition(world.inBounds(escapePos.x, escapePos.y) ? escapePos //czy poza granice
-                    : pos.randomAdjacent(world.getWidth(), world.getHeight(), getGenes().getSpeed()));
-        }
-    }
-
-
+    //idk czy nie za dużo tych getterów i setterów ;-;
 
     public Coord getPosition() {return position;}
     public int getAge() {return age;}
+    public int getMaxAge() {return maxAge;}
     public int getFoodLevel() {return foodLevel;}
     public int getLoneliness() {return loneliness;}
+    public int getMaxLoneliness() {return maxLoneliness;}
     public Genes getGenes() {return genes;}
     public Gender getGender() {return gender;}
     public boolean isAlive() {return alive;}
@@ -158,11 +68,12 @@ public abstract class Animal {
     public String getName(){return name;}
 
     public void setPosition(Coord newPosition) {this.position = newPosition;}
-    public void setFoodLevel(int foodLevel) {this.foodLevel = foodLevel;} //setter a nie add bo może będziemy chcieli coś więcej niż add
-    public void setMaxAge(int maxAge) {this.maxAge = maxAge;}
-    public void setMaxLoneliness(int maxLoneliness) {this.maxLoneliness = maxLoneliness;}
-    public void setGenes(Genes genes) {this.genes = genes;}
+    public void setFoodLevel(int foodLevel) {this.foodLevel = foodLevel;}
+    public void setAge(int age) {this.age = age;}
+    public void setLoneliness(int loneliness) {this.loneliness = loneliness;}
     public void setName(String name) {this.name = name;}
+    public void setEnergy(int energy) {this.energy = energy;}
+    public void setHealth(int health) {this.health = health;}
 
 }
 
