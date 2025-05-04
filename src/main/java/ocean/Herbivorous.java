@@ -22,8 +22,10 @@ public abstract class Herbivorous extends Animal implements IEat, IMove {
                 setPosition(foodPos); //skok do jedzenia
                 return;
             }
+        } else {
+            randomMove(world); //randomowo gdy nie głodny lub brak jedzenia
         }
-        randomMove(world); //randomowo gdy nie głodny lub brak jedzenia
+        System.out.println(this.getName() + " id: " + this.getId() + "  jumped to [" + this.getPosition().x + "," + this.getPosition().y + "]");
     }
 
 

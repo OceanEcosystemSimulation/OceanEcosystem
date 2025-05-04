@@ -2,9 +2,9 @@ package ocean;
 
 // DO ZMIANY CAŁE - i to mocno bo pogubiłam się co i jak z nimi
 public abstract class Omnivorous extends Animal implements IEat, IFight {
-    public Omnivorous(Coord position) {
-        super(position);
-    }
+    public Omnivorous(Coord position, Genes genes, int maxAge, int maxLoneliness) {
+            super(position, genes, maxAge, maxLoneliness);
+        }
 
     @Override
     public boolean canEat(Tile tile) { //whatever

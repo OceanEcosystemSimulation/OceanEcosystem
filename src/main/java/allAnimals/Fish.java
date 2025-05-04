@@ -35,9 +35,9 @@ public class Fish extends Herbivorous {
 
     //sprawdzenie czy na obecnym kafelku znajduje się jedzenie
     private void tryToEat(World world) {
-        Tile tile = world.getTile(getPosition()); //pobiera pole na którym znajduje się ryba
-        if (tile!=null && tile.hasFood() && canEat(tile)) { //sprawdza czy jest jedzenie (na wszelki?) i czy ryba może je zjeść
-            eat(tile); //wywołanie mechaniki jedzenia
+        Tile currentTile = world.getTile(getPosition()); //pobiera pole na którym znajduje się ryba
+        if (currentTile!=null && currentTile.hasFood() && canEat(currentTile)) { //sprawdza czy jest jedzenie (na wszelki?) i czy ryba może je zjeść
+            eat(currentTile); //wywołanie mechaniki jedzenia
         }
     }
 
@@ -65,6 +65,7 @@ public class Fish extends Herbivorous {
         };
         if (getAge()+gain <= 100){
             setFoodLevel(getFoodLevel() + gain); //je
+            System.out.println(this.getName() + " id: " + this.getId() + " eats " + tile.foodType);
             tile.clearFood();
         }
     }

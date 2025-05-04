@@ -11,6 +11,8 @@ public abstract class Animal {
     private final Gender gender; //niezmienne po ustawieniu
     private boolean alive = true;
     private String name;
+    private final int id;
+    private static int nextId = 1;
 
     protected static final Random rand = new Random();
 
@@ -25,11 +27,13 @@ public abstract class Animal {
         this.maxAge = maxAge; //losowanie w zwierzętach poszczególnych
         this.maxLoneliness = maxLoneliness; //losowanie w zwierzętach poszczególnych
         this.genes = genes; //losowanie w zwierzetach poszczegolnych
+        this.id = nextId++;
     }
 
     // konstruktor dla dzieci
     public Animal(Coord position, Animal parent1, Animal parent2) {
         this.position = position;
+        this.id = nextId++;
         this.genes = Genes.inherit(parent1.genes, parent2.genes);
         this.gender = rand.nextBoolean() ? Gender.MALE : Gender.FEMALE;
         this.age = 0;
@@ -43,7 +47,10 @@ public abstract class Animal {
 
     protected abstract void update(World world);
 
-    public void die() {alive = false;}
+    public void die() {
+        alive = false;
+        System.out.println(this.getName() + " id: " + this.getId() + " is dead ");
+    }
 
 
     //zostawiam to tutaj bo za wykładzie było że fajnie robić chyba takie pomiędzy a nie 1 do 1 połączenia
@@ -66,6 +73,7 @@ public abstract class Animal {
     public int getEnergy() {return energy;}
     public int getHealth() {return health;}
     public String getName(){return name;}
+    public int getId() {return id;}
 
     public void setPosition(Coord newPosition) {this.position = newPosition;}
     public void setFoodLevel(int foodLevel) {this.foodLevel = foodLevel;}

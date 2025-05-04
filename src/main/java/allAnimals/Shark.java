@@ -114,6 +114,7 @@ public class Shark extends Carnivorous implements IEat {
         };
         if (getFoodLevel()+gain <= 100){ //tak na wszelki
             setFoodLevel(getFoodLevel() + gain);
+            System.out.println(this.getName() + " id: " + this.getId() + " eats " + tile.foodType);
             tile.clearFood();
         }
     }

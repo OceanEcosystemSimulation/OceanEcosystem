@@ -44,5 +44,6 @@ public class Coord {
 
         return new Coord(newX, newY);
     }
+
 }
 

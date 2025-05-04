@@ -16,16 +16,17 @@ public abstract class Carnivorous extends Animal implements IFight, IMove {
                 setPosition(preyPos); //skok do ofiary
                 return;
             }
-        }
-        if (getFoodLevel() < 30) {
+        } else if (getFoodLevel() < 30) {
             Tile foodTile = WorldSearch.nearestFood(world, getPosition(), getGenes().getSpeed()); //szuka najbliższe jedzenie
             if (foodTile != null) {
                 Coord foodPos = new Coord(foodTile.x, foodTile.y);
                 setPosition(foodPos); //skok do jedzenia
                 return;
             }
+        } else {
+            randomMove(world); //randomowo gdy nie głodny lub brak jedzenia i ofiary
         }
-        randomMove(world); //randomowo gdy nie głodny lub brak jedzenia i ofiary
+        System.out.println(this.getName() + " id: " + this.getId() + "  jumped to [" + this.getPosition().x + "," + this.getPosition().y + "]");
     }
 
 
@@ -44,6 +45,7 @@ public abstract class Carnivorous extends Animal implements IFight, IMove {
         //próba ucieczki ofiary
         if (attackerSpeed < preySpeed*1.2) { //liczba do zmiany można
             AnimalCombatUtils.escape(world, prey);
+            System.out.println(prey.getName() + " id: " + prey.getId() + "  escape from  " + this.getName() + " id: " + this.getId());
             return false; //ucieczka udana - brak walki
         }
 
@@ -54,17 +56,25 @@ public abstract class Carnivorous extends Animal implements IFight, IMove {
         int rounds = 2; //maksymalnie 2 wymiany ciosów - do możliwej zmiany
         for (int i = 0; i < rounds; i++) {
             AnimalCombatUtils.takeDamage(prey, attackerPower);
-            if (!prey.isAlive()) return true; //prey padł
+            if (!prey.isAlive()) {
+                System.out.println(this.getName() + " id: " + this.getId() + "  killed " + prey.getName() + " id: " + prey.getId());
+                return true; //prey padł
+            }
 
             AnimalCombatUtils.takeDamage(this, preyPower);
-            if (!this.isAlive()) return false; //predator padł
+            if (!this.isAlive()) {
+                System.out.println(prey.getName() + " id: " + prey.getId() + "  killed " + this.getName() + " id: " + this.getId());
+                return false; //predator padł
+            }
         }
 
         //jeśli po 2 rundach nikt nie padł
         if (AnimalCombatUtils.getCombatPower(this) > AnimalCombatUtils.getCombatPower(prey)) { //kto ucieka (przegryw - słabszy)
             AnimalCombatUtils.escape(world, prey);
+            System.out.println(prey.getName() + " id: " + prey.getId() + "  escape from  " + this.getName() + " id: " + this.getId() + "  after 2 turns");
         } else {
             AnimalCombatUtils.escape(world, this);
+            System.out.println(this.getName() + " id: " + this.getId() + "  escape from  " + prey.getName() + " id: " + prey.getId() + "  after 2 turns");
         }
         return false; //nikt nie został zabity w walce
     }
