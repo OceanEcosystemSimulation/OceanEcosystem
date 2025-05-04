@@ -2,12 +2,15 @@ package allAnimals;
 
 import ocean.*;
 
-import static ocean.Coord.meetingAtMiddle;
-
 public class Fish extends Herbivorous {
     public Fish(Coord position) {
         super(position, generateGenes(), 100 + rand.nextInt(50), 40 + rand.nextInt(20));
         //wartości maxAge i maxLoneliness do zmiany
+        setName("Fish");
+    }
+
+    public Fish(Coord position, Animal parent1, Animal parent2) {
+        super(position, parent1, parent2);  //konstruktor dziecka
         setName("Fish");
     }
 
@@ -22,6 +25,7 @@ public class Fish extends Herbivorous {
         return g;
     }
 
+
     public void update(World world) {
         processLifeCycle(world); //duperele o życiu
         if (!isAlive()) {return;}
@@ -31,28 +35,6 @@ public class Fish extends Herbivorous {
         tryToEat(world); //wywołanie mechaniki jedzenia
         tryToMate(world);
     }
-
-
-    //sprawdzenie czy na obecnym kafelku znajduje się jedzenie
-    private void tryToEat(World world) {
-        Tile currentTile = world.getTile(getPosition()); //pobiera pole na którym znajduje się ryba
-        if (currentTile!=null && currentTile.hasFood() && canEat(currentTile)) { //sprawdza czy jest jedzenie (na wszelki?) i czy ryba może je zjeść
-            eat(currentTile); //wywołanie mechaniki jedzenia
-        }
-    }
-
-    //szuka partnera
-    private void tryToMate(World world) {
-        if (isAlive()) {
-            Animal mate = WorldSearch.nearestMate(world, this.getPosition(), this.getGenes().getSpeed(), this); //znajduje mate
-            if (mate != null) {
-                Coord target = meetingAtMiddle(world.getWidth(), world.getHeight(), this.getPosition(), mate.getPosition(), rand);
-                //UWAGA!!!!!: ta metoda meetingAtMiddle jest popieprzona, coś mi się rozwaliło i robiłam cokolwiek by nie podkreślało już, ale nwm co się tu stało
-                setPosition(target); //skok
-            }
-        }
-    }
-
 
 
     //zjada o ile nie byłoby ponad 100 napchane

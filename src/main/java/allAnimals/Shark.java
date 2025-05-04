@@ -4,15 +4,18 @@ import ocean.*;
 
 import java.util.List;
 
-import static ocean.Coord.meetingAtMiddle;
-
-public class Shark extends Carnivorous implements IEat {
-
+public class Shark extends Carnivorous {
     public Shark(Coord position) {
         super(position, generateGenes(), 150 + rand.nextInt(30), 70);
         //wartości maxAge i maxLoneliness do zmiany
         setName("Shark");
     }
+
+    public Shark(Coord position, Animal parent1, Animal parent2) {
+        super(position, parent1, parent2);  //konstruktor dziecka
+        setName("Shark");
+    }
+
 
 
     //do tworzenia genów w nowych - zakresy w losowych wartościah do zmiany
@@ -53,32 +56,6 @@ public class Shark extends Carnivorous implements IEat {
     }
 
 
-    //sprawdzenie czy na obecnym kafelku znajduje się jedzenie
-    private void tryToEat(World world) {
-        if (isAlive()) {
-            Tile currentTile = world.getTile(getPosition());
-            if (currentTile != null && canEat(currentTile)) { //jeśli tile zawiera jedzenie i Shark może je jeść
-                eat(currentTile); //je
-            }
-        }
-    }
-
-
-    //szuka partnera
-    private void tryToMate(World world) {
-        if (isAlive()){  //dalej nie wiem czy powinnam sprawdzac czy zyje czy nie
-            Animal mate = WorldSearch.nearestMate(world, this.getPosition(), this.getGenes().getSpeed(), this); //znajduje mate
-            if (mate != null) {
-                Coord target = meetingAtMiddle(world.getWidth(), world.getHeight(), this.getPosition(), mate.getPosition(), rand);
-                //UWAGA!!!!!: ta metoda meetingAtMiddle jest popieprzona, coś mi się rozwaliło i robiłam cokolwiek by nie podkreślało już, ale nwm co się tu stało
-                setPosition(target); //skok
-            }
-        }
-    }
-
-
-
-
     //stwierdziłam że dam tak bo bez sensu sie ma robić ciągle od nowa jak jest niezmienna
     private static final List<String> preyList = List.of("Fish"); //lista kogo atakuje - do zmiany wartości (dodawane po przecinku jak coś)
 
@@ -99,12 +76,6 @@ public class Shark extends Carnivorous implements IEat {
         return baseGain;
     }
 
-
-    @Override
-    public boolean canEat(Tile tile) { //also przykładowe
-        return getFoodLevel() <= 30 &&
-                (tile.foodType == FoodType.PLANKTON || tile.foodType == FoodType.ALGAE);
-    }
 
     @Override
     public void eat(Tile tile) { //przykładowe jak pisać

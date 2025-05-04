@@ -1,10 +1,19 @@
 package ocean;
 
+import allAnimals.Fish;
+
+import static ocean.Coord.meetingAtMiddle;
+
 //abstract bo nie ma update
-public abstract class Carnivorous extends Animal implements IFight, IMove {
+public abstract class Carnivorous extends Animal implements IFight, IMove, IEat {
     public Carnivorous(Coord position, Genes genes, int maxAge, int maxLoneliness) {
         super(position, genes, maxAge, maxLoneliness);
     }
+
+    public Carnivorous(Coord position, Animal parent1, Animal parent2) {
+        super(position, parent1, parent2);  //konstruktor dziecka
+    }
+
 
 
     //mechanika ruchu
@@ -77,6 +86,49 @@ public abstract class Carnivorous extends Animal implements IFight, IMove {
             System.out.println(this.getName() + " id: " + this.getId() + "  escape from  " + prey.getName() + " id: " + prey.getId() + "  after 2 turns");
         }
         return false; //nikt nie został zabity w walce
+    }
+
+
+    @Override
+    public boolean canEat(Tile tile) { //also przykładowe
+        return getFoodLevel() <= 30 &&
+                (tile.foodType == FoodType.PLANKTON || tile.foodType == FoodType.ALGAE);
+    }
+
+
+    //sprawdzenie czy na obecnym kafelku znajduje się jedzenie
+    public void tryToEat(World world) {
+        if (isAlive()) {
+            Tile currentTile = world.getTile(getPosition());
+            if (currentTile != null && canEat(currentTile)) { //jeśli tile zawiera jedzenie i Shark może je jeść
+                eat(currentTile); //je
+            }
+        }
+    }
+
+
+    //szuka partnera
+    public void tryToMate(World world) {
+        if (isAlive()) {
+            Animal mate = WorldSearch.nearestMate(world, this.getPosition(), this.getGenes().getSpeed(), this); //znajduje mate
+            if (mate!=null && mate.getGender()!=this.getGender()) { //przeciwna płeć
+                Coord meetingPointA = meetingAtMiddle(world.getWidth(), world.getHeight(), this.getPosition(), mate.getPosition(), rand);
+                Coord meetingPointB = meetingAtMiddle(world.getWidth(), world.getHeight(), this.getPosition(), mate.getPosition(), rand);
+                //UWAGA!!!!!: ta metoda meetingAtMiddle jest popieprzona, coś mi się rozwaliło i robiłam cokolwiek by nie podkreślało już, ale nwm co się tu stało
+                this.setPosition(meetingPointA); //skok do A
+                mate.setPosition(meetingPointB); //skok do B
+
+                if (canReproduce() && mate.canReproduce()) {
+                    System.out.println(this.getName() + " id: " + this.getId() + "  reproduce with  " + mate.getName() + " id: " + mate.getId());
+                    //losowanie nowych współrzędnych w zasięgu jednej kratki od aktualnej pozycji rodzica
+                    Coord childPosition = this.getPosition().randomAdjacent(world.getWidth(), world.getHeight(), 1);
+
+                    Animal child = new Fish(childPosition, this, mate); //tworzenie nowego dzieciaka
+                    world.addAnimal(child); //dodanie dzieciaka do świata
+                    System.out.println(child.getName() + " id: " + child.getId() + "  was born");
+                }
+            }
+        }
     }
 }
 

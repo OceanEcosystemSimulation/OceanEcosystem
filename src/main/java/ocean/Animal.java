@@ -59,6 +59,12 @@ public abstract class Animal {
     }
 
 
+    //czy moze sie rozmnażac - staty do zmiany - nie wiem gdzie dać tą metodę
+    public boolean canReproduce() {
+        return this.getEnergy()>=60 && this.getAge()>5 && this.getHealth()>=70; // przykładowe warunki
+    }
+
+
     //idk czy nie za dużo tych getterów i setterów ;-;
 
     public Coord getPosition() {return position;}
