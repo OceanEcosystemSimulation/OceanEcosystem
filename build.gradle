@@ -1,5 +1,7 @@
 plugins {
     id 'java'
+    id 'application'
+    id 'org.openjfx.javafxplugin' version '0.0.13'
 }
 
 group = 'org.example'
@@ -10,8 +12,19 @@ repositories {
 }
 
 dependencies {
+    implementation 'org.openjfx:javafx-controls:21'
+
     testImplementation platform('org.junit:junit-bom:5.10.0')
     testImplementation 'org.junit.jupiter:junit-jupiter'
+}
+
+javafx {
+    version = "21"
+    modules = [ 'javafx.controls' ]
+}
+
+application {
+    mainClass = 'ocean.Main'
 }
 
 test {
