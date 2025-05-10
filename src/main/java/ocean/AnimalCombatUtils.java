@@ -41,7 +41,7 @@ public class AnimalCombatUtils {
             int dy = rand.nextBoolean() ? distance : -distance;
             Coord escapePos = new Coord(pos.x + dx, pos.y + dy);
             animal.setPosition(world.inBounds(escapePos.x, escapePos.y) ? escapePos //robi set i w tym set jest warunek czy poza granice
-                    : pos.randomAdjacent(world.getWidth(), world.getHeight(), animal.getGenes().getSpeed()));
+                    : pos.randomAdjacent(world.getWidth(), world.getHeight(), animal.getGenes().getSpeed(), world));
         }
     }
 }

@@ -48,7 +48,7 @@ public abstract class Herbivorous extends Animal implements IEat, IMove {
 
     //losowy ruch w zasięgu speed
     private void randomMove(World world) {
-        Coord newPos = getPosition().randomAdjacent(world.getWidth(), world.getHeight(), getGenes().getSpeed()); //generuje nową losową pozycję sąsiednią
+        Coord newPos = getPosition().randomAdjacent(world.getWidth(), world.getHeight(), getGenes().getSpeed(), world); //generuje nową losową pozycję sąsiednią
         setPosition(newPos); //ustawia pozycję
     }
 
@@ -58,16 +58,15 @@ public abstract class Herbivorous extends Animal implements IEat, IMove {
         if (isAlive()) {
             Animal mate = WorldSearch.nearestMate(world, this.getPosition(), this.getGenes().getSpeed(), this); //znajduje mate
             if (mate!=null && mate.getGender()!=this.getGender()) { //przeciwna płeć
-                Coord meetingPointA = meetingAtMiddle(world.getWidth(), world.getHeight(), this.getPosition(), mate.getPosition(), rand);
-                Coord meetingPointB = meetingAtMiddle(world.getWidth(), world.getHeight(), this.getPosition(), mate.getPosition(), rand);
-                //UWAGA!!!!!: ta metoda meetingAtMiddle jest popieprzona, coś mi się rozwaliło i robiłam cokolwiek by nie podkreślało już, ale nwm co się tu stało
+                Coord meetingPointA = meetingAtMiddle(world.getWidth(), world.getHeight(), this.getPosition(), mate.getPosition());
+                Coord meetingPointB = meetingAtMiddle(world.getWidth(), world.getHeight(), this.getPosition(), mate.getPosition());
                 this.setPosition(meetingPointA); //skok do A
                 mate.setPosition(meetingPointB); //skok do B
 
                 if (canReproduce() && mate.canReproduce()) {
                     System.out.println(this.getName() + " id: " + this.getId() + "  reproduce with  " + mate.getName() + " id: " + mate.getId());
                     //losowanie nowych współrzędnych w zasięgu jednej kratki od aktualnej pozycji rodzica
-                    Coord childPosition = this.getPosition().randomAdjacent(world.getWidth(), world.getHeight(), 1);
+                    Coord childPosition = this.getPosition().randomAdjacent(world.getWidth(), world.getHeight(), 1, world);
 
                     Animal child = new Fish(childPosition, this, mate); //tworzenie nowego dzieciaka
                     world.addAnimal(child); //dodanie dzieciaka do świata

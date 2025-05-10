@@ -5,7 +5,7 @@ import java.util.Random;
 // reprezentacja współrzędnych
 public class Coord {
     public int x, y;
-    private Random random = new Random();
+    private static Random random = new Random();
 
     //inicjalizacja współrzędnych
     public Coord(int x, int y) {
@@ -18,21 +18,25 @@ public class Coord {
         return Math.sqrt(Math.pow(x - other.x, 2) + Math.pow(y - other.y, 2));
     }
 
-    //losuje nowe współrzędne od -speed do +speed (ofc w granicach świata)
-    public Coord randomAdjacent(int width, int height, int speed) {
-        int moveX = random.nextInt(speed * 2 + 1) - speed; //od 0 do speed*2 i odejmując speed daje to +- speed
-        int moveY = random.nextInt(speed * 2 + 1) - speed;
+    //losuje nowe współrzędne od -speed do +speed (ofc w granicach świata) - jesli juz ktos tam jest to losuje dalej
+    public Coord randomAdjacent(int width, int height, int speed, World world) {
+        Coord newCoord;
+        do {
+            int moveX = random.nextInt(speed * 2 + 1) - speed; //od 0 do speed*2 i odejmując speed daje to +- speed
+            int moveY = random.nextInt(speed * 2 + 1) - speed;
 
-        int newX = Math.max(0, Math.min(width - 1, x + moveX)); //w granicach mapy (nie mniejsze od 0 i nie wieksze od granicy)
-        int newY = Math.max(0, Math.min(height - 1, y + moveY)); //albo granica albo wartość losowana
+            int newX = Math.max(0, Math.min(width - 1, x + moveX)); //w granicach mapy (nie mniejsze od 0 i nie wieksze od granicy)
+            int newY = Math.max(0, Math.min(height - 1, y + moveY)); //albo granica albo wartość losowana
 
-        return new Coord(newX, newY);
+            newCoord = new Coord(newX, newY);
+        } while (!world.getNearbyAnimals(newCoord, 0).isEmpty());
+        return newCoord;
     }
 
 
     //znajduje punkt miedzy organizmamy na "środku" - szczerze nie wiem czy to działa, to było na dyskretnej, nienawidzę dyskretnej, też idk czy dać tutaj czy gdzie TwT
-    //static bo nie używa ani nie modyfikuje pól obiektu, działa czysto na argumentach
-    public static Coord meetingAtMiddle(int width, int height, Coord coord1, Coord coord2, Random random) {
+    //static bo nie używa ani nie modyfikuje pól obiektu, działa czysto na argumentach (brak this. itp)
+    public static Coord meetingAtMiddle(int width, int height, Coord coord1, Coord coord2) {
         int midX = (coord1.x + coord2.x) / 2; //obliczenie środka (czystko matematycznie) i od razy zaokrąglenie bo int
         int midY = (coord1.y + coord2.y) / 2;
 

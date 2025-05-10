@@ -68,7 +68,7 @@ public class WorldSetup {
         for (int i = 0; i < noFood; i++) {
             Coord coord = randomCoord(world); //generuje losowe współrzędne
             Tile tile = world.getTile(coord); //pobiera dane pole
-            if (tile != null) {
+            if (tile != null && !tile.hasFood()) {
                 // Losowanie typu jedzenia na kafelku
                 int foodTypeRoll = random.nextInt(3); //losuje wartość (0,1,2)
                 tile.foodType = switch (foodTypeRoll) { //dobra, wale to, coś był problem z ifem ale nie ogarniam czemu, więc zmieniam na switch case, wybaczcie
