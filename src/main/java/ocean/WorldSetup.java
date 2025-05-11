@@ -42,7 +42,7 @@ public class WorldSetup {
 
             Coord coord;
             do {coord = randomCoord(world);}  //losuje pozycje
-            while (!world.getNearbyAnimals(coord, 0).isEmpty()); //losuje dopóki wolne
+            while (world.isOccupied(coord)); //losuje dopóki wylosowane bedzie wolne
 
             Animal animal = createAnimalFromName(animalType, coord); //tworzy zwierzę
             if (animal != null) {

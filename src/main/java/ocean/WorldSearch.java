@@ -13,7 +13,7 @@ public class WorldSearch {
                 Coord candidate = new Coord(position.x + dx, position.y + dy); //wspołrzedne kandydata na ofiarę
                 if (world.inBounds(candidate.x, candidate.y)) { //czy współrzędne w granicach mapy
                     Tile tile = world.getTile(candidate); //pobranie pola
-                    if (tile != null && tile.hasFood() && world.getNearbyAnimals(candidate, 0).isEmpty()) { //sprawdza czy jest na nim jedzenie i czy ktos tam jest
+                    if (tile != null && tile.hasFood() && !world.isOccupied(candidate)) { //sprawdza czy jest na nim jedzenie i czy ktos tam jest
                         int dist = (int) position.distance(candidate); //rzutowanie double z euklidesa na int
                         if (dist < minDist) { //jeżeli ma mniejszy dystans niż wcześniejsze to bierze to
                             minDist = dist;
@@ -74,7 +74,7 @@ public class WorldSearch {
                 Coord newPos = new Coord(position.x + dx, position.y + dy);
                 if (world.inBounds(newPos.x, newPos.y)) {
                     Tile tile = world.getTile(new Coord(newPos.x, newPos.y));
-                    if (tile!=null && tile.type==MapType.CORAL && world.getNearbyAnimals(newPos, 0).isEmpty()) { //sprawdza czy to jest coral i czy ktoś tam jest
+                    if (tile!=null && tile.type==MapType.CORAL && !world.isOccupied(newPos)) { //sprawdza czy to jest coral i czy ktoś tam jest
                         int dist = (int) position.distance(newPos);
                         if (dist < minDist) {
                             minDist = dist;

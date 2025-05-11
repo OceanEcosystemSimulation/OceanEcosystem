@@ -29,7 +29,7 @@ public class Coord {
             int newY = Math.max(0, Math.min(height - 1, y + moveY)); //albo granica albo wartość losowana
 
             newCoord = new Coord(newX, newY);
-        } while (!world.getNearbyAnimals(newCoord, 0).isEmpty());
+        } while (world.isOccupied(newCoord));
         return newCoord;
     }
 

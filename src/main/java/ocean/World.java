@@ -65,6 +65,9 @@ public class World {
         return x >= 0 && x < width && y >= 0 && y < height;
     }
 
+    //sprawdza czy dane pole jest zajete, zwraca true jeśli not empty
+    public boolean isOccupied(Coord coord) { return !getNearbyAnimals(coord, 0).isEmpty(); }
+
 
     //dodaje zwierzeta do listy - potrzebuje ale może póżniej się da jakoś inaczej to załatwić
     public void addAnimal(Animal animal) {

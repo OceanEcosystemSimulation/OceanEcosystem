@@ -42,7 +42,7 @@ public class AnimalCombatUtils {
             Coord escapePos = new Coord(pos.x + dx, pos.y + dy);
 
             //jesli w granicach i nikogo tam nie ma to skacze na pełną odl w innym wypadku losowo
-            if (world.getNearbyAnimals(escapePos, 0).isEmpty() && world.inBounds(escapePos.x, escapePos.y)) {
+            if (world.inBounds(escapePos.x, escapePos.y) && !world.isOccupied(escapePos)) {
                 animal.setPosition(escapePos);
             } else {
                 animal.setPosition(pos.randomAdjacent(world.getWidth(), world.getHeight(), animal.getGenes().getSpeed(), world));
