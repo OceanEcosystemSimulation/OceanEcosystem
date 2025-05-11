@@ -21,24 +21,18 @@ class SimulationThread extends Thread {
                 e.printStackTrace(); //obsługuje sytuację gdy wątek zostanie przerwany w trakcie
             }
 
-            mainInstance.world.runSimulation(1); //uruchomienie symulacji jednego "kroku" (metoda anonimowa)
+            mainInstance.world.runSimulation(1); //uruchomienie symulacji jednego "kroku"
 
             //update widoku
-            Platform.runLater(new Runnable() { //uruchomienie kodu na głównym wątku JavaFX
-                //teortycznie chyba można użyc jakiegos wyrażenia lambda zamiasr runnable [Platform.runLater(() -> mainInstance.updateGrid());] ale trch nie ogarniam
-                @Override
-                public void run() {
-                    mainInstance.updateGrid(); //wywołanie update
-                }
+            Platform.runLater(() -> { //uruchomienie kodu na głównym wątku JavaFX
+                //normalnie przyjmuje Runnable które jest do definiowania kodu który ma byc wywołany w wątku i która ma metodę run()
+                mainInstance.updateGrid(); //wywołanie update
             });
         }
 
         //wyświetlenie statystyk
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                mainInstance.showAnimalStats(); //wywołanie statystyk
-            }
+        Platform.runLater(() -> {
+            mainInstance.showAnimalStats(); //wywołanie statystyk
         });
     }
 }

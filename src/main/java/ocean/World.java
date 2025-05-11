@@ -23,14 +23,15 @@ public class World {
     //główna symulacja świata - w każdym cyklu aktualizuje zwierzęta - dead alive
     public void runSimulation(int ticks) {
         for (int t = 0; t < ticks; t++) {
-            List<Animal> newAnimals = new ArrayList<>(); //nowa ze zwierzętami
+            List<Animal> currentAnimals = new ArrayList<>(animals); //tworzenie kopii by nie aktualizować m.in. dopiero co urodzonych
 
-            //iteracja po kopii animals - żeby nie było problemów później bo niektóre rzeczy usuwamy to sie rozwali inaczej
-            for (Animal animal : new ArrayList<>(animals)) {
-                animal.update(this); //update dla każdego zwierzęcia - miało byc jako update dla zwierząt o stanie na mapie
-                if (!animal.isAlive()) animals.remove(animal); //usuwa martwe
+            for (Animal animal : currentAnimals) {  //iteracja po kopii animals - żeby nie było problemów później bo niektóre rzeczy usuwamy itp to sie rozwali inaczej
+                animal.update(this); // aktualizuje stan zwierzęcia
+
+                if (!animal.isAlive()) {
+                    animals.remove(animal); //usuwa martwe
+                }
             }
-            animals.addAll(newAnimals); //dodaje nowe zwierzęta do animals
         }
     }
 
