@@ -74,7 +74,7 @@ public class WorldSearch {
                 Coord newPos = new Coord(position.x + dx, position.y + dy);
                 if (world.inBounds(newPos.x, newPos.y)) {
                     Tile tile = world.getTile(new Coord(newPos.x, newPos.y));
-                    if (tile!=null && tile.type==MapType.CORAL) { //sprawdza czy to jest coral
+                    if (tile!=null && tile.type==MapType.CORAL && world.getNearbyAnimals(newPos, 0).isEmpty()) { //sprawdza czy to jest coral i czy ktoś tam jest
                         int dist = (int) position.distance(newPos);
                         if (dist < minDist) {
                             minDist = dist;

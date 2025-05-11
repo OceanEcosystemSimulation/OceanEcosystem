@@ -40,8 +40,13 @@ public class AnimalCombatUtils {
             int dx = rand.nextBoolean() ? distance : -distance;
             int dy = rand.nextBoolean() ? distance : -distance;
             Coord escapePos = new Coord(pos.x + dx, pos.y + dy);
-            animal.setPosition(world.inBounds(escapePos.x, escapePos.y) ? escapePos //robi set i w tym set jest warunek czy poza granice
-                    : pos.randomAdjacent(world.getWidth(), world.getHeight(), animal.getGenes().getSpeed(), world));
+
+            //jesli w granicach i nikogo tam nie ma to skacze na pełną odl w innym wypadku losowo
+            if (world.getNearbyAnimals(escapePos, 0).isEmpty() && world.inBounds(escapePos.x, escapePos.y)) {
+                animal.setPosition(escapePos);
+            } else {
+                animal.setPosition(pos.randomAdjacent(world.getWidth(), world.getHeight(), animal.getGenes().getSpeed(), world));
+            }
         }
     }
 }
