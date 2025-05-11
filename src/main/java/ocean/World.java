@@ -2,19 +2,21 @@ package ocean;
 
 import java.util.*;
 
+import static ocean.WorldSetup.*;
+
 public class World {
     private final int width, height; //powirzchnia mapy
     private Tile[][] grid; //siatka - różne typy mapy i objekty
     private List<Animal> animals = new ArrayList<>(); //lista zwierząt na świecie
 
     //rozmieszczenie pól i zwierząt (na razie zawiera liczbę turn konkretną)
-    public World(int width, int height, int noFood, int noCoral, int noAnimals, int ticks, WorldSetup worldSetup) {
+    public World(int width, int height, int noFood, int noCoral, int noAnimals, int ticks) {
         this.width = width;
         this.height = height;
         this.grid = new Tile[width][height];
-        worldSetup.initTiles(this, noCoral); //określa jakie jest dane pole mapy
-        worldSetup.spawnAnimals(this, noAnimals); //spawn zwierząt randomowych według rarity
-        worldSetup.spawnFood(this, noFood); //spawn jedzenie randomowo
+        initTiles(this, noCoral); //określa jakie jest dane pole mapy
+        spawnAnimals(this, noAnimals); //spawn zwierząt randomowych według rarity
+        spawnFood(this, noFood); //spawn jedzenie randomowo
     }
 
 
@@ -54,6 +56,8 @@ public class World {
     public Tile[][] getGrid() {
         return grid;
     }
+
+    public List<Animal> getAnimals() { return animals; }
 
     //zwraca komórkę jeśli jest w granicach
     public Tile getTile(Coord coord) {

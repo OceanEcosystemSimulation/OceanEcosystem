@@ -5,10 +5,10 @@ import allAnimals.*;
 import java.util.Random;
 
 public class WorldSetup {
-    private Random random = new Random();
+    private static Random random = new Random();
 
     //inicjuje pola mapy jako NORMAL i losuje miejsca raf
-    protected void initTiles(World world, int noCoral) {
+    protected static void initTiles(World world, int noCoral) {
         Tile[][] grid = world.getGrid();
         int width = world.getWidth();
         int height = world.getHeight();
@@ -30,7 +30,7 @@ public class WorldSetup {
 
 
     //dodaje okreslona liczbe dowolnych (rarity) zwierząt do listy w losowych pozycjach
-    protected void spawnAnimals(World world, int count) {
+    protected static void spawnAnimals(World world, int count) {
         int added = 0; //ile zwierzat dodano pomyślnie
         int maxCount = Math.min(count, world.getHeight()*world.getWidth()); //jeśli count jest wiecej niz pól dodaje ile może
         RangeOfRarity rarityRange = new RangeOfRarity();
@@ -55,7 +55,7 @@ public class WorldSetup {
 
 
     //tworzenie zwierząt
-    private Animal createAnimalFromName(String name, Coord position) {
+    protected static Animal createAnimalFromName(String name, Coord position) {
         //wywalało żółty że nie == i faktycznie chyba bo == poówbuje chyba adresy a equals wartości wieć zmieniam
         if (name.equals("Nemo")) {
             return new Fish(position);
@@ -70,7 +70,7 @@ public class WorldSetup {
 
 
     //losowo rozmieszcza jedzenie
-    protected void spawnFood(World world, int noFood) {
+    protected static void spawnFood(World world, int noFood) {
         for (int i = 0; i < noFood; i++) {
             Coord coord = randomCoord(world); //generuje losowe współrzędne
             Tile tile = world.getTile(coord); //pobiera dane pole
@@ -90,7 +90,7 @@ public class WorldSetup {
 
 
     //generuje losowe współrzedne Coord na swiecie
-    private Coord randomCoord(World world) {
+    private static Coord randomCoord(World world) {
         return new Coord(random.nextInt(world.getWidth()), random.nextInt(world.getHeight()));
     }
 }
