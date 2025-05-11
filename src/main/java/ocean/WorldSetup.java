@@ -31,20 +31,26 @@ public class WorldSetup {
 
     //dodaje okreslona liczbe dowolnych (rarity) zwierząt do listy w losowych pozycjach
     protected void spawnAnimals(World world, int count) {
+        int added = 0; //ile zwierzat dodano pomyślnie
+        int maxCount = Math.min(count, world.getHeight()*world.getWidth()); //jeśli count jest wiecej niz pól dodaje ile może
         RangeOfRarity rarityRange = new RangeOfRarity();
         DrawningAnimalsByTheirRarity animalDrawer = new DrawningAnimalsByTheirRarity();
 
-        for (int i = 0; i < count; i++) {
+        for (int i = 0; i < maxCount; i++) {
             Rarity rarity = rarityRange.animalsDrawingByRarity(); //losuje rarity
             String animalType = animalDrawer.drawnAnimalByRarity(rarity); //losuje typ zwierzęcia z tej klasy rarity
 
-            Coord coord = randomCoord(world); //losuje pozycję
+            Coord coord;
+            do {coord = randomCoord(world);}  //losuje pozycje
+            while (!world.getNearbyAnimals(coord, 0).isEmpty()); //losuje dopóki wolne
 
             Animal animal = createAnimalFromName(animalType, coord); //tworzy zwierzę
             if (animal != null) {
                 world.addAnimal(animal);
+                added++;
             }
         }
+        System.out.println("Successfully added " + added + " from " + count + " animals");
     }
 
 
@@ -58,8 +64,8 @@ public class WorldSetup {
         }
         // itd
         else {
-            return null;
-        } // na wypadek błędu
+            return null;  // na wypadek błędu
+        }
     }
 
 
@@ -68,7 +74,7 @@ public class WorldSetup {
         for (int i = 0; i < noFood; i++) {
             Coord coord = randomCoord(world); //generuje losowe współrzędne
             Tile tile = world.getTile(coord); //pobiera dane pole
-            if (tile != null && !tile.hasFood()) {
+            if (tile != null && !tile.hasFood()) { //na wszelki sprawdza czy nic tam nie ma
                 // Losowanie typu jedzenia na kafelku
                 int foodTypeRoll = random.nextInt(3); //losuje wartość (0,1,2)
                 tile.foodType = switch (foodTypeRoll) { //dobra, wale to, coś był problem z ifem ale nie ogarniam czemu, więc zmieniam na switch case, wybaczcie
