@@ -57,39 +57,41 @@ public class WorldSetup {
     //tworzenie zwierząt
     protected static Animal createAnimalFromName(String name, Coord position) {
         //wywalało żółty że nie == i faktycznie chyba bo == poówbuje chyba adresy a equals wartości wieć zmieniam
-        if (name.equals("Nemo")) {
+        if (name.equals("Nemo")) { //do zmiany w nazwach w klasie Fish albo tutaj
             return new Fish(position);
         } else if (name.equals("Shark")) {
             return new Shark(position);
         }
-        // itd
+        //itd
         else {
-            return null;  // na wypadek błędu
+            return null;  //na wypadek błędu
         }
     }
 
 
     //losowo rozmieszcza jedzenie
     protected static void spawnFood(World world, int noFood) {
-        for (int i = 0; i < noFood; i++) {
-            Coord coord = randomCoord(world); //generuje losowe współrzędne
-            Tile tile = world.getTile(coord); //pobiera dane pole
-            if (tile != null && !tile.hasFood()) { //na wszelki sprawdza czy nic tam nie ma
-                // Losowanie typu jedzenia na kafelku
-                int foodTypeRoll = random.nextInt(3); //losuje wartość (0,1,2)
-                tile.foodType = switch (foodTypeRoll) { //dobra, wale to, coś był problem z ifem ale nie ogarniam czemu, więc zmieniam na switch case, wybaczcie
-                    case 0 -> FoodType.NONE;
-                    case 1 -> FoodType.PLANKTON;
-                    case 2 -> FoodType.ALGAE;
-                    default -> FoodType.NONE;
-                };
+        int maxNoFood = Math.min(noFood, world.getHeight()*world.getWidth()); //jeśli count jest wiecej niz pól dodaje ile może
 
-            }
+        for (int i = 0; i < maxNoFood; i++) {
+            Tile tile;
+            do {
+                Coord coord = randomCoord(world); //generuje losowe współrzędne
+                tile = world.getTile(coord); //pobiera dane pole
+            } while (tile.hasFood()); //losuje dopóki wylosowane bedzie wolne
+
+            //losowanie typu jedzenia na kafelku
+            int foodTypeRoll = random.nextInt(2); //losuje wartość (0,1)
+            tile.foodType = switch (foodTypeRoll) { //dobra, wale to, coś był problem z ifem ale nie ogarniam czemu, więc zmieniam na switch case, wybaczcie
+                case 0 -> FoodType.PLANKTON;
+                case 1 -> FoodType.ALGAE;
+                default -> FoodType.NONE;
+            };
         }
     }
 
 
-    //generuje losowe współrzedne Coord na swiecie
+    //generuje losowe współrzedne Coord na swiecie - w granicach ofc bo random.nextInt(bound) zawsze zwraca liczbę w zakresie [0, bound)
     private static Coord randomCoord(World world) {
         return new Coord(random.nextInt(world.getWidth()), random.nextInt(world.getHeight()));
     }
