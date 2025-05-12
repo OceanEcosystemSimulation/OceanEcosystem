@@ -7,31 +7,42 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.util.*;
 
 public class Main extends Application {
     private static final int tileSize = 25; //piksele
-
-    static int width = 20;
-    static int height = 20;
-    static int noFood = 10;
-    static int noCoral = 5;
-    static int noAnimals;
-    static int ticks;
+    static int width, height, noFood, noCoral, noAnimals, ticks; //parametry wejsciowe
 
     public World world; //deklaracja objektu world
     private Rectangle[][] tilesTab; //tablica kafelków
 
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
+        Map<String, Integer> config = new HashMap<>(); //stwierdzilam ze hashmap bo tak to by musiały byc w konkretnej kolejności i wgl i jakby któregoś zabraklo to problem i wgl
 
-        System.out.println("Podaj liczbę zwierząt:");
-        noAnimals = scanner.nextInt();
+        try{
+            File file = new File("parameters.csv"); //tworzenie objektu file
+            Scanner scanner = new Scanner(file); //odczywtywanie wartości z file
+            while (scanner.hasNextLine()) { //sprawdza czy jest jessvze linia do odczytania
+                String line = scanner.nextLine(); //pobiera ją
+                String[] parts = line.split(","); //dzieli linie na 2 czesci (rozdziela to co jest ,)
+                if (parts.length == 2) { //jesli sa 2 czesci - jest poprawnie odczytane i wgl zapisane
+                    config.put(parts[0], Integer.parseInt(parts[1])); //konwersja na int
+                }
+            }
+        } catch (Exception e) { //idk czy dac Exeption czy FileNotFoundException ale na razie exception chyba bo przechwytuje wszystkie wyjatki nawet przy konwersji
+            System.out.println("Error with file");
+            e.printStackTrace(); //wyswietla szczegóły błędu????
+            return;
+        }
 
-        System.out.println("Podaj liczbę cykli symulacji:");
-        ticks = scanner.nextInt();
-
-        //itd wszystkie parametry idkkk
+        //przypisanei wartości do pól
+        width = config.getOrDefault("width", 20);
+        height = config.getOrDefault("height", 20);
+        noFood = config.getOrDefault("noFood", 0);
+        noCoral = config.getOrDefault("noCoral", 0);
+        noAnimals = config.getOrDefault("noAnimals", 0);
+        ticks = config.getOrDefault("ticks", 0);
 
         launch(args); //uruchamia JavaFX ???
     }
