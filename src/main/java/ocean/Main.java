@@ -13,6 +13,7 @@ import java.util.*;
 public class Main extends Application {
     private static final int tileSize = 25; //piksele
     static int width, height, noFood, noCoral, noAnimals, ticks; //parametry wejsciowe
+    private Map<String, Integer> speciesCount = new HashMap<>(); //tworzy HashMap: gatunek->ilość
 
     public World world; //deklaracja objektu world
     private Rectangle[][] tilesTab; //tablica kafelków
@@ -31,8 +32,8 @@ public class Main extends Application {
                 }
             }
         } catch (Exception e) { //idk czy dac Exeption czy FileNotFoundException ale na razie exception chyba bo przechwytuje wszystkie wyjatki nawet przy konwersji
-            System.out.println("Error with file");
-            e.printStackTrace(); //wyswietla szczegóły błędu????
+            System.out.println("File error");
+            e.printStackTrace(); //wyswietla szczegóły błędu???? szczerze nie pamietam czy niezbędne
             return;
         }
 
@@ -102,12 +103,11 @@ public class Main extends Application {
         }
     }
 
+    //update statystyk w każdej turze
+    void updateStats() {
+        speciesCount.clear(); //czyści mapę - można jak będzie dużo rzeczy to zmienić to na jesli nie zywe to -1 i usuwa (zmienic z runSimulation) ale przy kilkuset podobno powinno byc git
 
-    //wyswietlanie statystyk -- jeśli nie są potrzebne w różnych momentach i tylko na końcu to można przenieść do SimulationThread
-    void showAnimalStats() {
-        Map<String, Integer> speciesCount = new HashMap<>(); //tworzy HashMap: gatunek->ilość
-
-        for (Animal animal : world.getAnimals()) { //przejscie po zwierzetach wszystkich
+        for (Animal animal : world.getAnimals()) {
             if (animal.isAlive()) { //sprawdza czy żywe
                 speciesCount.put(animal.getName(), speciesCount.getOrDefault(animal.getName(), 0) + 1); //dodaje
                 //pobiera nazwę, aktualną liczbę i powieksza o 1 - jesli nie ma jeszcze (deafult) to 0 (bo domysnie jest null wiec trzeba to tak
@@ -115,6 +115,14 @@ public class Main extends Application {
             }
         }
 
+        System.out.println("\n---> Aktualna liczba gatunków na mapie: <---");
+        for (Map.Entry<String, Integer> entry : speciesCount.entrySet()) {
+            System.out.println(entry.getKey() + ": " + entry.getValue());
+        }
+    }
+
+    //wyswietlanie statystyk końcowych - idk czy bedzie potrzebne jak mamy te updateStats ale na razie zostawie
+    void showAnimalStats() {
         System.out.println("\n---> Stan koncowy symulacji: <---");
         for (Map.Entry<String, Integer> entry : speciesCount.entrySet()) { //przechodzi po wszystkich dodanych w hashmap
             System.out.println(entry.getKey() + ": " + entry.getValue()); //bierze klucz i wartość
