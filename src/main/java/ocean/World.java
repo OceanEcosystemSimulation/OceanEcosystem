@@ -1,6 +1,8 @@
 package ocean;
 
-import body.Animal;
+import body.*;
+import map.Coord;
+import map.Tile;
 
 import java.util.*;
 
@@ -31,6 +33,7 @@ public class World {
                 animal.update(this); // aktualizuje stan zwierzęcia
 
                 if (!animal.isAlive()) {
+                    System.out.println(animal.getName() + " id: " + animal.getId() + " is dead ");
                     animals.remove(animal); //usuwa martwe
                 }
             }

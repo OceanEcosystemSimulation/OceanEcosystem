@@ -1,9 +1,7 @@
 package body;
 
-import map.FoodType;
-import movement.IEat;
-import movement.IFight;
-import ocean.*;
+import map.*;
+import movement.*;
 
 // DO ZMIANY CAŁE - i to mocno bo pogubiłam się co i jak z nimi
 public abstract class Omnivorous extends Animal implements IEat, IFight {
@@ -13,12 +11,12 @@ public abstract class Omnivorous extends Animal implements IEat, IFight {
 
     @Override
     public boolean canEat(Tile tile) { //whatever
-        return tile.foodType == FoodType.PLANKTON || tile.foodType == FoodType.ALGAE;
+        return tile.getFoodType() == FoodType.PLANKTON || tile.getFoodType() == FoodType.ALGAE;
     }
 
     @Override
     public void eat(Tile tile) { //whatever - do zmiany i tak
-        int gain = switch (tile.foodType) {
+        int gain = switch (tile.getFoodType()) {
             case PLANKTON -> 10;
             case ALGAE -> 15;
             default -> 0;

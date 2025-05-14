@@ -4,7 +4,6 @@ package body;
 public class Genes {
     private int strength;
     private int speed; //wartości max 5 kratek - zależy od tego ile się przesuwa/widzi
-    private int fertility; //rozrodczość
 
 
     //geny potomstwa (trzeba przenieść maxAge i maxLoneliness też raczej)
@@ -12,7 +11,6 @@ public class Genes {
         Genes g = new Genes();
         g.strength = mutate((g1.strength + g2.strength) / 2);
         g.speed = mutate((g1.speed + g2.speed) / 2);
-        g.fertility = mutate((g1.fertility + g2.fertility) / 2);
         return g;
     }
 
@@ -21,10 +19,8 @@ public class Genes {
 
     public int getStrength() {return strength;}
     public int getSpeed() {return speed;}
-    public int getFertility() {return fertility;}
 
     public void setStrength(int strength) {this.strength = strength;}
     public void setSpeed(int speed) {this.speed = speed;}
-    public void setFertility(int fertility) {this.fertility = fertility;}
 }
 

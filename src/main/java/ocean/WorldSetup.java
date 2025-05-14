@@ -1,12 +1,12 @@
 package ocean;
 
 import allAnimals.*;
-import body.Animal;
-import extendedMechanics.DrawningAnimalsByTheirRarity;
-import extendedMechanics.RangeOfRarity;
-import extendedMechanics.Rarity;
+import body.*;
+import extendedMechanics.*;
+import map.Coord;
 import map.FoodType;
 import map.MapType;
+import map.Tile;
 
 import java.util.Random;
 
@@ -14,7 +14,7 @@ public class WorldSetup {
     private static Random random = new Random();
 
     //inicjuje pola mapy jako NORMAL i losuje miejsca raf
-    protected static void initTiles(World world, int noCoral) {
+    static void initTiles(World world, int noCoral) {
         Tile[][] grid = world.getGrid();
         int width = world.getWidth();
         int height = world.getHeight();
@@ -30,13 +30,13 @@ public class WorldSetup {
             for (int dx = -1; dx <= 1; dx++)
                 for (int dy = -1; dy <= 1; dy++)
                     if (world.inBounds(cx + dx, cy + dy)) //sprawdza czy w zasięgu mapy
-                        grid[cx + dx][cy + dy].type = MapType.CORAL; //ustawia pole na CORAL
+                        grid[cx + dx][cy + dy].setMapType(MapType.CORAL); //ustawia pole na CORAL
         }
     }
 
 
     //dodaje okreslona liczbe dowolnych (rarity) zwierząt do listy w losowych pozycjach
-    protected static void spawnAnimals(World world, int count) {
+    static void spawnAnimals(World world, int count) {
         int added = 0; //ile zwierzat dodano pomyślnie
         int maxCount = Math.min(count, world.getHeight()*world.getWidth()); //jeśli count jest wiecej niz pól dodaje ile może
         RangeOfRarity rarityRange = new RangeOfRarity();
@@ -61,7 +61,7 @@ public class WorldSetup {
 
 
     //tworzenie zwierząt
-    protected static Animal createAnimalFromName(String name, Coord position) {
+    static Animal createAnimalFromName(String name, Coord position) {
         //wywalało żółty że nie == i faktycznie chyba bo == poówbuje chyba adresy a equals wartości wieć zmieniam
         if (name.equals("Nemo")) { //do zmiany w nazwach w klasie Fish albo tutaj
             return new Fish(position);
@@ -76,7 +76,7 @@ public class WorldSetup {
 
 
     //losowo rozmieszcza jedzenie
-    protected static void spawnFood(World world, int noFood) {
+    static void spawnFood(World world, int noFood) {
         int maxNoFood = Math.min(noFood, world.getHeight()*world.getWidth()); //jeśli count jest wiecej niz pól dodaje ile może
 
         for (int i = 0; i < maxNoFood; i++) {
@@ -88,11 +88,12 @@ public class WorldSetup {
 
             //losowanie typu jedzenia na kafelku
             int foodTypeRoll = random.nextInt(2); //losuje wartość (0,1)
-            tile.foodType = switch (foodTypeRoll) { //dobra, wale to, coś był problem z ifem ale nie ogarniam czemu, więc zmieniam na switch case, wybaczcie
+            FoodType foodType = switch (foodTypeRoll) {
                 case 0 -> FoodType.PLANKTON;
                 case 1 -> FoodType.ALGAE;
                 default -> FoodType.NONE;
             };
+            tile.setFoodType(foodType);
         }
     }
 

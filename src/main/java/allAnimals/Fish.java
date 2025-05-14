@@ -1,9 +1,12 @@
 package allAnimals;
 
-import body.Animal;
-import body.Genes;
-import body.Herbivorous;
-import ocean.*;
+import body.*;
+import map.*;
+import ocean.World;
+import ocean.WorldSearch;
+
+import static body.AnimalLifeManager.canReproduce;
+import static map.Coord.meetingAtMiddle;
 
 public class Fish extends Herbivorous {
     public Fish(Coord position) {
@@ -24,7 +27,6 @@ public class Fish extends Herbivorous {
         Genes g = new Genes();
         g.setStrength(5 + rand.nextInt(5));
         g.setSpeed(10 + rand.nextInt(10));
-        g.setFertility(20 + rand.nextInt(10));
         return g;
     }
 
@@ -43,15 +45,39 @@ public class Fish extends Herbivorous {
     //zjada o ile nie byłoby ponad 100 napchane
     @Override
     public void eat(Tile tile) { //przykładowe jak pisać
-        int gain = switch (tile.foodType) {
+        int gain = switch (tile.getFoodType()) {
             case PLANKTON -> 10;
             case ALGAE -> 15;
             default -> 0; //NONE
         };
         if (getAge()+gain <= 100){
             setFoodLevel(getFoodLevel() + gain); //je
-            System.out.println(this.getName() + " id: " + this.getId() + " eats " + tile.foodType);
+            System.out.println(this.getName() + " id: " + this.getId() + " eats " + tile.getFoodType());
             tile.clearFood();
+        }
+    }
+
+
+    //szuka partnera
+    private void tryToMate(World world) {
+        if (isAlive()) {
+            Animal mate = WorldSearch.nearestMate(world, this.getPosition(), this.getGenes().getSpeed(), this); //znajduje mate
+            if (mate!=null && mate.getGender()!=this.getGender()) { //przeciwna płeć
+                Coord meetingPointA = meetingAtMiddle(world.getWidth(), world.getHeight(), this.getPosition(), mate.getPosition());
+                Coord meetingPointB = meetingAtMiddle(world.getWidth(), world.getHeight(), this.getPosition(), mate.getPosition());
+                this.setPosition(meetingPointA); //skok do A
+                mate.setPosition(meetingPointB); //skok do B
+
+                if (canReproduce(this) && canReproduce(mate)) {
+                    System.out.println(this.getName() + " id: " + this.getId() + "  reproduce with  " + mate.getName() + " id: " + mate.getId());
+                    //losowanie nowych współrzędnych w zasięgu jednej kratki od aktualnej pozycji rodzica
+                    Coord childPosition = this.getPosition().randomAdjacent(world.getWidth(), world.getHeight(), 1, world);
+
+                    Animal child = new Fish(childPosition, this, mate); //tworzenie nowego dzieciaka
+                    world.addAnimal(child); //dodanie dzieciaka do świata
+                    System.out.println(child.getName() + " id: " + child.getId() + "  was born");
+                }
+            }
         }
     }
 }

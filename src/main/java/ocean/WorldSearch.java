@@ -1,8 +1,9 @@
 package ocean;
 
-import body.Animal;
-import body.Carnivorous;
+import body.*;
+import map.Coord;
 import map.MapType;
+import map.Tile;
 
 //wszystkie przeszukiwania mapy
 public class WorldSearch {
@@ -38,7 +39,7 @@ public class WorldSearch {
 
         for (Animal animal : world.getNearbyAnimals(position, radius)) { //iteracja po liście zwierząt w promieniu
             Tile preyTile = world.getTile(animal.getPosition()); //pole na którym jest ofiara
-            if (preyTile!=null && preyTile.type!= MapType.CORAL && predator.canAttack(animal)) { //sprawdzenie czy może zaatakować i czy to nie rafa
+            if (preyTile!=null && preyTile.getMapType()!= MapType.CORAL && predator.canAttack(animal)) { //sprawdzenie czy może zaatakować i czy to nie rafa
                 int dist = (int) position.distance(animal.getPosition());
                 if (dist < minDist) { //jeśli bliżej to bierze
                     minDist = dist;
@@ -78,7 +79,7 @@ public class WorldSearch {
                 Coord newPos = new Coord(position.x + dx, position.y + dy);
                 if (world.inBounds(newPos.x, newPos.y)) {
                     Tile tile = world.getTile(new Coord(newPos.x, newPos.y));
-                    if (tile!=null && tile.type==MapType.CORAL && !world.isOccupied(newPos)) { //sprawdza czy to jest coral i czy ktoś tam jest
+                    if (tile!=null && tile.getMapType()==MapType.CORAL && !world.isOccupied(newPos)) { //sprawdza czy to jest coral i czy ktoś tam jest
                         int dist = (int) position.distance(newPos);
                         if (dist < minDist) {
                             minDist = dist;

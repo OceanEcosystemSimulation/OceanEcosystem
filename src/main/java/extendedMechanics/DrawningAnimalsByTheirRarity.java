@@ -1,8 +1,6 @@
 package extendedMechanics;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 // funkcja, która losuje zwierzęta, które należą do tej samej klasy rzadkości
 public class DrawningAnimalsByTheirRarity implements IAnimalDrawer {

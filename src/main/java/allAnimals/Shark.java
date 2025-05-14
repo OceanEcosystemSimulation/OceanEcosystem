@@ -1,11 +1,14 @@
 package allAnimals;
 
-import body.Animal;
-import body.Carnivorous;
-import body.Genes;
-import ocean.*;
+import body.*;
+import map.*;
+import ocean.World;
+import ocean.WorldSearch;
 
 import java.util.List;
+
+import static body.AnimalLifeManager.canReproduce;
+import static map.Coord.meetingAtMiddle;
 
 public class Shark extends Carnivorous {
     public Shark(Coord position) {
@@ -26,7 +29,6 @@ public class Shark extends Carnivorous {
         Genes g = new Genes();
         g.setStrength(5 + rand.nextInt(5));
         g.setSpeed(10 + rand.nextInt(10));
-        g.setFertility(20 + rand.nextInt(10));
         return g;
     }
 
@@ -71,25 +73,48 @@ public class Shark extends Carnivorous {
     //przykładowe to wpisywania ile jakie jedzenie daje
     //można zrobić ifem jak wcześniej było jak wam nie pasuje takie
     private int calculateGain(Animal animal) {
-        int baseGain = switch (animal.getName()) {
+        return switch (animal.getName()) {
             case "Fish" -> 30;
             //itd inne
             default -> 0;
         };
-        return baseGain;
     }
 
 
     @Override
     public void eat(Tile tile) { //przykładowe jak pisać
-        int gain = switch (tile.foodType) {
+        int gain = switch (tile.getFoodType()) {
             case PLANKTON, ALGAE -> 5;
             default -> 0; //NONE
         };
         if (getFoodLevel()+gain <= 100){ //tak na wszelki
             setFoodLevel(getFoodLevel() + gain);
-            System.out.println(this.getName() + " id: " + this.getId() + " eats " + tile.foodType);
+            System.out.println(this.getName() + " id: " + this.getId() + " eats " + tile.getFoodType());
             tile.clearFood();
+        }
+    }
+
+
+    //szuka partnera
+    private void tryToMate(World world) {
+        if (isAlive()) {
+            Animal mate = WorldSearch.nearestMate(world, this.getPosition(), this.getGenes().getSpeed(), this); //znajduje mate
+            if (mate!=null && mate.getGender()!=this.getGender()) { //przeciwna płeć
+                Coord meetingPointA = meetingAtMiddle(world.getWidth(), world.getHeight(), this.getPosition(), mate.getPosition());
+                Coord meetingPointB = meetingAtMiddle(world.getWidth(), world.getHeight(), this.getPosition(), mate.getPosition());
+                this.setPosition(meetingPointA); //skok do A
+                mate.setPosition(meetingPointB); //skok do B
+
+                if (canReproduce(this) && canReproduce(mate)) {
+                    System.out.println(this.getName() + " id: " + this.getId() + "  reproduce with  " + mate.getName() + " id: " + mate.getId());
+                    //losowanie nowych współrzędnych w zasięgu jednej kratki od aktualnej pozycji rodzica
+                    Coord childPosition = this.getPosition().randomAdjacent(world.getWidth(), world.getHeight(), 1, world);
+
+                    Animal child = new Shark(childPosition, this, mate); //tworzenie nowego dzieciaka
+                    world.addAnimal(child); //dodanie dzieciaka do świata
+                    System.out.println(child.getName() + " id: " + child.getId() + "  was born");
+                }
+            }
         }
     }
 

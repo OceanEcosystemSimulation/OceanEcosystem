@@ -1,7 +1,6 @@
-package movement;
+package body;
 
-import body.Animal;
-import ocean.Coord;
+import map.*;
 import ocean.World;
 import ocean.WorldSearch;
 
@@ -10,20 +9,20 @@ import static body.Animal.rand;
 //narzedzia do mechaniki walki
 public class AnimalCombatUtils {
 
-    protected static double getEffectiveStrength(Animal animal) {
+    static double getEffectiveStrength(Animal animal) {
         return animal.getGenes().getStrength() * (animal.getEnergy()/100.0);
     }
 
-    protected static double getEffectiveSpeed(Animal animal) {
+    static double getEffectiveSpeed(Animal animal) {
         return animal.getGenes().getSpeed() * (animal.getEnergy()/100.0);
     }
 
-    protected static double getCombatPower(Animal animal) {
+    static double getCombatPower(Animal animal) {
         return getEffectiveStrength(animal) * 0.7 + getEffectiveSpeed(animal) * 0.3;
     }
 
 
-    protected static void takeDamage(Animal animal, double amount) {
+    static void takeDamage(Animal animal, double amount) {
         int newHealth = (int)(animal.getHealth() - amount);
         animal.setHealth(Math.max(newHealth, 0));
 
@@ -34,7 +33,7 @@ public class AnimalCombatUtils {
 
 
     //ucieczka z walki - nie podoba mi się że jest argument world ale idk jak to zrobić
-    protected static void escape(World world, Animal animal) {
+    static void escape(World world, Animal animal) {
         Coord pos = animal.getPosition();
         int distance = (int) (1.2 * animal.getGenes().getSpeed()); //ma większą prędkość w walce minimalnie (adrenalina XD) - do zmiany możliwej
 
@@ -53,5 +52,11 @@ public class AnimalCombatUtils {
                 animal.setPosition(pos.randomAdjacent(world.getWidth(), world.getHeight(), animal.getGenes().getSpeed(), world));
             }
         }
+    }
+
+    //losowy ruch w zasięgu speed
+    public static void randomMove(World world, Animal animal) {
+        Coord newPos = animal.getPosition().randomAdjacent(world.getWidth(), world.getHeight(), animal.getGenes().getSpeed(), world); //generuje nową losową pozycję sąsiednią
+        animal.setPosition(newPos); //ustawia pozycję
     }
 }

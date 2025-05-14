@@ -1,14 +1,12 @@
 package body;
 
-import allAnimals.Fish;
-import map.FoodType;
-import movement.AnimalCombatUtils;
-import movement.IEat;
-import movement.IFight;
-import movement.IMove;
-import ocean.*;
+import map.*;
+import movement.*;
+import ocean.World;
+import ocean.WorldSearch;
 
-import static ocean.Coord.meetingAtMiddle;
+import static body.AnimalCombatUtils.randomMove;
+
 
 //abstract bo nie ma update
 public abstract class Carnivorous extends Animal implements IFight, IMove, IEat {
@@ -34,21 +32,14 @@ public abstract class Carnivorous extends Animal implements IFight, IMove, IEat 
         } else if (getFoodLevel() < 30) {
             Tile foodTile = WorldSearch.nearestFood(world, getPosition(), getGenes().getSpeed()); //szuka najbliższe jedzenie
             if (foodTile != null) {
-                Coord foodPos = new Coord(foodTile.x, foodTile.y);
+                Coord foodPos = new Coord(foodTile.getX(), foodTile.getY());
                 setPosition(foodPos); //skok do jedzenia
                 return;
             }
         } else {
-            randomMove(world); //randomowo gdy nie głodny lub brak jedzenia i ofiary
+            randomMove(world, this); //randomowo gdy nie głodny lub brak jedzenia i ofiary
         }
         System.out.println(this.getName() + " id: " + this.getId() + "  jumped to [" + this.getPosition().x + "," + this.getPosition().y + "]");
-    }
-
-
-    //losowy ruch w zasięgu speed
-    private void randomMove(World world) {
-        Coord newPos = getPosition().randomAdjacent(world.getWidth(), world.getHeight(), getGenes().getSpeed(), world); //generuje nową losową pozycję sąsiednią
-        setPosition(newPos); //ustawia pozycję
     }
 
 
@@ -98,40 +89,16 @@ public abstract class Carnivorous extends Animal implements IFight, IMove, IEat 
     @Override
     public boolean canEat(Tile tile) { //also przykładowe
         return getFoodLevel() <= 30 &&
-                (tile.foodType == FoodType.PLANKTON || tile.foodType == FoodType.ALGAE);
+                (tile.getFoodType() == FoodType.PLANKTON || tile.getFoodType() == FoodType.ALGAE);
     }
 
 
     //sprawdzenie czy na obecnym kafelku znajduje się jedzenie
-    public void tryToEat(World world) {
+    protected void tryToEat(World world) {
         if (isAlive()) {
             Tile currentTile = world.getTile(getPosition());
             if (currentTile != null && canEat(currentTile)) { //jeśli tile zawiera jedzenie i Shark może je jeść
                 eat(currentTile); //je
-            }
-        }
-    }
-
-
-    //szuka partnera
-    public void tryToMate(World world) {
-        if (isAlive()) {
-            Animal mate = WorldSearch.nearestMate(world, this.getPosition(), this.getGenes().getSpeed(), this); //znajduje mate
-            if (mate!=null && mate.getGender()!=this.getGender()) { //przeciwna płeć
-                Coord meetingPointA = meetingAtMiddle(world.getWidth(), world.getHeight(), this.getPosition(), mate.getPosition());
-                Coord meetingPointB = meetingAtMiddle(world.getWidth(), world.getHeight(), this.getPosition(), mate.getPosition());
-                this.setPosition(meetingPointA); //skok do A
-                mate.setPosition(meetingPointB); //skok do B
-
-                if (canReproduce() && mate.canReproduce()) {
-                    System.out.println(this.getName() + " id: " + this.getId() + "  reproduce with  " + mate.getName() + " id: " + mate.getId());
-                    //losowanie nowych współrzędnych w zasięgu jednej kratki od aktualnej pozycji rodzica
-                    Coord childPosition = this.getPosition().randomAdjacent(world.getWidth(), world.getHeight(), 1, world);
-
-                    Animal child = new Fish(childPosition, this, mate); //tworzenie nowego dzieciaka
-                    world.addAnimal(child); //dodanie dzieciaka do świata
-                    System.out.println(child.getName() + " id: " + child.getId() + "  was born");
-                }
             }
         }
     }

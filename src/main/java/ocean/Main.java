@@ -7,13 +7,16 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
-import map.MapType;
+import javafx.scene.control.Label;
+import javafx.scene.layout.VBox;
+
+import map.*;
 
 import java.io.File;
 import java.util.*;
 
 public class Main extends Application {
-    private static final int tileSize = 25; //piksele
+    private static final int tileSize = 15; //piksele
     static int width, height, noFood, noCoral, noAnimals, ticks; //parametry wejsciowe
     private Map<String, Integer> speciesCount = new HashMap<>(); //tworzy HashMap: gatunek->ilość
 
@@ -70,15 +73,24 @@ public class Main extends Application {
 
         updateGrid(); //update rzeczy ustawionych
 
+
+        VBox bottomPanel = new VBox(); //tworzy taki kontener?? strukturę??? (VBox układa rzeczy jeden pod drugim)
+        bottomPanel.setSpacing(20); //ustawia odległość między elementami
+        Label statsLabel = new Label(); //tworzy label - takie do podstawowych tekstów (można zmienić na Text jeśli chcemy formatowania itp)
+
+        bottomPanel.getChildren().add(statsLabel); //dodaje statsLabel (element) do bottomPanel
+        VBox root = new VBox(grid, bottomPanel); //dodaje elementy siatka i panel do głównego jakby kontenera z elementami?? idk jak to się określa
+
+
         //tworzenie i wyswietlanie okna
-        Scene scene = new Scene(grid); //tworzy scene
-        primaryStage.setScene(scene); //dodaje objekty Stage do scene
+        Scene scene = new Scene(root); //tworzy scene i dodaje root cały (wszystkie elementy)
+        primaryStage.setScene(scene); //przypisuje scene do Stage - ustawia główną zawartość okna - określa co ma byc wyświetlane
         primaryStage.setTitle("Ocean Ecosystem Simulation"); //tytuł
         primaryStage.show();
 
         //uruchamianie osobnego wątku symulacji (w tle by działało gładko????) który co X ms wykonuje nowy cykl i odświeża interfejs
         //szerze nwm jak to działa za bardzo, wzięłam to z jakiegoś blogu
-        new SimulationThread(this).start();
+        new SimulationThread(this, statsLabel).start();
     }
 
 
@@ -90,7 +102,7 @@ public class Main extends Application {
                 Tile tile = world.getTile(coord); //pobranie info o polu z world
                 Rectangle rect = tilesTab[x][y]; //pobranie kafelka z tabicy kafelków
 
-                if (tile.type == MapType.CORAL) { //pole to coral
+                if (tile.getMapType() == MapType.CORAL) { //pole to coral
                     rect.setFill(Color.DARKCYAN);
                 } else {
                     rect.setFill(Color.LIGHTBLUE); //reszta pól - woda
@@ -106,7 +118,7 @@ public class Main extends Application {
     }
 
     //update statystyk w każdej turze
-    void updateStats() {
+    void updateStats(Label statsLabel) {
         speciesCount.clear(); //czyści mapę - można jak będzie dużo rzeczy to zmienić to na jesli nie zywe to -1 i usuwa (zmienic z runSimulation) ale przy kilkuset podobno powinno byc git
 
         for (Animal animal : world.getAnimals()) {
@@ -117,10 +129,14 @@ public class Main extends Application {
             }
         }
 
-        System.out.println("\n---> Aktualna liczba gatunków na mapie: <---");
+        String statsText = "---> Aktualna liczba gatunków na mapie: <---\n";
+        System.out.println();
         for (Map.Entry<String, Integer> entry : speciesCount.entrySet()) {
-            System.out.println(entry.getKey() + ": " + entry.getValue());
+            statsText += entry.getKey() + ": " + entry.getValue() + "    ";
+            System.out.println(entry.getKey() + ": " + entry.getValue()); //na chwile - testy
         }
+
+        statsLabel.setText(statsText); //ustawianie nowego tekstu w Label
     }
 
     //wyswietlanie statystyk końcowych - idk czy bedzie potrzebne jak mamy te updateStats ale na razie zostawie

@@ -1,7 +1,7 @@
 package body;
 
-import movement.AnimalLifeManager;
-import ocean.*;
+import map.*;
+import ocean.World;
 
 import java.util.*;
 
@@ -17,7 +17,7 @@ public abstract class Animal {
     private final int id;
     private static int nextId = 1;
 
-    protected static final Random rand = new Random();
+    public static final Random rand = new Random();
 
     // konstruktor dla zwierząt startowych
     public Animal(Coord position, Genes genes, int maxAge, int maxLoneliness) {
@@ -48,23 +48,14 @@ public abstract class Animal {
     }
 
 
-    protected abstract void update(World world);
+    public abstract void update(World world);
 
-    public void die() {
-        alive = false;
-        System.out.println(this.getName() + " id: " + this.getId() + " is dead ");
-    }
+    public void die() {alive = false;}
 
 
     //zostawiam to tutaj bo za wykładzie było że fajnie robić chyba takie pomiędzy a nie 1 do 1 połączenia
     protected void processLifeCycle(World world) {
         AnimalLifeManager.lifeCycle(world, this);
-    }
-
-
-    //czy moze sie rozmnażac - staty do zmiany - nie wiem gdzie dać tą metodę
-    public boolean canReproduce() {
-        return this.getEnergy()>=60 && this.getAge()>5 && this.getHealth()>=70; // przykładowe warunki
     }
 
 

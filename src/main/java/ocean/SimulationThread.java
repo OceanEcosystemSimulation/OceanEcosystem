@@ -1,13 +1,16 @@
 package ocean;
 
 import javafx.application.Platform;
+import javafx.scene.control.Label;
 
 class SimulationThread extends Thread {
     private Main mainInstance; //instancja main <-> przechowuje referencje do main bo potrzeba jej parametrów
+    private Label statsLabel;
 
     // szczerze już nwm co robię, teoretycznie przekazuje referencję do obiektu main żeby wątek miał dostęp do metod i danych
-    public SimulationThread(Main mainInstance) {
+    public SimulationThread(Main mainInstance, Label statsLabel) {
         this.mainInstance = mainInstance;
+        this.statsLabel = statsLabel;
     }
 
 
@@ -27,12 +30,13 @@ class SimulationThread extends Thread {
             Platform.runLater(() -> { //uruchomienie kodu na głównym wątku JavaFX
                 //normalnie przyjmuje Runnable które jest do definiowania kodu który ma byc wywołany w wątku i która ma metodę run()
                 mainInstance.updateGrid(); //wywołanie update
-                mainInstance.updateStats(); //wywołanie update statów liczby zwierzat
+                mainInstance.updateStats(statsLabel); //wywołanie update statów liczby zwierzat
             });
         }
 
         //wyświetlenie statystyk
         Platform.runLater(() -> {
+            System.out.println("Wywołuję showAnimalStats()...");
             mainInstance.showAnimalStats(); //wywołanie statystyk
         });
     }

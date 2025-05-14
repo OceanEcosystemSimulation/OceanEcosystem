@@ -1,13 +1,12 @@
-package movement;
+package body;
 
-import body.Animal;
 import ocean.World;
 
 import java.util.List;
 
 //obsługuje staty i cykl
 public class AnimalLifeManager {
-    protected static void lifeCycle(World world, Animal animal) {
+    static void lifeCycle(World world, Animal animal) {
         animal.setAge(animal.getAge() + 1);
         animal.setFoodLevel(animal.getFoodLevel() - 1);
         updateEnergy(animal);
@@ -62,5 +61,10 @@ public class AnimalLifeManager {
         if (animal.getFoodLevel()>70 && animal.getEnergy()>20) { //zdrowie się odnawia (tak jakies 120% ale do zmiany)
             animal.setHealth((int) (Math.min(animal.getHealth()*1.2, 100)));
         }
+    }
+
+    //czy moze sie rozmnażac - staty do zmiany - nie wiem gdzie dać tą metodę
+    public static boolean canReproduce(Animal animal) {
+        return animal.getEnergy()>=60 && animal.getAge()>5 && animal.getHealth()>=70; // przykładowe warunki
     }
 }

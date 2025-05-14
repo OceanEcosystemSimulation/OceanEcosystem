@@ -1,6 +1,6 @@
 package movement;
 
-import ocean.Tile;
+import map.Tile;
 
 public interface IEat {
     boolean canEat(Tile tile);
