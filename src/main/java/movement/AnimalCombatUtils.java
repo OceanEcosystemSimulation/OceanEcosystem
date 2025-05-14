@@ -1,6 +1,11 @@
-package ocean;
+package movement;
 
-import static ocean.Animal.rand;
+import body.Animal;
+import ocean.Coord;
+import ocean.World;
+import ocean.WorldSearch;
+
+import static body.Animal.rand;
 
 //narzedzia do mechaniki walki
 public class AnimalCombatUtils {

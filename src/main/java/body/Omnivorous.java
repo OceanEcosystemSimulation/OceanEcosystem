@@ -1,4 +1,9 @@
-package ocean;
+package body;
+
+import map.FoodType;
+import movement.IEat;
+import movement.IFight;
+import ocean.*;
 
 // DO ZMIANY CAŁE - i to mocno bo pogubiłam się co i jak z nimi
 public abstract class Omnivorous extends Animal implements IEat, IFight {

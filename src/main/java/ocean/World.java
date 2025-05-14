@@ -1,5 +1,7 @@
 package ocean;
 
+import body.Animal;
+
 import java.util.*;
 
 import static ocean.WorldSetup.*;

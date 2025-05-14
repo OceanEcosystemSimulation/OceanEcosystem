@@ -1,4 +1,4 @@
-package ocean;
+package map;
 
 public enum FoodType {
     NONE,

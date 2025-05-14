@@ -1,5 +1,9 @@
 package ocean;
 
+import body.Animal;
+import body.Carnivorous;
+import map.MapType;
+
 //wszystkie przeszukiwania mapy
 public class WorldSearch {
 
@@ -34,7 +38,7 @@ public class WorldSearch {
 
         for (Animal animal : world.getNearbyAnimals(position, radius)) { //iteracja po liście zwierząt w promieniu
             Tile preyTile = world.getTile(animal.getPosition()); //pole na którym jest ofiara
-            if (preyTile!=null && preyTile.type!=MapType.CORAL && predator.canAttack(animal)) { //sprawdzenie czy może zaatakować i czy to nie rafa
+            if (preyTile!=null && preyTile.type!= MapType.CORAL && predator.canAttack(animal)) { //sprawdzenie czy może zaatakować i czy to nie rafa
                 int dist = (int) position.distance(animal.getPosition());
                 if (dist < minDist) { //jeśli bliżej to bierze
                     minDist = dist;

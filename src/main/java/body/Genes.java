@@ -1,4 +1,4 @@
-package ocean;
+package body;
 
 //geny i ich mechanika (ogólnie wydaje mi się że latwo tak dodawać inne nowe jak trzeba)
 public class Genes {

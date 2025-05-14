@@ -1,4 +1,4 @@
-package ocean;
+package extendedMechanics;
 
 public enum Rarity {
     RARE,

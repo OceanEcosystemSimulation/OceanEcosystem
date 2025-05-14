@@ -1,4 +1,7 @@
-package ocean;
+package movement;
+
+import body.Animal;
+import ocean.World;
 
 import java.util.List;
 

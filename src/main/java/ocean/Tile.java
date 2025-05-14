@@ -1,5 +1,8 @@
 package ocean;
 
+import map.FoodType;
+import map.MapType;
+
 //reprezentacja pól mapy
 public class Tile {
     public int x, y; //współrzędne

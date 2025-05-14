@@ -1,6 +1,12 @@
-package ocean;
+package body;
 
 import allAnimals.Fish;
+import map.FoodType;
+import movement.AnimalCombatUtils;
+import movement.IEat;
+import movement.IFight;
+import movement.IMove;
+import ocean.*;
 
 import static ocean.Coord.meetingAtMiddle;
 

@@ -1,4 +1,4 @@
-package ocean;
+package body;
 
 public enum Gender {
     MALE,

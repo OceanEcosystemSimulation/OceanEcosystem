@@ -1,5 +1,8 @@
 package allAnimals;
 
+import body.Animal;
+import body.Genes;
+import body.Herbivorous;
 import ocean.*;
 
 public class Fish extends Herbivorous {

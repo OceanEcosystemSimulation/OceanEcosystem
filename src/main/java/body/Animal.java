@@ -1,4 +1,7 @@
-package ocean;
+package body;
+
+import movement.AnimalLifeManager;
+import ocean.*;
 
 import java.util.*;
 

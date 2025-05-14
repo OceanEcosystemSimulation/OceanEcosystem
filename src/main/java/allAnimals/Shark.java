@@ -1,5 +1,8 @@
 package allAnimals;
 
+import body.Animal;
+import body.Carnivorous;
+import body.Genes;
 import ocean.*;
 
 import java.util.List;

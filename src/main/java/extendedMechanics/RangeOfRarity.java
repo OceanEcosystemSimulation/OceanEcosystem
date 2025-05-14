@@ -1,6 +1,4 @@
-package ocean;
-
-import java.util.Random;
+package extendedMechanics;
 
 public class RangeOfRarity {
 

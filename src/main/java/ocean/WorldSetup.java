@@ -1,6 +1,12 @@
 package ocean;
 
 import allAnimals.*;
+import body.Animal;
+import extendedMechanics.DrawningAnimalsByTheirRarity;
+import extendedMechanics.RangeOfRarity;
+import extendedMechanics.Rarity;
+import map.FoodType;
+import map.MapType;
 
 import java.util.Random;
 
