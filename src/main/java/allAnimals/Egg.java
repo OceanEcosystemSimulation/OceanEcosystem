@@ -5,6 +5,7 @@ import body.Genes;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import map.Coord;
+import ocean.Main;
 import ocean.World;
 
 import java.util.Objects;
@@ -23,8 +24,7 @@ public class Egg extends Animal {
         super(position, genes);
         this.genes = genes;
         this.hatching = hatching;
-        imageView.setImage(EggImage);
-        imageView.setPreserveRatio(true);
+        settings();
     }
 
     /* -------------------------------GRAPHICS------------------------------- */
@@ -32,6 +32,13 @@ public class Egg extends Animal {
     private static final Image EggImage = new Image(Objects.requireNonNull(Egg.class.getResource("/images/Egg.png")).toExternalForm());
 
     private final ImageView imageView = new ImageView();
+
+    private void settings() {
+        imageView.setImage(EggImage);
+        imageView.setPreserveRatio(true);
+        imageView.setFitWidth(Main.getTileSize() * 0.9);
+        imageView.setFitHeight(Main.getTileSize() * 0.9);
+    }
 
     public ImageView getImageView() {
         return imageView;
