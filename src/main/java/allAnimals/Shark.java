@@ -64,12 +64,14 @@ public class Shark extends Carnivorous {
         //wartości maxAge i maxLoneliness do zmiany
         settings();
         setName("Shark");
+
     }
 
     public Shark(Coord position, Animal parent1, Animal parent2) {
         super(position, parent1, parent2);  //konstruktor dziecka
         settings();
         setName("Shark");
+
     }
 
     /* -------------------------------GENES------------------------------- */

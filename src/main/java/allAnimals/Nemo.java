@@ -14,7 +14,6 @@ import body.Herbivorous;
 /* ------GRAPHICS------ */
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import java.awt.*;
 import java.util.Objects;
 
 

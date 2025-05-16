@@ -3,12 +3,16 @@ package ocean;
 import allAnimals.*;
 import body.*;
 import extendedMechanics.*;
+import javafx.scene.image.Image;
 import map.Coord;
 import map.FoodType;
 import map.MapType;
 import map.Tile;
 
+import java.util.Objects;
 import java.util.Random;
+
+import static com.sun.javafx.scene.control.skin.Utils.getResource;
 
 public class WorldSetup {
     private static Random random = new Random();
@@ -96,7 +100,6 @@ public class WorldSetup {
             tile.setFoodType(foodType);
         }
     }
-
 
     //generuje losowe współrzedne Coord na swiecie - w granicach ofc bo random.nextInt(bound) zawsze zwraca liczbę w zakresie [0, bound)
     private static Coord randomCoord(World world) {

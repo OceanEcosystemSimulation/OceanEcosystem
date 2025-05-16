@@ -9,7 +9,7 @@ import java.util.List;
 import static body.AnimalLifeManager.canReproduce;
 import static map.Coord.meetingAtMiddle;
 
-public class Orca extends Carnivorous {
+/*public class Orca extends Carnivorous {
 
     public Orca(Coord position) {
         super(position, generateGenes(), 30, 60); //max loneliness randomowa wsm jak wymyslimy jaka to sie zmieni
@@ -134,4 +134,4 @@ public class Orca extends Carnivorous {
         return getGenes().getSpeed();
     }
 
-}
+}*/
