@@ -1,6 +1,5 @@
 package allAnimals;
 
-import body.Gender;
 import extendedMechanics.Reproduction;
 import map.Coord;
 import map.Tile;
@@ -127,14 +126,11 @@ public class Nemo extends Herbivorous {
     }
 
     private void updateNemoGraphics() {
-        if (getAge() < AGE_OLD) {
-            imageView.setImage(YoungNemo);
-            imageView.setFitWidth(World.TILE_SIZE * 0.6);
-            imageView.setFitHeight(World.TILE_SIZE * 0.6);
-        } else {
-            imageView.setImage(OldNemo);
-            imageView.setFitWidth(World.TILE_SIZE);
-            imageView.setFitHeight(World.TILE_SIZE);
-        }
+        boolean isYoung = getAge() < AGE_OLD;
+        imageView.setImage(isYoung ? YoungNemo : OldNemo);
+
+        double scale = isYoung ? 0.7 : 1.0;
+        imageView.setFitWidth(Main.getTileSize() * scale);
+        imageView.setFitHeight(Main.getTileSize() * scale);
     }
 }

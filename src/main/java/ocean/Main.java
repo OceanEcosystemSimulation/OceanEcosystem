@@ -84,7 +84,8 @@ public class Main extends Application {
 
         bottomPanel.getChildren().add(statsLabel); //dodaje statsLabel (element) do bottomPanel
         VBox root = new VBox(grid, bottomPanel); //dodaje elementy siatka i panel do głównego jakby kontenera z elementami?? idk jak to się określa
-        root.setId("pane");
+        grid.setId("pane");
+
 
 
         //tworzenie i wyswietlanie okna
@@ -117,10 +118,7 @@ public class Main extends Application {
                 } else {
                     rect.setFill(Color.color(0, 0,0, 0)); //reszta pól - woda
                 }
-
-                /*if (world.isOccupied(coord)) { //zajety przez zwierze (do zmiany bo na razie wszystkie takie same)
-                    rect.setFill(Color.RED);
-                } else */ if (tile.hasFood()) { //zajety przez jedzenie
+                if (tile.hasFood()) { //zajety przez jedzenie
                     rect.setFill(Color.GREEN);
                 }
             }
@@ -147,12 +145,14 @@ public class Main extends Application {
                 }
 
                 if (image != null) {
-                    image.setFitWidth(tileSize);
-                    image.setFitHeight(tileSize);
                     image.setPreserveRatio(true);
 
                     GridPane.setColumnIndex(image, animal.getPosition().getX());
                     GridPane.setRowIndex(image, animal.getPosition().getY());
+
+                    GridPane.setHalignment(image, javafx.geometry.HPos.CENTER); //centering by nie były w lewym górnym
+                    GridPane.setValignment(image, javafx.geometry.VPos.CENTER);
+
                     grid.getChildren().add(image);
                 } else {
                     Coord pos = animal.getPosition();

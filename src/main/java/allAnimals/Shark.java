@@ -5,6 +5,7 @@ import extendedMechanics.Reproduction;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import map.*;
+import ocean.Main;
 import ocean.World;
 import ocean.WorldSearch;
 
@@ -144,15 +145,12 @@ public class Shark extends Carnivorous {
     }
 
     private void updateSharkGraphics() {
-        if (getAge() < AGE_OLD) {
-            imageView.setImage(YoungShark);
-            imageView.setFitWidth(World.TILE_SIZE * 0.8);
-            imageView.setFitHeight(World.TILE_SIZE * 0.8);
-        } else {
-            imageView.setImage(OldShark);
-            imageView.setFitWidth(World.TILE_SIZE);
-            imageView.setFitHeight(World.TILE_SIZE);
-        }
+        boolean isYoung = getAge() < AGE_OLD;
+        imageView.setImage(isYoung ? YoungShark : OldShark);
+
+        double scale = isYoung ? 0.8 : 1.0;
+        imageView.setFitWidth(Main.getTileSize() * scale);
+        imageView.setFitHeight(Main.getTileSize() * scale);
     }
 
 
