@@ -28,6 +28,7 @@ public class Orca extends Carnivorous {
         return g;
     }
 
+
     @Override
     public void update(World world) {
         processLifeCycle(world);
