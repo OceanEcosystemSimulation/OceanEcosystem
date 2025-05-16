@@ -11,78 +11,36 @@ import ocean.WorldSearch;
 import java.util.List;
 import java.util.Objects;
 
-import static body.AnimalLifeManager.canReproduce;
-import static map.Coord.meetingAtMiddle;
 
 public class Shark extends Carnivorous {
-
-    /* -------------------------------GRAPHICS------------------------------- */
-
-    // Shark < 18
-
-    private static final Image YoungShark = new Image(Objects.requireNonNull(Shark.class.getResource("/images/YoungShark.png")).toExternalForm());
-
-    // Shark >= 18
-
-    private static final Image OldShark = new Image(Objects.requireNonNull(Shark.class.getResource("/images/OldShark.png")).toExternalForm());
-
-    private static final int AGE_OLD = 18; // one turn = one month
-
-    private final ImageView imageView = new ImageView();
-
-    public ImageView getImageView() {
-        return imageView;
-    } // getter
-
-    /* -------------------------------GUI------------------------------- */
-
-    private void settings() {
-        imageView.setPreserveRatio(true);
-        updateSharkGraphics();
+    public Shark(Coord position) {
+        super(position, generateGenes());
         setName("Shark");
-    }
-
-    private void updateSharkGraphics() {
-        if (getAge() < AGE_OLD) {
-            imageView.setImage(YoungShark);
-            imageView.setFitWidth(World.TILE_SIZE * 0.8);
-            imageView.setFitHeight(World.TILE_SIZE * 0.8);
-        } else {
-            imageView.setImage(OldShark);
-            imageView.setFitWidth(World.TILE_SIZE);
-            imageView.setFitHeight(World.TILE_SIZE);
-        }
-    }
-
-    /* -------------------------------CONSTRUCTORS------------------------------- */
-
-    public Shark(Coord position, Genes genes) {
-        super(position, genes,
-                150 + rand.nextInt(30),
-                70 + rand.nextInt(20),
-                90 + rand.nextInt(40));
-        //wartości maxAge i maxLoneliness do zmiany
         settings();
-        setName("Shark");
+
     }
 
+    //konstruktor dziecka
     public Shark(Coord position, Animal parent1, Animal parent2) {
-        super(position, parent1, parent2);  //konstruktor dziecka
-        settings();
+        super(position, parent1, parent2);
         setName("Shark");
+        settings();
     }
+
 
     /* -------------------------------GENES------------------------------- */
 
-    //do tworzenia genów w nowych - zakresy w losowych wartościah do zmiany
+    //do tworzenia genów w nowych
     private static Genes generateGenes() {
-        Genes g = new Genes();
-        g.setStrength(5 + rand.nextInt(5));
-        g.setSpeed(10 + rand.nextInt(10));
-        g.setFertility(20 + rand.nextInt(10));
-        g.setGender(rand.nextBoolean() ? Gender.FEMALE : Gender.MALE);
-        return g;
+        Genes genes = new Genes();
+        genes.setStrength(5 + rand.nextInt(5));
+        genes.setSpeed(5);
+        genes.setMaxAge(100 + rand.nextInt(50));
+        genes.setMaxLoneliness(40 + rand.nextInt(20));
+        genes.setMaxEnergy(80);
+        return genes;
     }
+
 
     /* -------------------------------LIFE------------------------------- */
 
@@ -98,15 +56,16 @@ public class Shark extends Carnivorous {
         tryToEat(world); //wywołanie mechaniki jedzenia
         int radius = getGenes().getSpeed();
         Animal mate = WorldSearch.nearestMate(world, getPosition(), radius, this);
-        Reproduction.ReproductionProcess(world, this, mate);
+        Reproduction.ReproductionProcess(this, mate);
         move(world); //wywołanie mechaniki ruchu
     }
 
     // tylko tata, bo kobieta rodzi
     @Override
-    public Animal giveBirth(Coord position, Genes genes) {
-        return new Shark(position, genes);
+    public Animal giveBirth(Coord position, Animal parent1, Animal parent2) {
+        return new Shark(position, parent1, parent2);
     }
+
 
     //sprawdzenie czy na obecnej pozycji znajduje się ofiara
     private void tryToAttack(World world) {
@@ -160,5 +119,42 @@ public class Shark extends Carnivorous {
             tile.clearFood();
         }
     }
+
+    /* -------------------------------GRAPHICS------------------------------- */
+
+    // Shark < 18
+
+    private static final Image YoungShark = new Image(Objects.requireNonNull(Shark.class.getResource("/images/YoungShark.png")).toExternalForm());
+
+    // Shark >= 18
+
+    private static final int AGE_OLD = 18; // one turn = one month
+
+    private static final Image OldShark = new Image(Objects.requireNonNull(Shark.class.getResource("/images/OldShark.png")).toExternalForm());
+    private final ImageView imageView = new ImageView();
+    public ImageView getImageView() {
+        return imageView;
+    } // getter
+
+    /* -------------------------------GUI------------------------------- */
+
+    private void settings() {
+        imageView.setPreserveRatio(true);
+        updateSharkGraphics();
+    }
+
+    private void updateSharkGraphics() {
+        if (getAge() < AGE_OLD) {
+            imageView.setImage(YoungShark);
+            imageView.setFitWidth(World.TILE_SIZE * 0.8);
+            imageView.setFitHeight(World.TILE_SIZE * 0.8);
+        } else {
+            imageView.setImage(OldShark);
+            imageView.setFitWidth(World.TILE_SIZE);
+            imageView.setFitHeight(World.TILE_SIZE);
+        }
+    }
+
+
 }
 

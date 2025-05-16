@@ -36,7 +36,6 @@ class SimulationThread extends Thread {
 
         //wyświetlenie statystyk
         Platform.runLater(() -> {
-            System.out.println("Wywołuję showAnimalStats()...");
             mainInstance.showAnimalStats(); //wywołanie statystyk
         });
     }

@@ -10,12 +10,12 @@ import static body.AnimalCombatUtils.randomMove;
 
 //abstract bo nie ma update
 public abstract class Carnivorous extends Animal implements IFight, IMove, IEat {
-    public Carnivorous(Coord position, Genes genes, int maxAge, int maxLoneliness, int maxEnergy) {
-        super(position, genes, maxAge, maxLoneliness, maxEnergy);
+    public Carnivorous(Coord position, Genes genes) {
+        super(position, genes);
     }
 
     public Carnivorous(Coord position, Animal parent1, Animal parent2) {
-        super(position, parent1, parent2);  //konstruktor dziecka
+        super(position, parent1, parent2);
     }
 
 
@@ -41,7 +41,6 @@ public abstract class Carnivorous extends Animal implements IFight, IMove, IEat 
         }
         System.out.println(this.getName() + " id: " + this.getId() + "  jumped to [" + this.getPosition().x + "," + this.getPosition().y + "]");
     }
-
 
 
     public boolean attack(Animal prey, World world) {

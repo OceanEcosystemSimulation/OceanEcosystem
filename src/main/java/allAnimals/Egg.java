@@ -11,7 +11,7 @@ public class Egg extends Animal {
     private Animal mother;
 
     public Egg(Coord position, Genes genes, int hatching) {
-        super(position, genes, 0, 0, 100);
+        super(position, genes);
         this.genes = genes;
         this.hatching = hatching;
     }
@@ -20,26 +20,27 @@ public class Egg extends Animal {
     public void update(World world) {
         hatching--;
         if (hatching == 0) {
-            Animal baby = this.getMother().giveBirth(getPosition(), genes);
+            Animal baby = giveBirth(getPosition(), mother, mother.getFatherDuringPregnancy());
             world.addAnimal(baby);
             world.getAnimals().remove(this);
         }
     }
 
     @Override
-    public Animal giveBirth(Coord position, Genes genes) {
-        return mother.giveBirth(position, genes);
+    public Animal giveBirth(Coord position, Animal parent1, Animal parent2) {
+        return mother.giveBirth(position, parent1, parent2);
     }
+
 
     /*public Coord getPosition() {
         return position;
     }*/
 
-    public void setMother(Animal mother) {
-        this.mother = mother;
-    }
-
     public Animal getMother() {
         return mother;
+    }
+
+    public void setMother(Animal mother) {
+        this.mother = mother;
     }
 }

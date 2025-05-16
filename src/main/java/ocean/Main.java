@@ -18,13 +18,13 @@ import java.io.File;
 import java.util.*;
 
 public class Main extends Application {
-    private static final int tileSize = 40; //piksele
+    private static final int tileSize = 20; //piksele
     static int width, height, noFood, noCoral, noAnimals, ticks; //parametry wejsciowe
     private Map<String, Integer> speciesCount = new HashMap<>(); //tworzy HashMap: gatunek->ilość
 
     public World world; //deklaracja objektu world
     private Rectangle[][] tilesTab; //tablica kafelków
-    private GridPane grid;
+    private GridPane grid; //deklaracja grid
 
     public static void main(String[] args) {
         Map<String, Integer> config = new HashMap<>(); //stwierdzilam ze hashmap bo tak to by musiały byc w konkretnej kolejności i wgl i jakby któregoś zabraklo to problem i wgl
@@ -180,4 +180,7 @@ public class Main extends Application {
             System.out.println(entry.getKey() + ": " + entry.getValue()); //bierze klucz i wartość
         }
     }
+
+
+    public static int getTileSize() { return tileSize; }
 }

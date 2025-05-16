@@ -7,10 +7,10 @@ import map.Coord;
 import ocean.World;
 import allAnimals.Egg;
 
-import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
 
 public final class Reproduction {
 
@@ -23,36 +23,47 @@ public final class Reproduction {
 
     /* -------------------------------CONDITIONS------------------------------- */
 
-    public static boolean IsReady(Animal a) {
+    public static boolean IsReady(Animal animal) {
         return
-                a.isAlive()
-                && a.getAge() >= MINIMAL_AGE_TO_GET_PREGNANT
-                && !a.isPregnant()
-                && a.getEnergy() >= a.getMaxEnergy() * ENERGY_NEEDED;
+                animal.isAlive()
+                && animal.getAge() >= MINIMAL_AGE_TO_GET_PREGNANT
+                && !animal.isPregnant()
+                && animal.getEnergy() >= animal.getGenes().getMaxEnergy() * ENERGY_NEEDED;
     }
 
     /* -------------------------------DISTANCE NEEDED------------------------------- */
 
     // MUSZĄ BYĆ MAKSYMALNIE KRATKĘ OD SIEBIE, BY KOBITKA MOGŁA ZAJŚĆ W CIĄŻĘ
+    //wykorzystuje metrykę maksimum (Czebyszewa) - max różnica w osi x lub y
     public static boolean isDistance(Animal animal1, Animal animal2) {
         Coord pos1 = animal1.getPosition();
         Coord pos2 = animal2.getPosition();
-        int x = Math.abs(pos1.getX() - pos2.getX());
-        int y = Math.abs(pos1.getY() - pos2.getY());
-        return x + y <= 1;
+        int dx = Math.abs(pos1.getX() - pos2.getX());
+        int dy = Math.abs(pos1.getY() - pos2.getY());
+        return Math.max(dx, dy) <= 1; // max( |x1 - x2|; |y1 - y2| )
     }
+
+    //przesuwa się do mate kratkę obok niego
+    public static boolean moveToMate(Animal self, Animal mate, World world) {
+        List<Coord> neighbour = Coord.getAdjacentCoords(mate.getPosition()); //tworzy liste pól wokół mate
+        for (Coord coord : neighbour) { //iteruje po każdnym
+            if (world.inBounds(coord.x, coord.y) && !world.isOccupied(coord)) { //jeżeli jest w granicach i nie zajęte
+                self.setPosition(coord);
+                return true;
+            }
+        }
+        return false;
+    }
+
 
     /* -------------------------------MECHANICS------------------------------- */
 
-    public static void ReproductionProcess(World world, Animal animal1, Animal animal2) {
+    public static void ReproductionProcess(Animal animal1, Animal animal2) {
         // PŁEĆ I GATUNEK
-        if (animal2 == null) return; // brak partnera/partnerki
-        if (!animal1.getClass().equals(animal2.getClass())) return; // ten sam gatunek
-        if (animal1.getGender() == animal2.getGender()) return; // ta sama płeć
-
-        if (animal1.getId() == animal2.getId()) {
-            return;
-        }
+        if (animal2 == null) {return;} // brak partnera/partnerki
+        if (!animal1.getClass().equals(animal2.getClass())) {return;} // ten sam gatunek
+        if (animal1.getGender() == animal2.getGender()) {return;} // ta sama płeć
+        if (animal1.getId() == animal2.getId()) {return;}
 
         Animal female; // kobietka
         if (animal1.getGender() == Gender.FEMALE) {
@@ -69,10 +80,10 @@ public final class Reproduction {
         }
 
         // BEZPIECZNY DYSTANS
-        if(!isDistance(animal1, animal2)) return;
+        if(!isDistance(animal1, animal2)) {return;}
 
         // CZY SPEŁNIAJĄ WARUNKI
-        if (!IsReady(female) || !IsReady(male)) return; //odpowiedni wiek, poziom energii, status życia i status ciąży (TAK LUB NIE)
+        if (!IsReady(female) || !IsReady(male)) {return;} //odpowiedni wiek, poziom energii, status życia i status ciąży (TAK LUB NIE)
 
         // SPADEK ENERGII W ZWIĄZKU Z ZAPŁODNIENIEM
         int energy_loss_male = 5;
@@ -86,18 +97,17 @@ public final class Reproduction {
         female.setFatherDuringPregnancy(male);
         female.setPregnancyCounter(PREGNANCY_DURATION);
 
-        System.out.println("CIĄŻA!");
-
+        System.out.println(female.getName() + " id: " + female.getId() + "  get pregnant with  " + male.getName() + " id: " + male.getId());
     }
 
     /* -------------------------------PREGNANCY------------------------------- */
-    public static void pregnancyTick(World world, Animal a) {
-        if (a.getGender() != Gender.FEMALE || !a.isPregnant()) return; // czy kobietka i czy w ciąży obecnie
-        a.setPregnancyCounter(a.getPregnancyCounter() - 1); // odejmowanie 'miesiąca' co turę
+    public static void pregnancyTick(World world, Animal animal) {
+        if (animal.getGender() != Gender.FEMALE || !animal.isPregnant()) {return;} // czy kobietka i czy w ciąży obecnie
+        animal.setPregnancyCounter(animal.getPregnancyCounter() - 1); // odejmowanie 'miesiąca' co turę
 
-        if (a.getPregnancyCounter() == 0) { // czas rozwiązania
-            spawnBaby(world, a, a.getFatherDuringPregnancy());
-            a.setPregnant(false);
+        if (animal.getPregnancyCounter() == 0) { // czas rozwiązania
+            spawnBaby(world, animal, animal.getFatherDuringPregnancy());
+            animal.setPregnant(false);
         }
     }
 
@@ -105,13 +115,14 @@ public final class Reproduction {
 
     public static void spawnBaby(World world, Animal mother, Animal father) {
         Coord spawn = findFreeTile(world, mother.getPosition());
-        if (spawn == null) return; // idk, nie zrespi się
+        if (spawn == null) {return;} // idk, nie zrespi się
 
         Genes genes = Genes.inherit(mother.getGenes(), father.getGenes());
         Egg egg = new Egg(spawn, genes, 5); // 5 tur
         egg.setMother(mother);
+        egg.setName(mother.getName());
         world.addEgg(egg);
-        System.out.println("POTOMSTWO!");
+        System.out.println(egg.getName() + " id: " + egg.getId() + "  was born");
     }
 
     /* -------------------------------SAFE SPACE------------------------------- */
@@ -132,7 +143,7 @@ public final class Reproduction {
             }
         }
 
-        if (possibleTiles.isEmpty()) return null;
+        if (possibleTiles.isEmpty()) {return null;}
 
         return possibleTiles.get(random.nextInt(possibleTiles.size()));
     }

@@ -11,7 +11,7 @@ public class AnimalLifeManager {
         animal.setFoodLevel(animal.getFoodLevel() - 1);
         updateEnergy(animal);
 
-        if (animal.getFoodLevel() <= 0 || animal.getEnergy() <= 0 || animal.getAge() > animal.getMaxAge()) {
+        if (animal.getFoodLevel() <= 0 || animal.getEnergy() <= 0 || animal.getAge() > animal.getGenes().getMaxAge()) {
             animal.die();
             return; //koniec
         }
@@ -52,7 +52,7 @@ public class AnimalLifeManager {
 
     //aktualizacja zdrowia - zależna od jedzenia i samotności
     private static void updateHealth(Animal animal) {
-        if (animal.getFoodLevel() < 40 || animal.getLoneliness() >= animal.getMaxLoneliness()){ //jeśli samotność osiągnęła max traci zdrowie co turę
+        if (animal.getFoodLevel() < 40 || animal.getLoneliness() >= animal.getGenes().getMaxLoneliness()){ //jeśli samotność osiągnęła max traci zdrowie co turę
             animal.setHealth(Math.max(animal.getHealth()-1, 0)); //zdrowie podupada (-1) z każdą turą
         } else if (animal.getLoneliness()>0 && animal.getLoneliness()%3==0){ //normalnie jest co 3 tury - do zmiany chyba bo idk czy matematycznie działa
             animal.setHealth(Math.max(animal.getHealth()-1, 0));
@@ -61,10 +61,5 @@ public class AnimalLifeManager {
         if (animal.getFoodLevel()>70 && animal.getEnergy()>20) { //zdrowie się odnawia (tak jakies 120% ale do zmiany)
             animal.setHealth((int) (Math.min(animal.getHealth()*1.2, 100)));
         }
-    }
-
-    //czy moze sie rozmnażac - staty do zmiany - nie wiem gdzie dać tą metodę
-    public static boolean canReproduce(Animal animal) {
-        return animal.getEnergy()>=60 && animal.getAge()>5 && animal.getHealth()>=70; // przykładowe warunki
     }
 }

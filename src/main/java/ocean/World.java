@@ -10,7 +10,7 @@ import java.util.*;
 import static ocean.WorldSetup.*;
 
 public class World {
-    public static final int TILE_SIZE = 20;
+    public static final int TILE_SIZE = 10;
 
     private final int width, height; //powirzchnia mapy
     private Tile[][] grid; //siatka - różne typy mapy i objekty
