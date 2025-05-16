@@ -18,7 +18,7 @@ import java.io.File;
 import java.util.*;
 
 public class Main extends Application {
-    private static final int tileSize = 20; //piksele
+    private static final int tileSize = 30; //piksele
     static int width, height, noFood, noCoral, noAnimals, ticks; //parametry wejsciowe
     private Map<String, Integer> speciesCount = new HashMap<>(); //tworzy HashMap: gatunek->ilość
 
@@ -46,8 +46,8 @@ public class Main extends Application {
         }
 
         //przypisanei wartości do pól
-        width = config.getOrDefault("width", 64);
-        height = config.getOrDefault("height", 39);
+        width = config.getOrDefault("width", 32);
+        height = config.getOrDefault("height", 18);
         noFood = config.getOrDefault("noFood", 0);
         noCoral = config.getOrDefault("noCoral", 0);
         noAnimals = config.getOrDefault("noAnimals", 0);
@@ -68,7 +68,7 @@ public class Main extends Application {
         for (int x = 0; x < width; x++) { //przechodzi po kolei width x height
             for (int y = 0; y < height; y++) {
                 Rectangle rectangle = new Rectangle(tileSize, tileSize); //tworzy kafelek (rectancle)
-                rectangle.setStroke(Color.GRAY); //robi go szarym na obwodzie (na razie)
+                rectangle.setStroke(Color.GRAY); //robi go szarym na obwodzie (na razie) //TRANSPARENT - jak któraś chce bez gridu
                 tilesTab[x][y] = rectangle; //dodaje do tablicy by móc później nim zarzadzac
                 grid.add(rectangle, x, y); //dodaje obiekt rectangle do siatki na współrzędne xy
             }
@@ -81,14 +81,17 @@ public class Main extends Application {
         bottomPanel.setSpacing(20); //ustawia odległość między elementami
         Label statsLabel = new Label(); //tworzy label - takie do podstawowych tekstów (można zmienić na Text jeśli chcemy formatowania itp)
 
+
         bottomPanel.getChildren().add(statsLabel); //dodaje statsLabel (element) do bottomPanel
         VBox root = new VBox(grid, bottomPanel); //dodaje elementy siatka i panel do głównego jakby kontenera z elementami?? idk jak to się określa
+        root.setId("pane");
 
 
         //tworzenie i wyswietlanie okna
         Scene scene = new Scene(root); //tworzy scene i dodaje root cały (wszystkie elementy)
         primaryStage.setScene(scene); //przypisuje scene do Stage - ustawia główną zawartość okna - określa co ma byc wyświetlane
         primaryStage.setTitle("Ocean Ecosystem Simulation"); //tytuł
+        scene.getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
         primaryStage.show();
 
         //uruchamianie osobnego wątku symulacji (w tle by działało gładko????) który co X ms wykonuje nowy cykl i odświeża interfejs
@@ -112,7 +115,7 @@ public class Main extends Application {
                 if (tile.getMapType() == MapType.CORAL) { //pole to coral
                     rect.setFill(Color.DARKCYAN);
                 } else {
-                    rect.setFill(Color.LIGHTBLUE); //reszta pól - woda
+                    rect.setFill(Color.color(0, 0,0, 0)); //reszta pól - woda
                 }
 
                 /*if (world.isOccupied(coord)) { //zajety przez zwierze (do zmiany bo na razie wszystkie takie same)
@@ -122,7 +125,13 @@ public class Main extends Application {
                 }
             }
 
-            grid.getChildren().removeIf(ImageView.class::isInstance);
+            List<Node> toRemove = new ArrayList<>();
+            for (Node node : grid.getChildren()) {
+                if (node instanceof ImageView) {
+                    toRemove.add(node);
+                }
+            }
+            grid.getChildren().removeAll(toRemove);
 
             for (Animal animal : world.getAnimals()) {
                 if (!animal.isAlive()) continue;
@@ -133,6 +142,8 @@ public class Main extends Application {
                     image = nemo.getImageView();
                 } else if (animal instanceof allAnimals.Shark shark) {
                     image = shark.getImageView();
+                } else if (animal instanceof allAnimals.Egg egg) {
+                    image = egg.getImageView();
                 }
 
                 if (image != null) {
