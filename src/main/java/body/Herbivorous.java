@@ -11,8 +11,8 @@ import static body.AnimalCombatUtils.randomMove;
 
 //abstract bo nie ma dalej update
 public abstract class Herbivorous extends Animal implements IEat, IMove {
-    public Herbivorous(Coord position, Genes genes, int maxAge, int maxLoneliness) {
-        super(position, genes, maxAge, maxLoneliness);
+    public Herbivorous(Coord position, Genes genes, int maxAge, int maxLoneliness, int maxEnergy) {
+        super(position, genes, maxAge, maxLoneliness, maxEnergy);
     }
 
     public Herbivorous(Coord position, Animal parent1, Animal parent2) {
@@ -32,7 +32,6 @@ public abstract class Herbivorous extends Animal implements IEat, IMove {
             eat(currentTile); //wywołanie mechaniki jedzenia
         }
     }
-
 
     //mechanika ruchu
     @Override

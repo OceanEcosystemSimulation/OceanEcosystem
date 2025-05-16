@@ -4,7 +4,7 @@ package map;
 public class Tile {
     private final int x, y; //współrzędne
     private MapType mapType; //typ pola
-    private FoodType foodType = FoodType.NONE; //typ jedzenia, domyślnie brak jedzenia
+    public FoodType foodType = FoodType.NONE; //typ jedzenia, domyślnie brak jedzenia
 
     public Tile(int x, int y, MapType mapType) {
         this.x = x;

@@ -1,5 +1,6 @@
 package ocean;
 
+import allAnimals.Egg;
 import body.*;
 import map.Coord;
 import map.Tile;
@@ -9,6 +10,8 @@ import java.util.*;
 import static ocean.WorldSetup.*;
 
 public class World {
+    public static final int TILE_SIZE = 20;
+
     private final int width, height; //powirzchnia mapy
     private Tile[][] grid; //siatka - różne typy mapy i objekty
     private List<Animal> animals = new ArrayList<>(); //lista zwierząt na świecie
@@ -84,5 +87,9 @@ public class World {
         if (animal != null && animal.isAlive()) {
             animals.add(animal); //dodaje jeśli żywe
         }
+    }
+
+    public void addEgg(Egg egg) {
+        addAnimal(egg);
     }
 }

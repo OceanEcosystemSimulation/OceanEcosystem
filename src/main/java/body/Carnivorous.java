@@ -10,8 +10,8 @@ import static body.AnimalCombatUtils.randomMove;
 
 //abstract bo nie ma update
 public abstract class Carnivorous extends Animal implements IFight, IMove, IEat {
-    public Carnivorous(Coord position, Genes genes, int maxAge, int maxLoneliness) {
-        super(position, genes, maxAge, maxLoneliness);
+    public Carnivorous(Coord position, Genes genes, int maxAge, int maxLoneliness, int maxEnergy) {
+        super(position, genes, maxAge, maxLoneliness, maxEnergy);
     }
 
     public Carnivorous(Coord position, Animal parent1, Animal parent2) {

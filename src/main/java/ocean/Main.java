@@ -2,6 +2,7 @@ package ocean;
 
 import body.Animal;
 import javafx.application.Application;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
@@ -9,6 +10,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
+import javafx.scene.image.ImageView;
 
 import map.*;
 
@@ -16,12 +18,13 @@ import java.io.File;
 import java.util.*;
 
 public class Main extends Application {
-    private static final int tileSize = 15; //piksele
+    private static final int tileSize = 40; //piksele
     static int width, height, noFood, noCoral, noAnimals, ticks; //parametry wejsciowe
     private Map<String, Integer> speciesCount = new HashMap<>(); //tworzy HashMap: gatunek->ilość
 
     public World world; //deklaracja objektu world
     private Rectangle[][] tilesTab; //tablica kafelków
+    private GridPane grid;
 
     public static void main(String[] args) {
         Map<String, Integer> config = new HashMap<>(); //stwierdzilam ze hashmap bo tak to by musiały byc w konkretnej kolejności i wgl i jakby któregoś zabraklo to problem i wgl
@@ -43,8 +46,8 @@ public class Main extends Application {
         }
 
         //przypisanei wartości do pól
-        width = config.getOrDefault("width", 20);
-        height = config.getOrDefault("height", 20);
+        width = config.getOrDefault("width", 64);
+        height = config.getOrDefault("height", 39);
         noFood = config.getOrDefault("noFood", 0);
         noCoral = config.getOrDefault("noCoral", 0);
         noAnimals = config.getOrDefault("noAnimals", 0);
@@ -58,7 +61,7 @@ public class Main extends Application {
         world = new World(width, height, noFood, noCoral, noAnimals, ticks);
 
         //GridPane pozwala na organizację elementów w formie siatki a nie jakiś węzłów więc to wzięłam ale nwm szczerze co robię XD
-        GridPane grid = new GridPane(); //tworzenie układu siatki na której będą wyświetlane kafelki
+        grid = new GridPane(); // tworzenie układu siatki na której będą wyświetlane kafelki // zapisuje do pola klasy
         tilesTab = new Rectangle[width][height]; //tablica kafelków update wielkości
 
         //tworzenie kafelków i dodawanie do GridPane
@@ -93,6 +96,10 @@ public class Main extends Application {
         new SimulationThread(this, statsLabel).start();
     }
 
+    private boolean isImageView(Node change) {
+        return change instanceof ImageView;
+    }
+
 
     //aktualizuje wyglad kafelków
     void updateGrid() {
@@ -108,10 +115,37 @@ public class Main extends Application {
                     rect.setFill(Color.LIGHTBLUE); //reszta pól - woda
                 }
 
-                if (world.isOccupied(coord)) { //zajety przez zwierze (do zmiany bo na razie wszystkie takie same)
+                /*if (world.isOccupied(coord)) { //zajety przez zwierze (do zmiany bo na razie wszystkie takie same)
                     rect.setFill(Color.RED);
-                } else if (tile.hasFood()) { //zajety przez jedzenie
+                } else */ if (tile.hasFood()) { //zajety przez jedzenie
                     rect.setFill(Color.GREEN);
+                }
+            }
+
+            grid.getChildren().removeIf(ImageView.class::isInstance);
+
+            for (Animal animal : world.getAnimals()) {
+                if (!animal.isAlive()) continue;
+
+                ImageView image = null;
+
+                if (animal instanceof allAnimals.Nemo nemo) {
+                    image = nemo.getImageView();
+                } else if (animal instanceof allAnimals.Shark shark) {
+                    image = shark.getImageView();
+                }
+
+                if (image != null) {
+                    image.setFitWidth(tileSize);
+                    image.setFitHeight(tileSize);
+                    image.setPreserveRatio(true);
+
+                    GridPane.setColumnIndex(image, animal.getPosition().getX());
+                    GridPane.setRowIndex(image, animal.getPosition().getY());
+                    grid.getChildren().add(image);
+                } else {
+                    Coord pos = animal.getPosition();
+                    tilesTab[pos.getX()][pos.getY()].setFill(Color.RED);
                 }
             }
         }

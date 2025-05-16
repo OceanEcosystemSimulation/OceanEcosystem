@@ -51,5 +51,13 @@ public class Coord {
         return new Coord(newX, newY);
     }
 
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
 }
 

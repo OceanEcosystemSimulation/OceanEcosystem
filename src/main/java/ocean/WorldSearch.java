@@ -57,7 +57,9 @@ public class WorldSearch {
         int minDist = Integer.MAX_VALUE; //najmniejsza odległość od pozycji
 
         for (Animal animal : world.getNearbyAnimals(position, radius)) { //iteracja po liście zwierząt w promieniu
-            if (animal != self && animal.isAlive() && animal.getName().equals(self.getName())) { //porównywanie gatunków
+            //if (animal.getName() == null) continue;
+            if (animal == null || animal == self) continue;
+            if (animal != null && animal.getName() != null && self.getName() != null && animal.getName().equals(self.getName())) { //porównywanie gatunków
                 int dist = (int) position.distance(animal.getPosition()); //odległość ich
                 if (dist < minDist) {
                     minDist = dist;

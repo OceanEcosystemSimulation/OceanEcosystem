@@ -1,50 +1,112 @@
 package allAnimals;
 
 import body.*;
+import extendedMechanics.Reproduction;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import map.*;
 import ocean.World;
 import ocean.WorldSearch;
 
 import java.util.List;
+import java.util.Objects;
 
 import static body.AnimalLifeManager.canReproduce;
 import static map.Coord.meetingAtMiddle;
 
 public class Shark extends Carnivorous {
-    public Shark(Coord position) {
-        super(position, generateGenes(), 150 + rand.nextInt(30), 70);
+
+    /* -------------------------------GRAPHICS------------------------------- */
+
+    // Shark < 18
+
+    private static final Image YoungShark = new Image(Objects.requireNonNull(Shark.class.getResource("/images/YoungShark.png")).toExternalForm());
+
+    // Shark >= 18
+
+    private static final Image OldShark = new Image(Objects.requireNonNull(Shark.class.getResource("/images/OldShark.png")).toExternalForm());
+
+    private static final int AGE_OLD = 18; // one turn = one month
+
+    private final ImageView imageView = new ImageView();
+
+    public ImageView getImageView() {
+        return imageView;
+    } // getter
+
+    /* -------------------------------GUI------------------------------- */
+
+    private void settings() {
+        imageView.setPreserveRatio(true);
+        updateSharkGraphics();
+        setName("Shark");
+    }
+
+    private void updateSharkGraphics() {
+        if (getAge() < AGE_OLD) {
+            imageView.setImage(YoungShark);
+            imageView.setFitWidth(World.TILE_SIZE * 0.8);
+            imageView.setFitHeight(World.TILE_SIZE * 0.8);
+        } else {
+            imageView.setImage(OldShark);
+            imageView.setFitWidth(World.TILE_SIZE);
+            imageView.setFitHeight(World.TILE_SIZE);
+        }
+    }
+
+    /* -------------------------------CONSTRUCTORS------------------------------- */
+
+    public Shark(Coord position, Genes genes) {
+        super(position, genes,
+                150 + rand.nextInt(30),
+                70 + rand.nextInt(20),
+                90 + rand.nextInt(40));
         //wartości maxAge i maxLoneliness do zmiany
+        settings();
         setName("Shark");
     }
 
     public Shark(Coord position, Animal parent1, Animal parent2) {
         super(position, parent1, parent2);  //konstruktor dziecka
+        settings();
         setName("Shark");
     }
 
-
+    /* -------------------------------GENES------------------------------- */
 
     //do tworzenia genów w nowych - zakresy w losowych wartościah do zmiany
     private static Genes generateGenes() {
         Genes g = new Genes();
         g.setStrength(5 + rand.nextInt(5));
         g.setSpeed(10 + rand.nextInt(10));
+        g.setFertility(20 + rand.nextInt(10));
+        g.setGender(rand.nextBoolean() ? Gender.FEMALE : Gender.MALE);
         return g;
     }
 
+    /* -------------------------------LIFE------------------------------- */
+
     @Override
     public void update(World world) {
-        processLifeCycle(world);
-        if (!isAlive()) {return;}
+        processLifeCycle(world); //duperele o życiu
+        updateSharkGraphics();
+        if (!isAlive()) return;
 
-        move(world);
+        Reproduction.pregnancyTick(world, this);
 
-        tryToAttack(world);
-        tryToEat(world);
-        tryToMate(world);
+
+        tryToEat(world); //wywołanie mechaniki jedzenia
+        int radius = getGenes().getSpeed();
+        Animal mate = WorldSearch.nearestMate(world, getPosition(), radius, this);
+        Reproduction.ReproductionProcess(world, this, mate);
+        move(world); //wywołanie mechaniki ruchu
     }
 
-
+    // tylko tata, bo kobieta rodzi
+    @Override
+    public Animal giveBirth(Coord position, Genes genes) {
+        return new Shark(position, genes);
+    }
 
     //sprawdzenie czy na obecnej pozycji znajduje się ofiara
     private void tryToAttack(World world) {
@@ -60,26 +122,31 @@ public class Shark extends Carnivorous {
         }
     }
 
-
     //stwierdziłam że dam tak bo bez sensu sie ma robić ciągle od nowa jak jest niezmienna
-    private static final List<String> preyList = List.of("Fish"); //lista kogo atakuje - do zmiany wartości (dodawane po przecinku jak coś)
+    private static final List<String> preyList = List.of("Nemo"); //lista kogo atakuje - do zmiany wartości (dodawane po przecinku jak coś)
 
+
+    /*
     @Override
     public boolean canAttack(Animal other) {
         return other != null && preyList.contains(other.getName());  //czy imie gatunku znajduje się na liscie
+    }*/
+    @Override
+    public boolean canAttack(Animal other) {
+        return other != null && other.getName() != null && preyList.contains(other.getName());
     }
-
 
     //przykładowe to wpisywania ile jakie jedzenie daje
     //można zrobić ifem jak wcześniej było jak wam nie pasuje takie
     private int calculateGain(Animal animal) {
         return switch (animal.getName()) {
-            case "Fish" -> 30;
+            case "Nemo" -> 30;
             //itd inne
             default -> 0;
         };
     }
 
+    /* -------------------------------EATING------------------------------- */
 
     @Override
     public void eat(Tile tile) { //przykładowe jak pisać
@@ -93,30 +160,5 @@ public class Shark extends Carnivorous {
             tile.clearFood();
         }
     }
-
-
-    //szuka partnera
-    private void tryToMate(World world) {
-        if (isAlive()) {
-            Animal mate = WorldSearch.nearestMate(world, this.getPosition(), this.getGenes().getSpeed(), this); //znajduje mate
-            if (mate!=null && mate.getGender()!=this.getGender()) { //przeciwna płeć
-                Coord meetingPointA = meetingAtMiddle(world.getWidth(), world.getHeight(), this.getPosition(), mate.getPosition());
-                Coord meetingPointB = meetingAtMiddle(world.getWidth(), world.getHeight(), this.getPosition(), mate.getPosition());
-                this.setPosition(meetingPointA); //skok do A
-                mate.setPosition(meetingPointB); //skok do B
-
-                if (canReproduce(this) && canReproduce(mate)) {
-                    System.out.println(this.getName() + " id: " + this.getId() + "  reproduce with  " + mate.getName() + " id: " + mate.getId());
-                    //losowanie nowych współrzędnych w zasięgu jednej kratki od aktualnej pozycji rodzica
-                    Coord childPosition = this.getPosition().randomAdjacent(world.getWidth(), world.getHeight(), 1, world);
-
-                    Animal child = new Shark(childPosition, this, mate); //tworzenie nowego dzieciaka
-                    world.addAnimal(child); //dodanie dzieciaka do świata
-                    System.out.println(child.getName() + " id: " + child.getId() + "  was born");
-                }
-            }
-        }
-    }
-
 }
 

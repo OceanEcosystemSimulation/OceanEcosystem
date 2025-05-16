@@ -63,10 +63,10 @@ public class WorldSetup {
     //tworzenie zwierząt
     static Animal createAnimalFromName(String name, Coord position) {
         //wywalało żółty że nie == i faktycznie chyba bo == poówbuje chyba adresy a equals wartości wieć zmieniam
-        if (name.equals("Nemo")) { //do zmiany w nazwach w klasie Fish albo tutaj
-            return new Fish(position);
+        if (name.equals("Nemo")) {
+            return new Nemo(position, Genes.randomGenes());
         } else if (name.equals("Shark")) {
-            return new Shark(position);
+            return new Shark(position, Genes.randomGenes());
         }
         //itd
         else {
