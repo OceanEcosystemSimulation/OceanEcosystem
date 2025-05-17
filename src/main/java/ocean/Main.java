@@ -116,50 +116,50 @@ public class Main extends Application {
                 if (tile.getMapType() == MapType.CORAL) { //pole to coral
                     rect.setFill(Color.DARKCYAN);
                 } else {
-                    rect.setFill(Color.color(0, 0,0, 0)); //reszta pól - woda
+                    rect.setFill(Color.color(0, 0, 0, 0)); //reszta pól - woda
                 }
                 if (tile.hasFood()) { //zajety przez jedzenie
                     rect.setFill(Color.GREEN);
                 }
             }
+        }
 
-            List<Node> toRemove = new ArrayList<>();
-            for (Node node : grid.getChildren()) {
-                if (node instanceof ImageView) {
-                    toRemove.add(node);
-                }
+        List<Node> toRemove = new ArrayList<>();
+        for (Node node : grid.getChildren()) {
+            if (node instanceof ImageView) {
+                toRemove.add(node);
             }
-            grid.getChildren().removeAll(toRemove);
+        }
+        grid.getChildren().removeAll(toRemove);
 
-            for (Animal animal : world.getAnimals()) {
-                if (!animal.isAlive()) continue;
+        for (Animal animal : world.getAnimals()) {
+            if (!animal.isAlive()) continue;
 
-                ImageView image = null;
+            ImageView image = null;
 
-                if (animal instanceof allAnimals.Nemo nemo) {
-                    image = nemo.getImageView();
-                } else if (animal instanceof allAnimals.Shark shark) {
-                    image = shark.getImageView();
-                } else if (animal instanceof allAnimals.Egg egg) {
-                    image = egg.getImageView();
-                } else if (animal instanceof allAnimals.Orca orca) {
-                    image = orca.getImageView();
-                }
+            if (animal instanceof allAnimals.Nemo nemo) {
+                image = nemo.getImageView();
+            } else if (animal instanceof allAnimals.Shark shark) {
+                image = shark.getImageView();
+            } else if (animal instanceof allAnimals.Egg egg) {
+                image = egg.getImageView();
+            } else if (animal instanceof allAnimals.Orca orca) {
+                image = orca.getImageView();
+            }
 
-                if (image != null) {
-                    image.setPreserveRatio(true);
+            if (image != null) {
+                image.setPreserveRatio(true);
 
-                    GridPane.setColumnIndex(image, animal.getPosition().getX());
-                    GridPane.setRowIndex(image, animal.getPosition().getY());
+                GridPane.setColumnIndex(image, animal.getPosition().getX());
+                GridPane.setRowIndex(image, animal.getPosition().getY());
 
-                    GridPane.setHalignment(image, javafx.geometry.HPos.CENTER); //centering by nie były w lewym górnym
-                    GridPane.setValignment(image, javafx.geometry.VPos.CENTER);
+                GridPane.setHalignment(image, javafx.geometry.HPos.CENTER); //centering by nie były w lewym górnym
+                GridPane.setValignment(image, javafx.geometry.VPos.CENTER);
 
-                    grid.getChildren().add(image);
-                } else {
-                    Coord pos = animal.getPosition();
-                    tilesTab[pos.getX()][pos.getY()].setFill(Color.RED);
-                }
+                grid.getChildren().add(image);
+            } else {
+                Coord pos = animal.getPosition();
+                tilesTab[pos.getX()][pos.getY()].setFill(Color.RED);
             }
         }
     }

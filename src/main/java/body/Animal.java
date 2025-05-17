@@ -77,7 +77,11 @@ public abstract class Animal {
 
     /* -------------------------------SETTERS------------------------------- */
 
-    public void setPosition(Coord newPosition) {this.position = newPosition;}
+    public void setPosition(Coord newPosition) {
+        this.position = newPosition;
+        System.out.println(this.getName() + " id: " + this.getId() + "  jumped to [" + this.getPosition().x + "," + this.getPosition().y + "]");
+    }
+
     public void setFoodLevel(int foodLevel) {this.foodLevel = foodLevel;}
     public void setAge(int age) {this.age = age;}
     public void setLoneliness(int loneliness) {this.loneliness = loneliness;}

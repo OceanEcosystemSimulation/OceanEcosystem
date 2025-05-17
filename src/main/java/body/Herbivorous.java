@@ -33,13 +33,13 @@ public abstract class Herbivorous extends Animal implements IEat, IMove, IMate {
             Tile foodTile = WorldSearch.nearestFood(world, getPosition(), getGenes().getSpeed()); //szuka najbliższe jedzenie
             if (foodTile != null) {
                 Coord foodPos = new Coord(foodTile.getX(), foodTile.getY());
-                setPosition(foodPos); //skok do jedzenia
-                return;
+                if (!world.isOccupied(foodPos)) {
+                    setPosition(foodPos); //skok do jedzenia
+                    return; //zwraca by nie szło już do random move
+                }
             }
-        } else {
-            randomMove(world, this); //randomowo gdy nie głodny lub brak jedzenia
         }
-        System.out.println(this.getName() + " id: " + this.getId() + "  jumped to [" + this.getPosition().x + "," + this.getPosition().y + "]");
+        randomMove(world, this); //randomowo gdy nie głodny lub brak jedzenia
     }
 }
 
