@@ -8,11 +8,9 @@ import body.Animal;
 import body.Genes;
 import body.Herbivorous;
 
-/* ------GRAPHICS------ */
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import java.util.Objects;
-import java.util.List;
 
 
 public class Nemo extends Herbivorous {
@@ -36,8 +34,8 @@ public class Nemo extends Herbivorous {
     //nie może potrzebować objektu by dzialac bo to ma tworzyć konstruktor (objekt) a nie byc uzywanym przez niego wiec static
     private static Genes generateGenes() {
         Genes genes = new Genes();
-        genes.setStrength(5 + rand.nextInt(5));
-        genes.setSpeed(3);
+        genes.setStrength(5);
+        genes.setSpeed(2);
         genes.setMaxAge(100 + rand.nextInt(50));
         genes.setMaxLoneliness(40 + rand.nextInt(20));
         genes.setMaxEnergy(80);
@@ -54,23 +52,8 @@ public class Nemo extends Herbivorous {
 
         Reproduction.pregnancyTick(world, this);
 
-        tryToEat(world); //wywołanie mechaniki jedzenia
-
-        //sprawdza czy może się rozmnażać
-        List<Animal> mates = WorldSearch.allMatesInRange(world, this, this.getPosition(), this.getGenes().getSpeed());
-        for (Animal mate : mates) { //przechodzi po każdym mate
-            if (mate != null) {
-                if (Reproduction.isDistance(this, mate)) { //jeżeli są w kratkach obok
-                    Reproduction.ReproductionProcess(this, mate); //mechanika reprodukcji
-                } else {
-                    boolean move = Reproduction.moveToMate(this, mate, world);
-                    if (move && Reproduction.isDistance(this, mate)) { //czy się przesunął i na wszelki czy mate jest obok
-                        Reproduction.ReproductionProcess(this, mate); //mechanika reprodukcji
-                    }
-                }
-            }
-        }
-
+        tryToEat(world, this); //wywołanie mechaniki jedzenia
+        tryToMate(world, this); //wywołanie mechaniki rozmnażania
         move(world); //wywołanie mechaniki ruchu
     }
 
@@ -79,7 +62,6 @@ public class Nemo extends Herbivorous {
     public Animal giveBirth(Coord position, Animal parent1, Animal parent2) {
         return new Nemo(position, parent1, parent2);
     }
-
 
 
     /* -------------------------------EATING------------------------------- */

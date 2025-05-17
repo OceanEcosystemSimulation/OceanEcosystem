@@ -5,12 +5,12 @@ import map.*;
 import ocean.Main;
 import ocean.World;
 import extendedMechanics.Reproduction;
-import ocean.WorldSearch;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 import java.util.List;
 import java.util.Objects;
+
 
 public class Orca extends Carnivorous {
 
@@ -46,64 +46,32 @@ public class Orca extends Carnivorous {
 
         Reproduction.pregnancyTick(world, this);
 
-        handleFeeding(world); //je jesli moze
-        handleMating(world);
-        handleMovement(world);
-    }
-
-    private void handleFeeding(World world) {
-        tryToEat(world);
-    }
-
-    private void handleMating(World world) {
-        int radius = getGenes().getSpeed();
-        Animal mate = WorldSearch.nearestMate(world, getPosition(), radius, this);
-        Reproduction.ReproductionProcess(this, mate);
-    }
-
-    private void handleMovement(World world) {
+        tryToMate(world, this);
         move(world);
+        tryToAttack(world, this);
     }
+
 
     @Override
     public Animal giveBirth(Coord position, Animal parent1, Animal parent2) {
         return new Orca(position, parent1, parent2);
     }
 
-    //atak
-    private void tryToAttack(World world) {
-        List<Animal> nearbyAnimals = world.getNearbyAnimals(getPosition(), 0); // pobiera zwierzęta na aktualnym polu
-        for (Animal animal : nearbyAnimals) {
-            if (animal != this && canAttack(animal)) {
-                System.out.println("Orca id: " + getId() + " attacks " + animal.getName() + " id: " + animal.getId());
-                if (attack(animal, world)) {
-                    int gain = calculateGain(animal);
-                    setFoodLevel(getFoodLevel() + gain);
-                    return;
-                }
-            }
-        }
-    }
-
     //taka sama zasada jak w rekinie haha
-    private static final List<String> preyList = List.of("Fish", "Shark");
+    private static final List<String> preyList = List.of("Nemo", "Shark");
 
     @Override
     public boolean canAttack(Animal other) {
         return other != null && preyList.contains(other.getName());
     }
 
-    private int calculateGain(Animal animal) {
+    @Override
+    public int calculateGain(Animal animal) {
         return switch (animal.getName()) {
-            case "Fish" -> 30; //przykladowo
+            case "Nemo" -> 30; //przykladowo
             case "Shark" -> 40;
             default -> 0;
         };
-    }
-
-    @Override
-    public void eat(Tile tile) { //wiem że to nic nie daje ale bez tego pokazywało że "public class orca ..." jest błędnie
-        //po prostu nic nie je z mapy
     }
 
 

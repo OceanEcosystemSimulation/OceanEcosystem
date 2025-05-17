@@ -35,7 +35,7 @@ public class AnimalCombatUtils {
     //ucieczka z walki - nie podoba mi się że jest argument world ale idk jak to zrobić
     static void escape(World world, Animal animal) {
         Coord pos = animal.getPosition();
-        int distance = (int) (1.2 * animal.getGenes().getSpeed()); //ma większą prędkość w walce minimalnie (adrenalina XD) - do zmiany możliwej
+        int distance = animal.getGenes().getSpeed();
 
         Coord coralPos = WorldSearch.nearestCoral(world, pos, distance);
         if (coralPos!=null) { //gdy istnieje rafa w zasięgu

@@ -9,7 +9,7 @@ import static body.AnimalCombatUtils.randomMove;
 
 
 //abstract bo nie ma update
-public abstract class Carnivorous extends Animal implements IFight, IMove, IEat {
+public abstract class Carnivorous extends Animal implements IFight, IMove, IMate {
     public Carnivorous(Coord position, Genes genes) {
         super(position, genes);
     }
@@ -48,7 +48,7 @@ public abstract class Carnivorous extends Animal implements IFight, IMove, IEat 
         double preySpeed = AnimalCombatUtils.getEffectiveSpeed(prey); //prey speed
 
         //próba ucieczki ofiary
-        if (attackerSpeed < preySpeed*1.2) { //liczba do zmiany można
+        if (attackerSpeed < preySpeed) {
             AnimalCombatUtils.escape(world, prey);
             System.out.println(prey.getName() + " id: " + prey.getId() + "  escape from  " + this.getName() + " id: " + this.getId());
             return false; //ucieczka udana - brak walki
@@ -58,7 +58,7 @@ public abstract class Carnivorous extends Animal implements IFight, IMove, IEat 
         double attackerPower = AnimalCombatUtils.getCombatPower(this);
         double preyPower = AnimalCombatUtils.getCombatPower(prey);
 
-        int rounds = 2; //maksymalnie 2 wymiany ciosów - do możliwej zmiany
+        int rounds = 5; //maksymalnie X wymian ciosów
         for (int i = 0; i < rounds; i++) {
             AnimalCombatUtils.takeDamage(prey, attackerPower);
             if (!prey.isAlive()) {
@@ -76,30 +76,12 @@ public abstract class Carnivorous extends Animal implements IFight, IMove, IEat 
         //jeśli po 2 rundach nikt nie padł
         if (AnimalCombatUtils.getCombatPower(this) > AnimalCombatUtils.getCombatPower(prey)) { //kto ucieka (przegryw - słabszy)
             AnimalCombatUtils.escape(world, prey);
-            System.out.println(prey.getName() + " id: " + prey.getId() + "  escape from  " + this.getName() + " id: " + this.getId() + "  after 2 turns");
+            System.out.println(prey.getName() + " id: " + prey.getId() + "  escape from  " + this.getName() + " id: " + this.getId() + "  after " + rounds + " turns");
         } else {
             AnimalCombatUtils.escape(world, this);
-            System.out.println(this.getName() + " id: " + this.getId() + "  escape from  " + prey.getName() + " id: " + prey.getId() + "  after 2 turns");
+            System.out.println(this.getName() + " id: " + this.getId() + "  escape from  " + prey.getName() + " id: " + prey.getId() + "  after " + rounds + " turns");
         }
         return false; //nikt nie został zabity w walce
-    }
-
-
-    @Override
-    public boolean canEat(Tile tile) { //also przykładowe
-        return getFoodLevel() <= 30 &&
-                (tile.getFoodType() == FoodType.PLANKTON || tile.getFoodType() == FoodType.ALGAE);
-    }
-
-
-    //sprawdzenie czy na obecnym kafelku znajduje się jedzenie
-    protected void tryToEat(World world) {
-        if (isAlive()) {
-            Tile currentTile = world.getTile(getPosition());
-            if (currentTile != null && canEat(currentTile)) { //jeśli tile zawiera jedzenie i Shark może je jeść
-                eat(currentTile); //je
-            }
-        }
     }
 }
 

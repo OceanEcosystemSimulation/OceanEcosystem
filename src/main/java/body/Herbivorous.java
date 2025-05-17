@@ -10,7 +10,7 @@ import static body.AnimalCombatUtils.randomMove;
 
 
 //abstract bo nie ma dalej update
-public abstract class Herbivorous extends Animal implements IEat, IMove {
+public abstract class Herbivorous extends Animal implements IEat, IMove, IMate {
     public Herbivorous(Coord position, Genes genes) {
         super(position, genes);
     }
@@ -25,13 +25,6 @@ public abstract class Herbivorous extends Animal implements IEat, IMove {
         return tile.getFoodType() == FoodType.PLANKTON || tile.getFoodType() == FoodType.ALGAE;
     }
 
-    //sprawdzenie czy na obecnym kafelku znajduje się jedzenie
-    protected void tryToEat(World world) {
-        Tile currentTile = world.getTile(getPosition()); //pobiera pole na którym znajduje się ryba
-        if (currentTile!=null && currentTile.hasFood() && canEat(currentTile)) { //sprawdza czy jest jedzenie (na wszelki?) i czy ryba może je zjeść
-            eat(currentTile); //wywołanie mechaniki jedzenia
-        }
-    }
 
     //mechanika ruchu
     @Override

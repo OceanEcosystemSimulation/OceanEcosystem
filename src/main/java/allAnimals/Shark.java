@@ -5,15 +5,15 @@ import extendedMechanics.Reproduction;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import map.*;
+import movement.IEat;
 import ocean.Main;
 import ocean.World;
-import ocean.WorldSearch;
 
 import java.util.List;
 import java.util.Objects;
 
 
-public class Shark extends Carnivorous {
+public class Shark extends Carnivorous implements IEat {
     public Shark(Coord position) {
         super(position, generateGenes());
         setName("Shark");
@@ -34,7 +34,7 @@ public class Shark extends Carnivorous {
     //do tworzenia genów w nowych
     private static Genes generateGenes() {
         Genes genes = new Genes();
-        genes.setStrength(5 + rand.nextInt(5));
+        genes.setStrength(40);
         genes.setSpeed(5);
         genes.setMaxAge(100 + rand.nextInt(50));
         genes.setMaxLoneliness(40 + rand.nextInt(20));
@@ -54,11 +54,10 @@ public class Shark extends Carnivorous {
         Reproduction.pregnancyTick(world, this);
 
 
-        tryToEat(world); //wywołanie mechaniki jedzenia
-        int radius = getGenes().getSpeed();
-        Animal mate = WorldSearch.nearestMate(world, getPosition(), radius, this);
-        Reproduction.ReproductionProcess(this, mate);
+        tryToEat(world, this); //wywołanie mechaniki jedzenia
+        tryToMate(world, this); //wywołanie mechaniki rozmnażania
         move(world); //wywołanie mechaniki ruchu
+        tryToAttack(world, this); //wywołanie mechaniki ataku
     }
 
     // tylko tata, bo kobieta rodzi
@@ -68,29 +67,12 @@ public class Shark extends Carnivorous {
     }
 
 
-    //sprawdzenie czy na obecnej pozycji znajduje się ofiara
-    private void tryToAttack(World world) {
-        List<Animal> nearbyAnimals = world.getNearbyAnimals(getPosition(), 0); //pobiera zwierzęta na aktualnym polu
-        for (Animal animal : nearbyAnimals) {
-            if (animal!=this && canAttack(animal)) { //nie zjada sam siebie
-                if (attack(animal, world)) { //udany atak
-                    int gain = calculateGain(animal); //obliczanie gain z ataku na zwierzę
-                    setFoodLevel(getFoodLevel() + gain); //aktualizacja poziomu jedzenia
-                    return; //koniec akcji
-                }
-            }
-        }
-    }
+
 
     //stwierdziłam że dam tak bo bez sensu sie ma robić ciągle od nowa jak jest niezmienna
     private static final List<String> preyList = List.of("Nemo"); //lista kogo atakuje - do zmiany wartości (dodawane po przecinku jak coś)
 
 
-    /*
-    @Override
-    public boolean canAttack(Animal other) {
-        return other != null && preyList.contains(other.getName());  //czy imie gatunku znajduje się na liscie
-    }*/
     @Override
     public boolean canAttack(Animal other) {
         return other != null && other.getName() != null && preyList.contains(other.getName());
@@ -98,7 +80,8 @@ public class Shark extends Carnivorous {
 
     //przykładowe to wpisywania ile jakie jedzenie daje
     //można zrobić ifem jak wcześniej było jak wam nie pasuje takie
-    private int calculateGain(Animal animal) {
+    @Override
+    public int calculateGain(Animal animal) {
         return switch (animal.getName()) {
             case "Nemo" -> 30;
             //itd inne
@@ -107,6 +90,12 @@ public class Shark extends Carnivorous {
     }
 
     /* -------------------------------EATING------------------------------- */
+
+    @Override
+    public boolean canEat(Tile tile) { //also przykładowe
+        return getFoodLevel() <= 30 &&
+                (tile.getFoodType() == FoodType.PLANKTON || tile.getFoodType() == FoodType.ALGAE);
+    }
 
     @Override
     public void eat(Tile tile) { //przykładowe jak pisać
@@ -120,6 +109,7 @@ public class Shark extends Carnivorous {
             tile.clearFood();
         }
     }
+
 
     /* -------------------------------GRAPHICS------------------------------- */
 

@@ -27,11 +27,11 @@ public class AnimalLifeManager {
 
      //aktualizacja energii - zależna od jedzenia i zdrowia
      private static void updateEnergy(Animal animal) {
-        animal.setEnergy((int)((animal.getFoodLevel() * 0.7) + (animal.getHealth() * 0.3)));
-        if (animal.getEnergy() < 20) {
-            animal.setEnergy((int)(animal.getEnergy() * 0.6)); //zmniejszenie energii przy krytycznym poziomie
+        int baseEnergy = (int)((animal.getFoodLevel() * 0.7) + (animal.getHealth() * 0.3));
+        if (baseEnergy < 20) {
+            baseEnergy = (int)(animal.getEnergy() * 0.6); //zmniejszenie energii przy krytycznym poziomie
         }
-        animal.setEnergy(Math.max(0, animal.getEnergy())); //nie mniej niż 0
+        animal.setEnergy(Math.max(0, baseEnergy)); //nie mniej niż 0
     }
 
 
@@ -45,7 +45,7 @@ public class AnimalLifeManager {
                 break;
             }
         }
-        if (!foundSameSpecies) {animal.setLoneliness(animal.getLoneliness() + 1);} //nikogo nie ma :((
+        if (!foundSameSpecies) {animal.setLoneliness(animal.getLoneliness() + 5);} //nikogo nie ma :((
         else {animal.setLoneliness(0);} //reset samotności jeśli ktoś jest
     }
 

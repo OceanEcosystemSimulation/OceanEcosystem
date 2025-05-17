@@ -4,7 +4,7 @@ import map.*;
 import movement.*;
 
 // DO ZMIANY CAŁE - i to mocno bo pogubiłam się co i jak z nimi
-public abstract class Omnivorous extends Animal implements IEat, IFight {
+public abstract class Omnivorous extends Animal implements IEat, IFight, IMate {
     public Omnivorous(Coord position, Genes genes) {
             super(position, genes);
         }
