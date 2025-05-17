@@ -40,7 +40,7 @@ public class AnimalLifeManager {
         List<Animal> nearby = world.getNearbyAnimals(animal.getPosition(), (int)(animal.getGenes().getSpeed() * 0.5)); //wartość przeszukiwania do zmiany
         boolean foundSameSpecies = false;
         for (Animal other : nearby) {
-            if (animal.getName().equals(other.getName())){
+            if (other != animal && animal.getName().equals(other.getName())){
                 foundSameSpecies = true;
                 break;
             }

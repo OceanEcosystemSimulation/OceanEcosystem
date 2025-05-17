@@ -9,6 +9,7 @@ import movement.IEat;
 import ocean.Main;
 import ocean.World;
 
+import java.awt.*;
 import java.util.List;
 import java.util.Objects;
 
@@ -113,21 +114,23 @@ public class Shark extends Carnivorous implements IEat {
 
     /* -------------------------------GRAPHICS------------------------------- */
 
-    // Shark < 18
-
-    private static final Image YoungShark = new Image(Objects.requireNonNull(Shark.class.getResource("/images/YoungShark.png")).toExternalForm());
-
-    // Shark >= 18
-
+    private static Image YoungShark = new Image(Objects.requireNonNull(Shark.class.getResource("/images/YoungShark.png")).toExternalForm());
+    private static Image OldShark = new Image(Objects.requireNonNull(Shark.class.getResource("/images/OldShark.png")).toExternalForm());
     private static final int AGE_OLD = 18; // one turn = one month
 
-    private static final Image OldShark = new Image(Objects.requireNonNull(Shark.class.getResource("/images/OldShark.png")).toExternalForm());
     private final ImageView imageView = new ImageView();
-    public ImageView getImageView() {
-        return imageView;
-    } // getter
+    public ImageView getImageView() { return imageView; } // getter
 
     /* -------------------------------GUI------------------------------- */
+
+    private static void loadImagesIfNeeded() {
+        if (YoungShark == null || OldShark == null) {
+            if (!GraphicsEnvironment.isHeadless()) { //sprawdza czy jest srodowisko graficzne (testy go nie mają)
+                YoungShark = new Image(Objects.requireNonNull(Shark.class.getResource("/images/YoungShark.png")).toExternalForm());
+                OldShark = new Image(Objects.requireNonNull(Shark.class.getResource("/images/OldShark.png")).toExternalForm());
+            }
+        }
+    }
 
     private void settings() {
         imageView.setPreserveRatio(true);
@@ -135,6 +138,8 @@ public class Shark extends Carnivorous implements IEat {
     }
 
     private void updateSharkGraphics() {
+        loadImagesIfNeeded();
+
         boolean isYoung = getAge() < AGE_OLD;
         imageView.setImage(isYoung ? YoungShark : OldShark);
 

@@ -8,6 +8,7 @@ import extendedMechanics.Reproduction;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
+import java.awt.*;
 import java.util.List;
 import java.util.Objects;
 
@@ -107,12 +108,21 @@ public class Orca extends Carnivorous {
     private static final int AGE_OLD = 18;
 
     //laduje baby i adult orke
-    private static final Image BabyOrca = new Image(Objects.requireNonNull(Orca.class.getResource("/images/babyOrca.png")).toExternalForm());
-    private static final Image AdultOrca = new Image(Objects.requireNonNull(Orca.class.getResource("/images/adultOrca.png")).toExternalForm());
+    private static Image BabyOrca;
+    private static Image AdultOrca;
 
     private final ImageView imageView = new ImageView();
     public ImageView getImageView() {
         return imageView;
+    }
+
+    private static void loadImagesIfNeeded() {
+        if (BabyOrca == null || AdultOrca == null) {
+            if (!GraphicsEnvironment.isHeadless()) { //sprawdza czy jest srodowisko graficzne (testy go nie mają)
+                BabyOrca = new Image(Objects.requireNonNull(Orca.class.getResource("/images/babyOrca.png")).toExternalForm());
+                AdultOrca = new Image(Objects.requireNonNull(Orca.class.getResource("/images/adultOrca.png")).toExternalForm());
+            }
+        }
     }
 
     private void settings() {
@@ -121,6 +131,8 @@ public class Orca extends Carnivorous {
     }
 
     private void updateOrcaGraphics() {
+        loadImagesIfNeeded();
+
         boolean isYoung = getAge() < AGE_OLD;
         imageView.setImage(isYoung ? BabyOrca : AdultOrca);
 

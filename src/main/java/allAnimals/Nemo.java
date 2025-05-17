@@ -10,6 +10,8 @@ import body.Herbivorous;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+
+import java.awt.*;
 import java.util.Objects;
 
 
@@ -85,22 +87,25 @@ public class Nemo extends Herbivorous {
 
     /* -------------------------------GRAPHICS------------------------------- */
 
-    // Nemo < 18
-
-    private static final Image YoungNemo = new Image(Objects.requireNonNull(Nemo.class.getResource("/images/YoungNemo.png")).toExternalForm());
-
-    // Nemo >= 18
-
+    private static Image YoungNemo;
+    private static Image OldNemo;
     private static final int AGE_OLD = 18; // one turn = one month
 
-    private static final Image OldNemo = new Image(Objects.requireNonNull(Nemo.class.getResource("/images/OldNemo.png")).toExternalForm());
+
     private final ImageView imageView = new ImageView();
-    public ImageView getImageView() {
-        return imageView;
-    } // getter
+    public ImageView getImageView() { return imageView; } // getter
 
 
     /* -------------------------------GUI------------------------------- */
+
+    private static void loadImagesIfNeeded() {
+        if (YoungNemo == null || OldNemo == null) {
+            if (!GraphicsEnvironment.isHeadless()) { //sprawdza czy jest srodowisko graficzne (testy go nie mają)
+                YoungNemo = new Image(Objects.requireNonNull(Nemo.class.getResource("/images/YoungNemo.png")).toExternalForm());
+                OldNemo = new Image(Objects.requireNonNull(Nemo.class.getResource("/images/OldNemo.png")).toExternalForm());
+            }
+        }
+    }
 
     private void settings() {
         imageView.setPreserveRatio(true);
@@ -108,6 +113,8 @@ public class Nemo extends Herbivorous {
     }
 
     private void updateNemoGraphics() {
+        loadImagesIfNeeded();
+
         boolean isYoung = getAge() < AGE_OLD;
         imageView.setImage(isYoung ? YoungNemo : OldNemo);
 

@@ -8,6 +8,7 @@ import map.Coord;
 import ocean.Main;
 import ocean.World;
 
+import java.awt.*;
 import java.util.Objects;
 
 public class Egg extends Animal {
@@ -29,11 +30,21 @@ public class Egg extends Animal {
 
     /* -------------------------------GRAPHICS------------------------------- */
 
-    private static final Image EggImage = new Image(Objects.requireNonNull(Egg.class.getResource("/images/Egg.png")).toExternalForm());
+    private static Image EggImage;
 
     private final ImageView imageView = new ImageView();
 
+    private static void loadImagesIfNeeded() {
+        if (EggImage != null) {
+            if (!GraphicsEnvironment.isHeadless()) { //sprawdza czy jest srodowisko graficzne (testy go nie mają)
+                EggImage = new Image(Objects.requireNonNull(Egg.class.getResource("/images/Egg.png")).toExternalForm());
+            }
+        }
+    }
+
     private void settings() {
+        loadImagesIfNeeded();
+
         imageView.setImage(EggImage);
         imageView.setPreserveRatio(true);
         imageView.setFitWidth(Main.getTileSize() * 0.9);
