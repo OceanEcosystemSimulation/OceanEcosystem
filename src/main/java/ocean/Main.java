@@ -142,6 +142,8 @@ public class Main extends Application {
                     image = shark.getImageView();
                 } else if (animal instanceof allAnimals.Egg egg) {
                     image = egg.getImageView();
+                } else if (animal instanceof allAnimals.Orca orca) {
+                    image = orca.getImageView();
                 }
 
                 if (image != null) {

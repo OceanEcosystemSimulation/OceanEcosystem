@@ -1,137 +1,164 @@
 package allAnimals;
+
 import body.*;
 import map.*;
+import ocean.Main;
 import ocean.World;
+import extendedMechanics.Reproduction;
 import ocean.WorldSearch;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 import java.util.List;
+import java.util.Objects;
 
-import static body.AnimalLifeManager.canReproduce;
-import static map.Coord.meetingAtMiddle;
-
-/*public class Orca extends Carnivorous {
+public class Orca extends Carnivorous {
 
     public Orca(Coord position) {
-        super(position, generateGenes(), 30, 60); //max loneliness randomowa wsm jak wymyslimy jaka to sie zmieni
+        super(position, generateGenes());
         setName("Orca");
+        settings();
     }
 
     public Orca(Coord position, Animal parent1, Animal parent2) {
         super(position, parent1, parent2);
         setName("Orca");
+        settings();
     }
 
     private static Genes generateGenes() {
         Genes g = new Genes();
-        g.setStrength(70 + rand.nextInt(11)); //narazie bez zwiekszania jak jest jedzenie
-        g.setSpeed(70 + rand.nextInt(11)); //dalam tyle samo wiec mozna zmienic
+        g.setStrength(70 + rand.nextInt(11));
+        g.setSpeed(70 + rand.nextInt(11)); //mozna zmienic
+        g.setMaxAge(80 + rand.nextInt(20));
+        g.setMaxLoneliness(50 + rand.nextInt(10));
+        g.setMaxEnergy(100);
         return g;
     }
-
 
     @Override
     public void update(World world) {
         processLifeCycle(world);
+
+        updateOrcaGraphics();
+
         if (!isAlive()) return;
 
-        move(world);
+        Reproduction.pregnancyTick(world, this);
 
-        tryToAttack(world);
-        tryToEat(world);
-        tryToMate(world);
+        handleFeeding(world); //je jesli moze
+        handleMating(world);
+        handleMovement(world);
     }
 
-    private void tryToAttack(World world) {
-        List<Animal> nearbyAnimals = world.getNearbyAnimals(getPosition(), 0);
+    private void handleFeeding(World world) {
+        tryToEat(world);
+    }
 
+    private void handleMating(World world) {
+        int radius = getGenes().getSpeed();
+        Animal mate = WorldSearch.nearestMate(world, getPosition(), radius, this);
+        Reproduction.ReproductionProcess(this, mate);
+    }
+
+    private void handleMovement(World world) {
+        move(world);
+    }
+
+    @Override
+    public Animal giveBirth(Coord position, Animal parent1, Animal parent2) {
+        return new Orca(position, parent1, parent2);
+    }
+
+    //atak
+    private void tryToAttack(World world) {
+        List<Animal> nearbyAnimals = world.getNearbyAnimals(getPosition(), 0); // pobiera zwierzęta na aktualnym polu
         for (Animal animal : nearbyAnimals) {
             if (animal != this && canAttack(animal)) {
                 System.out.println("Orca id: " + getId() + " attacks " + animal.getName() + " id: " + animal.getId());
                 if (attack(animal, world)) {
                     int gain = calculateGain(animal);
                     setFoodLevel(getFoodLevel() + gain);
-                    return; //udala sie akcja
+                    return;
                 }
             }
-
         }
     }
 
     //taka sama zasada jak w rekinie haha
     private static final List<String> preyList = List.of("Fish", "Shark");
 
+    @Override
     public boolean canAttack(Animal other) {
         return other != null && preyList.contains(other.getName());
     }
 
     private int calculateGain(Animal animal) {
         return switch (animal.getName()) {
-            case "Fish" -> 30; //wartosci przykladowo
+            case "Fish" -> 30; //przykladowo
             case "Shark" -> 40;
             default -> 0;
         };
     }
 
     @Override
-    public void eat(Tile tile) { //wiem ze to nic nie daje ale bez tego pokazywalo ze "public class orca ..." jest blednie
-
+    public void eat(Tile tile) { //wiem że to nic nie daje ale bez tego pokazywało że "public class orca ..." jest błędnie
+        //po prostu nic nie je z mapy
     }
 
 
-
-    private void tryToMate(World world) {
-        if (!isAlive()) return;
-
-        Animal mate = WorldSearch.nearestMate(world, getPosition(), getSpeedForFood(world), this);
-        if (mate != null && mate.getGender() != getGender()) { //sprawdza płeć
-            Coord middleA = meetingAtMiddle(world.getWidth(), world.getHeight(), getPosition(), mate.getPosition());
-            Coord middleB = meetingAtMiddle(world.getWidth(), world.getHeight(), getPosition(), mate.getPosition());
-            this.setPosition(middleA);
-            mate.setPosition(middleB);
-
-            if (canReproduce(this) && canReproduce(mate)) {
-                //szuka czy jest miejsce na dziecko, idk uznalam ze to moze pomoc z za duza iloscia zwierzac ale jak bez sensu to mozna usnac
-                Coord childPos = getPosition().randomAdjacent(world.getWidth(), world.getHeight(), 1, world);
-                if (childPos == null) {
-                    System.out.println(getName() + " id: " + getId() + " and " +
-                            mate.getName() + " id: " + mate.getId() +
-                            " wanted to reproduce, but there was no space for a new baby.");
-                    return;
-                } else {
-                    Animal child = new Orca(childPos, this, mate);
-                    world.addAnimal(child);
-                    System.out.println("Orca id: " + child.getId() + " was born");
-                }
-            }
-        }
-    }
-
+    //przyspieszenie gdy znajdzie jedzenie w odleglosci do 3 kratek
     public int getSpeedForFood(World world) {
         if (world != null) {
             int x = getPosition().x;
             int y = getPosition().y;
-            int range = 3;//wyszukuje posilku w odleglosci do 3 kratek
+            int range = 3;
 
-            for (int dx = -range; dx <= range; dx++) {//tam na minusie jest bo chce objac kratki przed tez
+            for (int dx = -range; dx <= range; dx++) {
                 for (int dy = -range; dy <= range; dy++) {
-                    //przeszkuje kratki
                     int newX = x + dx;
                     int newY = y + dy;
 
-                    if (newX >= 0 && newX < world.getWidth() && newY >= 0 && newY < world.getHeight()) { //sprawdza czy jest w granicach
+                    if (newX >= 0 && newX < world.getWidth() && newY >= 0 && newY < world.getHeight()) {
                         Coord candidate = new Coord(newX, newY);
-                        Tile tile = world.getTile(candidate); //bierze dane o polu
+                        Tile tile = world.getTile(candidate);
 
                         if (tile != null && tile.hasFood()) {
-                            return getGenes().getSpeed() + 10; //boost jeśli znalazło jedzenie, przykladowo 10
+                            return getGenes().getSpeed() + 10; //boost
                         }
                     }
                 }
             }
         }
-
-        //jesli world == null albo brak jedzenia to wtedy zwraca bazową prędkość
-        return getGenes().getSpeed();
+        return getGenes().getSpeed(); // brak boosta
     }
 
-}*/
+    //grafika
+
+    // wiek kiedy orka sie robi dorosla
+    private static final int AGE_OLD = 18;
+
+    //laduje baby i adult orke
+    private static final Image BabyOrca = new Image(Objects.requireNonNull(Orca.class.getResource("/images/babyOrca.png")).toExternalForm());
+    private static final Image AdultOrca = new Image(Objects.requireNonNull(Orca.class.getResource("/images/adultOrca.png")).toExternalForm());
+
+    private final ImageView imageView = new ImageView();
+    public ImageView getImageView() {
+        return imageView;
+    }
+
+    private void settings() {
+        imageView.setPreserveRatio(true);
+        updateOrcaGraphics();
+    }
+
+    private void updateOrcaGraphics() {
+        boolean isYoung = getAge() < AGE_OLD;
+        imageView.setImage(isYoung ? BabyOrca : AdultOrca);
+
+        double scale = isYoung ? 0.7 : 1.0; //baby orka jeszcze mniejsza hahah
+        imageView.setFitWidth(Main.getTileSize() * scale);
+        imageView.setFitHeight(Main.getTileSize() * scale);
+    }
+
+}

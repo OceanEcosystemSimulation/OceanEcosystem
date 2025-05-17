@@ -71,6 +71,8 @@ public class WorldSetup {
             return new Nemo(position);
         } else if (name.equals("Shark")) {
             return new Shark(position);
+        }else if (name.equals("Orca")) {
+            return new Orca(position);
         }
         //itd
         else {

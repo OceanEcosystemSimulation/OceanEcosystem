@@ -8,7 +8,7 @@ public class DrawningAnimalsByTheirRarity implements IAnimalDrawer {
 
     static {
         rarityDrawning.put(Rarity.LEGENDARY, List.of("TralaleroTralala"));
-        rarityDrawning.put(Rarity.MYTHIC, List.of("Starfish", "Whale", "Grind", "Seal", "Crab", "Octopus"));
+        rarityDrawning.put(Rarity.MYTHIC, List.of("Starfish", "Whale", "Orca", "Seal", "Crab", "Octopus"));
         rarityDrawning.put(Rarity.SUPER_RARE, List.of("Shark", "Dolphin", "Oceanic_puffer"));
         rarityDrawning.put(Rarity.RARE, List.of("Nemo", "Noname fish cuz it does not exists yet"));
     }
