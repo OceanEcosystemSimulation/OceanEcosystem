@@ -1,5 +1,7 @@
 package map;
 
+import ocean.World;
+
 //reprezentacja pól mapy
 public class Tile {
     private final int x, y; //współrzędne
@@ -19,8 +21,9 @@ public class Tile {
     }
 
     //usuwanie jedzenia
-    public void clearFood() {
+    public void clearFood(World world) {
         foodType = FoodType.NONE;
+        world.setEatenFoodCounter(world.getEatenFoodCounter() + 1);
     }
 
     public int getX() { return x; }

@@ -13,6 +13,7 @@ public class World {
     private final int width, height; //powirzchnia mapy
     private Tile[][] grid; //siatka - różne typy mapy i objekty
     private List<Animal> animals = new ArrayList<>(); //lista zwierząt na świecie
+    private int eatenFoodCounter = 0; //do liczenia ile jedzenia zostało zjedzone
 
     //rozmieszczenie pól i zwierząt (na razie zawiera liczbę turn konkretną)
     public World(int width, int height, int noFood, int noCoral, int noAnimals, int ticks) {
@@ -29,6 +30,11 @@ public class World {
     public void runSimulation(int ticks) {
         for (int t = 0; t < ticks; t++) {
             List<Animal> currentAnimals = new ArrayList<>(animals); //tworzenie kopii by nie aktualizować m.in. dopiero co urodzonych
+
+            if (t % 5 == 0 ) {  //co X tą turę dodaje brakujące jedzenie
+                WorldSetup.spawnFood(this, eatenFoodCounter); //dodawanie jedzenia na mapę
+                eatenFoodCounter = 0; //zerowanie licznika
+            }
 
             for (Animal animal : currentAnimals) {  //iteracja po kopii animals - żeby nie było problemów później bo niektóre rzeczy usuwamy itp to sie rozwali inaczej
                 animal.update(this); // aktualizuje stan zwierzęcia
@@ -52,18 +58,10 @@ public class World {
         return result;
     }
 
-    public int getWidth() {
-        return width;
-    }
-
-    public int getHeight() {
-        return height;
-    }
-
-    public Tile[][] getGrid() {
-        return grid;
-    }
-
+    public int getWidth() { return width; }
+    public int getHeight() { return height; }
+    public int getEatenFoodCounter() { return eatenFoodCounter; }
+    public Tile[][] getGrid() { return grid; }
     public List<Animal> getAnimals() { return animals; }
 
     //zwraca komórkę jeśli jest w granicach
@@ -90,4 +88,6 @@ public class World {
     public void addEgg(Egg egg) {
         addAnimal(egg);
     }
+
+    public void setEatenFoodCounter(int eatenFoodCounter) {this.eatenFoodCounter = eatenFoodCounter;}
 }

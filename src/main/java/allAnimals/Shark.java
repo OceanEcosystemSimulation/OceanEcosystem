@@ -98,7 +98,7 @@ public class Shark extends Carnivorous implements IEat {
     }
 
     @Override
-    public void eat(Tile tile) { //przykładowe jak pisać
+    public void eat(Tile tile, World world) { //przykładowe jak pisać
         int gain = switch (tile.getFoodType()) {
             case PLANKTON, ALGAE -> 5;
             default -> 0; //NONE
@@ -106,7 +106,7 @@ public class Shark extends Carnivorous implements IEat {
         if (getFoodLevel()+gain <= 100){ //tak na wszelki
             setFoodLevel(getFoodLevel() + gain);
             System.out.println(this.getName() + " id: " + this.getId() + " eats " + tile.getFoodType());
-            tile.clearFood();
+            tile.clearFood(world);
         }
     }
 

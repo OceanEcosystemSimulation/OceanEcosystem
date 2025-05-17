@@ -2,6 +2,7 @@ package body;
 
 import map.*;
 import movement.*;
+import ocean.World;
 
 // DO ZMIANY CAŁE - i to mocno bo pogubiłam się co i jak z nimi
 public abstract class Omnivorous extends Animal implements IEat, IFight, IMate {
@@ -15,7 +16,7 @@ public abstract class Omnivorous extends Animal implements IEat, IFight, IMate {
     }
 
     @Override
-    public void eat(Tile tile) { //whatever - do zmiany i tak
+    public void eat(Tile tile, World world) { //whatever - do zmiany i tak
         int gain = switch (tile.getFoodType()) {
             case PLANKTON -> 10;
             case ALGAE -> 15;
@@ -23,7 +24,7 @@ public abstract class Omnivorous extends Animal implements IEat, IFight, IMate {
         };
         if (getAge()+gain <= 100){
             setFoodLevel(getFoodLevel() + gain);
-            tile.clearFood();
+            tile.clearFood(world);
         }
     }
 

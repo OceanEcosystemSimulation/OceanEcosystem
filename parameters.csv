@@ -1,6 +1,7 @@
-﻿width,20
+﻿//musi tu byc przerwa
+width,20
 height,20
-noFood,15
+noFood,5
 noCoral,5
-noAnimals,30
-ticks,50
+noAnimals,15
+ticks,100

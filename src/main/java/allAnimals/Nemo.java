@@ -68,7 +68,7 @@ public class Nemo extends Herbivorous {
 
     //zjada o ile nie byłoby ponad 100 napchane
     @Override
-    public void eat(Tile tile) { //przykładowe jak pisać
+    public void eat(Tile tile, World world) { //przykładowe jak pisać
         int gain = switch (tile.foodType) {
             case PLANKTON -> 10;
             case ALGAE -> 15;
@@ -77,7 +77,7 @@ public class Nemo extends Herbivorous {
         if (getAge()+gain <= 100){
             setFoodLevel(getFoodLevel() + gain); //je
             System.out.println(this.getName() + " id: " + this.getId() + " eats " + tile.foodType);
-            tile.clearFood();
+            tile.clearFood(world);
         }
     }
 
