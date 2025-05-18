@@ -18,9 +18,11 @@ public class Coord {
     }
 
 
-    //odległość euklidesowo
-    public double distance(Coord other) {
-        return Math.sqrt(Math.pow(x - other.x, 2) + Math.pow(y - other.y, 2));
+    //odległość - wykorzystuje metrykę maksimum (Czebyszewa) - max różnica w osi x lub y
+    public int distance(Coord other) {
+        int dx = Math.abs(this.x - other.x);
+        int dy = Math.abs(this.y - other.y);
+        return Math.max(dx, dy);  // max( |x1 - x2|; |y1 - y2| )
     }
 
 

@@ -34,14 +34,12 @@ public final class Reproduction {
     /* -------------------------------DISTANCE NEEDED------------------------------- */
 
     // MUSZĄ BYĆ MAKSYMALNIE KRATKĘ OD SIEBIE, BY KOBITKA MOGŁA ZAJŚĆ W CIĄŻĘ
-    //wykorzystuje metrykę maksimum (Czebyszewa) - max różnica w osi x lub y
-    public static boolean isDistance(Animal animal1, Animal animal2) {
+    public static boolean isDistanceOne(Animal animal1, Animal animal2) {
         Coord pos1 = animal1.getPosition();
         Coord pos2 = animal2.getPosition();
-        int dx = Math.abs(pos1.getX() - pos2.getX());
-        int dy = Math.abs(pos1.getY() - pos2.getY());
-        return Math.max(dx, dy) <= 1; // max( |x1 - x2|; |y1 - y2| )
+        return pos1.distance(pos2) <= 1;
     }
+
 
     //przesuwa się do mate kratkę obok niego
     public static boolean moveToMate(Animal self, Animal mate, World world) {
@@ -80,7 +78,7 @@ public final class Reproduction {
         }
 
         // BEZPIECZNY DYSTANS
-        if(!isDistance(animal1, animal2)) {return;}
+        if(!isDistanceOne(animal1, animal2)) {return;}
 
         // CZY SPEŁNIAJĄ WARUNKI
         if (!IsReady(female) || !IsReady(male)) {return;} //odpowiedni wiek, poziom energii, status życia i status ciąży (TAK LUB NIE)
