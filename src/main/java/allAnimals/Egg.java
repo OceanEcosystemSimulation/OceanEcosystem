@@ -35,7 +35,7 @@ public class Egg extends Animal {
     private final ImageView imageView = new ImageView();
 
     private static void loadImagesIfNeeded() {
-        if (EggImage != null) {
+        if (EggImage == null) {
             if (!GraphicsEnvironment.isHeadless()) { //sprawdza czy jest srodowisko graficzne (testy go nie mają)
                 EggImage = new Image(Objects.requireNonNull(Egg.class.getResource("/images/Egg.png")).toExternalForm());
             }
@@ -51,9 +51,7 @@ public class Egg extends Animal {
         imageView.setFitHeight(Main.getTileSize() * 0.9);
     }
 
-    public ImageView getImageView() {
-        return imageView;
-    } // getter
+    public ImageView getImageView() { return imageView; } // getter
 
 
     /* -------------------------------MECHANICS------------------------------- */
