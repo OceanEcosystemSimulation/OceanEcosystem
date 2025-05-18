@@ -8,17 +8,20 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
+import javafx.stage.Screen;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.scene.image.ImageView;
+import javafx.geometry.Rectangle2D;
 
 import map.*;
 
 import java.io.File;
 import java.util.*;
 
+
 public class Main extends Application {
-    private static final int tileSize = 30; //piksele
+    private static int tileSize; //piksele
     static int width, height, noFood, noCoral, noAnimals, ticks; //parametry wejsciowe
     private Map<String, Integer> speciesCount = new HashMap<>(); //tworzy HashMap: gatunek->ilość
 
@@ -53,6 +56,15 @@ public class Main extends Application {
         noAnimals = config.getOrDefault("noAnimals", 0);
         ticks = config.getOrDefault("ticks", 0);
 
+
+        Screen screen = Screen.getPrimary(); //pobiera główny ekran
+        Rectangle2D bounds = screen.getVisualBounds(); //pobiera wymary ekranu bez paska zadań itp
+        double windowWidth = bounds.getWidth() * 0.9; //szerokość okna aplikacji na X%
+        double windowHeight = bounds.getHeight() * 0.9; //wysokość okna aplikacji na X%
+
+        tileSize = (int) Math.min( (windowWidth/width), ((windowHeight-100)/height) ); //-100pkt około na label itp
+
+
         launch(args); //uruchamia JavaFX ???
     }
 
@@ -61,7 +73,7 @@ public class Main extends Application {
         world = new World(width, height, noFood, noCoral, noAnimals, ticks);
 
         //GridPane pozwala na organizację elementów w formie siatki a nie jakiś węzłów więc to wzięłam ale nwm szczerze co robię XD
-        grid = new GridPane(); // tworzenie układu siatki na której będą wyświetlane kafelki // zapisuje do pola klasy
+        grid = new GridPane(); //tworzenie układu siatki na której będą wyświetlane kafelki
         tilesTab = new Rectangle[width][height]; //tablica kafelków update wielkości
 
         //tworzenie kafelków i dodawanie do GridPane
@@ -78,7 +90,9 @@ public class Main extends Application {
 
 
         VBox bottomPanel = new VBox(); //tworzy taki kontener?? strukturę??? (VBox układa rzeczy jeden pod drugim)
-        bottomPanel.setSpacing(20); //ustawia odległość między elementami
+        bottomPanel.setTranslateY(5); //przesuwa bottomPanel o 5px niżej
+        bottomPanel.setTranslateX(10); //przesuwa bottomPanel o 10px w prawo
+        bottomPanel.setSpacing(50); //ustawienie odległości elementów od siebie
         Label statsLabel = new Label(); //tworzy label - takie do podstawowych tekstów (można zmienić na Text jeśli chcemy formatowania itp)
 
 
@@ -90,15 +104,17 @@ public class Main extends Application {
 
         //tworzenie i wyswietlanie okna
         Scene scene = new Scene(root); //tworzy scene i dodaje root cały (wszystkie elementy)
+        primaryStage.setWidth(tileSize * width); //ustawia szerokość okna aplikacji
+        primaryStage.setHeight(tileSize * height + 100); //ustawia wysokość okna aplikacji
         primaryStage.setScene(scene); //przypisuje scene do Stage - ustawia główną zawartość okna - określa co ma byc wyświetlane
         primaryStage.setTitle("Ocean Ecosystem Simulation"); //tytuł
         scene.getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
         primaryStage.show();
 
         //uruchamianie osobnego wątku symulacji (w tle by działało gładko????) który co X ms wykonuje nowy cykl i odświeża interfejs
-        //szerze nwm jak to działa za bardzo, wzięłam to z jakiegoś blogu
         new SimulationThread(this, statsLabel).start();
     }
+
 
     private boolean isImageView(Node change) {
         return change instanceof ImageView;
@@ -135,17 +151,13 @@ public class Main extends Application {
         for (Animal animal : world.getAnimals()) {
             if (!animal.isAlive()) continue;
 
-            ImageView image = null;
-
-            if (animal instanceof allAnimals.Nemo nemo) {
-                image = nemo.getImageView();
-            } else if (animal instanceof allAnimals.Shark shark) {
-                image = shark.getImageView();
-            } else if (animal instanceof allAnimals.Egg egg) {
-                image = egg.getImageView();
-            } else if (animal instanceof allAnimals.Orca orca) {
-                image = orca.getImageView();
-            }
+            ImageView image = switch (animal) { //intellij stwierdził że lepiej dać switch case + będzei to czytelniejsze raczej
+                case allAnimals.Nemo nemo -> nemo.getImageView();
+                case allAnimals.Shark shark -> shark.getImageView();
+                case allAnimals.Egg egg -> egg.getImageView();
+                case allAnimals.Orca orca -> orca.getImageView();
+                default -> null;
+            };
 
             if (image != null) {
                 image.setPreserveRatio(true);
