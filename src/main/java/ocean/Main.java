@@ -22,7 +22,7 @@ import java.util.*;
 
 public class Main extends Application {
     private static int tileSize; //piksele
-    static int width, height, noFood, noCoral, noAnimals, ticks; //parametry wejsciowe
+    static int width, height, noFood, noCoral, noAnimals, noTicks; //parametry wejsciowe
     private Map<String, Integer> speciesCount = new HashMap<>(); //tworzy HashMap: gatunek->ilość
 
     public World world; //deklaracja objektu world
@@ -54,15 +54,15 @@ public class Main extends Application {
         noFood = config.getOrDefault("noFood", 0);
         noCoral = config.getOrDefault("noCoral", 0);
         noAnimals = config.getOrDefault("noAnimals", 0);
-        ticks = config.getOrDefault("ticks", 0);
+        noTicks = config.getOrDefault("ticks", 0);
 
 
         Screen screen = Screen.getPrimary(); //pobiera główny ekran
         Rectangle2D bounds = screen.getVisualBounds(); //pobiera wymary ekranu bez paska zadań itp
-        double windowWidth = bounds.getWidth() * 0.9; //szerokość okna aplikacji na X%
-        double windowHeight = bounds.getHeight() * 0.9; //wysokość okna aplikacji na X%
+        double windowWidth = bounds.getWidth() * 0.8; //szerokość okna aplikacji na X%
+        double windowHeight = bounds.getHeight() * 0.8; //wysokość okna aplikacji na X%
 
-        tileSize = (int) Math.min( (windowWidth/width), ((windowHeight-100)/height) ); //-100pkt około na label itp
+        tileSize = (int) Math.min( (windowWidth/width), ((windowHeight-150)/height) ); //-100pkt około na label itp
 
 
         launch(args); //uruchamia JavaFX ???
@@ -70,7 +70,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        world = new World(width, height, noFood, noCoral, noAnimals, ticks);
+        world = new World(width, height, noFood, noCoral, noAnimals, noTicks);
 
         //GridPane pozwala na organizację elementów w formie siatki a nie jakiś węzłów więc to wzięłam ale nwm szczerze co robię XD
         grid = new GridPane(); //tworzenie układu siatki na której będą wyświetlane kafelki
@@ -105,14 +105,14 @@ public class Main extends Application {
         //tworzenie i wyswietlanie okna
         Scene scene = new Scene(root); //tworzy scene i dodaje root cały (wszystkie elementy)
         primaryStage.setWidth(tileSize * width); //ustawia szerokość okna aplikacji
-        primaryStage.setHeight(tileSize * height + 100); //ustawia wysokość okna aplikacji
+        primaryStage.setHeight(tileSize * height + 110); //ustawia wysokość okna aplikacji
         primaryStage.setScene(scene); //przypisuje scene do Stage - ustawia główną zawartość okna - określa co ma byc wyświetlane
         primaryStage.setTitle("Ocean Ecosystem Simulation"); //tytuł
         scene.getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
         primaryStage.show();
 
         //uruchamianie osobnego wątku symulacji (w tle by działało gładko????) który co X ms wykonuje nowy cykl i odświeża interfejs
-        new SimulationThread(this, statsLabel).start();
+        new SimulationThread(this, statsLabel, primaryStage).start();
     }
 
 
@@ -188,22 +188,31 @@ public class Main extends Application {
             }
         }
 
-        String statsText = "---> Aktualna liczba gatunków na mapie: <---\n";
-        System.out.println();
+        String statsText = "---> Aktualna liczba gatunkow na mapie: <---";
+        System.out.println("\n" + statsText);
         for (Map.Entry<String, Integer> entry : speciesCount.entrySet()) {
-            statsText += entry.getKey() + ": " + entry.getValue() + "    ";
+            statsText += "\n" + entry.getKey() + ": " + entry.getValue() + "    ";
             System.out.println(entry.getKey() + ": " + entry.getValue()); //na chwile - testy
         }
 
         statsLabel.setText(statsText); //ustawianie nowego tekstu w Label
     }
 
-    //wyswietlanie statystyk końcowych - idk czy bedzie potrzebne jak mamy te updateStats ale na razie zostawie
-    void showAnimalStats() {
-        System.out.println("\n---> Stan koncowy symulacji: <---");
-        for (Map.Entry<String, Integer> entry : speciesCount.entrySet()) { //przechodzi po wszystkich dodanych w hashmap
-            System.out.println(entry.getKey() + ": " + entry.getValue()); //bierze klucz i wartość
+
+    //statystyki końcowe
+    void showEndStats(Label statsLabel, Stage stage, int finalTick) {
+        String statsText = ">>> KONIEC SYMULACJI " + (world.isSimulationEnded()?" (z powodu braku miejsca) ":"") + "<<<\n" + "\nWykonane tury: " + finalTick + "/" + noTicks;
+        statsText += "\nLiczba zjedzonego jedzenia: " + world.totalEatenFood + "\nUmarlych: " + world.deadAnimalCounter + "\n";
+        statsText += "\n---> Stan końcowy na mapie: <---";
+        System.out.println("\n" + statsText);
+        for (Map.Entry<String, Integer> entry : speciesCount.entrySet()) {
+            statsText += "\n" + entry.getKey() + ": " + entry.getValue() + "    ";
+            System.out.println(entry.getKey() + ": " + entry.getValue()); //na chwile - testy
         }
+        statsLabel.setText(statsText);
+
+        double newHeight = stage.getHeight() + 110; //dodaje Xpt do dołu by pokazywało staty całe
+        stage.setHeight(newHeight);
     }
 
 

@@ -24,6 +24,7 @@ public class Tile {
     public void clearFood(World world) {
         foodType = FoodType.NONE;
         world.setEatenFoodCounter(world.getEatenFoodCounter() + 1);
+        world.totalEatenFood++;
     }
 
     public int getX() { return x; }

@@ -2,22 +2,26 @@ package ocean;
 
 import javafx.application.Platform;
 import javafx.scene.control.Label;
+import javafx.stage.Stage;
 
 class SimulationThread extends Thread {
     private Main mainInstance; //instancja main <-> przechowuje referencje do main bo potrzeba jej parametrów
     private Label statsLabel;
+    private Stage primaryStage;
 
     // szczerze już nwm co robię, teoretycznie przekazuje referencję do obiektu main żeby wątek miał dostęp do metod i danych
-    public SimulationThread(Main mainInstance, Label statsLabel) {
+    public SimulationThread(Main mainInstance, Label statsLabel, Stage primaryStage) {
         this.mainInstance = mainInstance;
         this.statsLabel = statsLabel;
+        this.primaryStage = primaryStage;
     }
 
 
     //odpowiada za przeprowadzenie symulacji
     @Override
     public void run() {  //run() odpala się zawsze chyba w wątku po wywołaniu start()
-        for (int i = 0; i < Main.ticks; i++) { //wykonuje ticks (ile zadane)
+        int tick = 0;
+        while (tick < Main.noTicks && !mainInstance.world.isSimulationEnded()) { //wykonuje ticks (ile zadane) lub dopuki nie zakończy się symulacja
             try {
                 Thread.sleep(500); //każdy tick trwa 500ms (do zmiany)
             } catch (InterruptedException e) {
@@ -32,11 +36,14 @@ class SimulationThread extends Thread {
                 mainInstance.updateGrid(); //wywołanie update
                 mainInstance.updateStats(statsLabel); //wywołanie update statów liczby zwierzat
             });
+            tick++;
         }
 
-        //wyświetlenie statystyk
+        int finalTick = tick;
+
+        //wyświetlenie statystyk końcowych
         Platform.runLater(() -> {
-            mainInstance.showAnimalStats(); //wywołanie statystyk
+            mainInstance.showEndStats(statsLabel, primaryStage, finalTick);
         });
     }
 }

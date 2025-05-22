@@ -13,7 +13,10 @@ public class World {
     private final int width, height; //powirzchnia mapy
     private Tile[][] grid; //siatka - różne typy mapy i objekty
     private List<Animal> animals = new ArrayList<>(); //lista zwierząt na świecie
-    private int eatenFoodCounter = 0; //do liczenia ile jedzenia zostało zjedzone
+    private int eatenFoodCounter = 0; //do liczenia ile jedzenia zostało zjedzone od ostatnego uzupełnienia
+    public int totalEatenFood = 0;
+    public int deadAnimalCounter = 0;
+    private boolean simulationEnded = false;
 
     //rozmieszczenie pól i zwierząt (na razie zawiera liczbę turn konkretną)
     public World(int width, int height, int noFood, int noCoral, int noAnimals, int ticks) {
@@ -41,10 +44,15 @@ public class World {
 
                 if (!animal.isAlive()) {
                     System.out.println(animal.getName() + " id: " + animal.getId() + " is dead ");
+                    deadAnimalCounter++;
                     animals.remove(animal); //usuwa martwe
                 }
             }
         }
+    }
+
+    public void endSimulation() {
+        simulationEnded = true;
     }
 
 
@@ -63,6 +71,7 @@ public class World {
     public int getEatenFoodCounter() { return eatenFoodCounter; }
     public Tile[][] getGrid() { return grid; }
     public List<Animal> getAnimals() { return animals; }
+    public boolean isSimulationEnded() { return simulationEnded; }
 
     //zwraca komórkę jeśli jest w granicach
     public Tile getTile(Coord coord) {

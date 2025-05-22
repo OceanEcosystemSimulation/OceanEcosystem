@@ -49,7 +49,12 @@ public class AnimalCombatUtils {
             if (world.inBounds(escapePos.x, escapePos.y) && !world.isOccupied(escapePos)) {
                 animal.setPosition(escapePos);
             } else {
-                animal.setPosition(pos.randomAdjacent(world.getWidth(), world.getHeight(), animal.getGenes().getSpeed(), world));
+                Coord randomEscapePos = pos.randomAdjacent(world.getWidth(), world.getHeight(), animal.getGenes().getSpeed(), world);
+                if (randomEscapePos == null) { //jeśli zwróciło null czyli nie ma już miejcsc
+                    world.endSimulation(); //kończy symulację
+                    return;
+                }
+                animal.setPosition(randomEscapePos);
             }
         }
     }
@@ -57,6 +62,10 @@ public class AnimalCombatUtils {
     //losowy ruch w zasięgu speed
     public static void randomMove(World world, Animal animal) {
         Coord newPos = animal.getPosition().randomAdjacent(world.getWidth(), world.getHeight(), animal.getGenes().getSpeed(), world); //generuje nową losową pozycję sąsiednią
+        if (newPos == null) { //jeśli zwróciło null czyli nie ma już miejcsc
+            world.endSimulation(); //kończy symulację
+            return;
+        }
         animal.setPosition(newPos); //ustawia pozycję
     }
 }

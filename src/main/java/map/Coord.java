@@ -29,6 +29,8 @@ public class Coord {
     //losuje nowe współrzędne od -speed do +speed (ofc w granicach świata) - jesli juz ktos tam jest to losuje dalej
     public Coord randomAdjacent(int width, int height, int speed, World world) {
         Coord newCoord;
+        int attempts = 0;
+
         do {
             int moveX = random.nextInt(speed * 2 + 1) - speed; //od 0 do speed*2 i odejmując speed daje to +- speed
             int moveY = random.nextInt(speed * 2 + 1) - speed;
@@ -37,6 +39,12 @@ public class Coord {
             int newY = Math.max(0, Math.min(height - 1, y + moveY)); //albo granica albo wartość losowana
 
             newCoord = new Coord(newX, newY);
+            System.out.println("attempt no: " + attempts);
+
+            attempts++;
+            if (attempts >= 100) { //kiedy przy X próbach nie będzie miejsca
+                return null;
+            }
         } while (world.isOccupied(newCoord));
         return newCoord;
     }
