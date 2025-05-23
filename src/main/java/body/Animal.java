@@ -7,7 +7,7 @@ import java.util.*;
 
 public abstract class Animal {
 
-    /* -------------------------------CONSTANTS------------------------------- */
+    /* -------------------------------STAŁE------------------------------- */
 
     private Coord position; //aktualne współrzędne w świecie
     private int foodLevel, age, loneliness;
@@ -24,7 +24,7 @@ public abstract class Animal {
 
     public static final Random rand = new Random();
 
-    /* -------------------------------CONSTRUCTORS------------------------------- */
+    /* -------------------------------KONSTRUKTORY------------------------------- */
 
     // konstruktor dla zwierząt startowych
     public Animal(Coord position, Genes genes) {
@@ -55,10 +55,19 @@ public abstract class Animal {
         AnimalLifeManager.lifeCycle(world, this);
     }
 
+    /* -------------------------------ZATRUCIE OD OCEANIC PUFFER------------------------------- */
+
+    private int poisonTicks = 4; // ile tur efekt zatrucia ma się utrzymywać na rybce
+
+    private void poison() {
+        if (poisonTicks > 0) {
+            setHealth(getHealth() - 5); // odejmuje 5HP co turę
+            poisonTicks--; // dekrementuje licznik co turę
+        }
+    }
 
 
-
-    /* -------------------------------GETTERS------------------------------- */
+    /* -------------------------------GETTERY------------------------------- */
 
     public Coord getPosition() {return position;}
     public int getAge() {return age;}
@@ -75,7 +84,7 @@ public abstract class Animal {
     public int getPregnancyCounter() {return pregnancyCounter;}
     public Animal getFatherDuringPregnancy() {return fatherDuringPregnancy;}
 
-    /* -------------------------------SETTERS------------------------------- */
+    /* -------------------------------SETTERY------------------------------- */
 
     public void setPosition(Coord newPosition) {
         this.position = newPosition;

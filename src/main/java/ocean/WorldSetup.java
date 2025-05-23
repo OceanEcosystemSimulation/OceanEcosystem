@@ -17,6 +17,8 @@ import static com.sun.javafx.scene.control.skin.Utils.getResource;
 public class WorldSetup {
     private static Random random = new Random();
 
+    /* -------------------------------CORAL REEFS - SAFETY PLACE------------------------------- */
+
     //inicjuje pola mapy jako NORMAL i losuje miejsca raf
     static void initTiles(World world, int noCoral) {
         Tile[][] grid = world.getGrid();
@@ -27,7 +29,7 @@ public class WorldSetup {
             for (int y = 0; y < height; y++)
                grid[x][y] = new Tile(x, y, MapType.NORMAL); //ustawia pole na NORMAL
 
-        // simple rozmieszczenie raf (otoczenie 3x3 na razie - jeśli dobrze ustawiłąm lol)
+        // simple rozmieszczenie raf (otoczenie 3x3 na razie - jeśli dobrze ustawiłąm lol) //dobrze
         for (int i = 0; i < noCoral; i++) {
             int cx = random.nextInt(width); //losuje centralne pole x rafy
             int cy = random.nextInt(height); //losuje centralne pole y rafy

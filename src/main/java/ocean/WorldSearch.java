@@ -35,6 +35,7 @@ public class WorldSearch {
     }
 
 
+
     //szuka najbliższego organizmu do zjedzenia (ofiarę)
     public static Coord nearestPrey(World world, Coord position, int radius, Carnivorous predator) {
         Animal nearestPrey = null; //zmenna z najblizszą ofiarą

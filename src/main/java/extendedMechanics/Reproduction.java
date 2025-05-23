@@ -129,7 +129,7 @@ public final class Reproduction {
         return true;
     }
 
-    public static Coord findFreeTile(World world, Coord pos) {
+    public static Coord findFreeTile(World world, Coord pos) { //szuka wolnego miejsca, by złożyć jajo
         int[][] directions = {{1,0}, {-1,0}, {0,1}, {0,-1}}; // kierunki: góra, dół, prawo, lewo
         Random random = new Random();
 

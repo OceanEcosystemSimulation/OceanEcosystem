@@ -4,6 +4,7 @@ import body.Animal;
 import javafx.application.Application;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -88,19 +89,15 @@ public class Main extends Application {
 
         updateGrid(); //update rzeczy ustawionych
 
-
         VBox bottomPanel = new VBox(); //tworzy taki kontener?? strukturę??? (VBox układa rzeczy jeden pod drugim)
         bottomPanel.setTranslateY(5); //przesuwa bottomPanel o 5px niżej
         bottomPanel.setTranslateX(10); //przesuwa bottomPanel o 10px w prawo
         bottomPanel.setSpacing(50); //ustawienie odległości elementów od siebie
         Label statsLabel = new Label(); //tworzy label - takie do podstawowych tekstów (można zmienić na Text jeśli chcemy formatowania itp)
 
-
         bottomPanel.getChildren().add(statsLabel); //dodaje statsLabel (element) do bottomPanel
         VBox root = new VBox(grid, bottomPanel); //dodaje elementy siatka i panel do głównego jakby kontenera z elementami?? idk jak to się określa
         grid.setId("pane");
-
-
 
         //tworzenie i wyswietlanie okna
         Scene scene = new Scene(root); //tworzy scene i dodaje root cały (wszystkie elementy)
@@ -120,7 +117,6 @@ public class Main extends Application {
         return change instanceof ImageView;
     }
 
-
     //aktualizuje wyglad kafelków
     void updateGrid() {
         for (int x = 0; x < width; x++) { //przechodzi przez kazdy kafelek w siatce
@@ -134,23 +130,56 @@ public class Main extends Application {
                 } else {
                     rect.setFill(Color.color(0, 0, 0, 0)); //reszta pól - woda
                 }
-                if (tile.hasFood()) { //zajety przez jedzenie
-                    rect.setFill(Color.GREEN);
-                }
             }
         }
 
+        // czyści wszystkie stare obrazki, czyli te ktore zostaną po poprzedniej turze
+        // zeby sie nie nakladaly na stare
         List<Node> toRemove = new ArrayList<>();
         for (Node node : grid.getChildren()) {
             if (node instanceof ImageView) {
                 toRemove.add(node);
             }
         }
+
         grid.getChildren().removeAll(toRemove);
 
-        for (Animal animal : world.getAnimals()) {
-            if (!animal.isAlive()) continue;
+        /* -------------------------------OTOCZENIE - ŚRODOWISKO------------------------------- */
+        //TODO: RAFA KORALOWA
 
+        /* -------------------------------GRAFIKI JEDZENIA------------------------------- */
+
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+
+                Tile tile = world.getTile(new Coord(x, y)); // pobiera kafalek
+                if (tile.hasFood()) { // sprawdza, czy znajduje sie na nim jedzenie
+                    Image FoodImage = tile.foodType.getFoodImage(); // pobiera grafike z Enum FoodType
+                    if (FoodImage != null) { // jesli to faktycznie jedzenie, to je ustawia
+                        ImageView food = new ImageView(FoodImage);
+                        food.setPreserveRatio(true); // proporcja
+                        food.setFitHeight(tileSize);
+                        food.setFitWidth(tileSize);
+
+                        // ustawianie współrzędnych
+                        GridPane.setColumnIndex(food, x);
+                        GridPane.setRowIndex(food,  y);
+                        GridPane.setHalignment(food, javafx.geometry.HPos.CENTER);
+                        GridPane.setValignment(food, javafx.geometry.VPos.CENTER);
+
+                        grid.getChildren().add(food); // dodanie do GUI
+                    }
+                }
+            }
+        }
+
+        /* -------------------------------GRAFIKI ZWIERZĄT------------------------------- */
+
+        for (Animal animal : world.getAnimals()) {
+            if (!animal.isAlive()) continue; // sprawdzenie czy są w ogóle żywe (dla pewności)
+            //TODO: dodać grafikę dla martwych (Skeleton)
+
+            // dopasowanie grafiki do zwierzęcia
             ImageView image = switch (animal) { //intellij stwierdził że lepiej dać switch case + będzei to czytelniejsze raczej
                 case allAnimals.Nemo nemo -> nemo.getImageView();
                 case allAnimals.Shark shark -> shark.getImageView();
@@ -170,6 +199,7 @@ public class Main extends Application {
 
                 grid.getChildren().add(image);
             } else {
+                // jeśli nie ma grafiki, pojawi się czerwony kafelek
                 Coord pos = animal.getPosition();
                 tilesTab[pos.getX()][pos.getY()].setFill(Color.RED);
             }
