@@ -185,6 +185,7 @@ public class Main extends Application {
                 case allAnimals.Shark shark -> shark.getImageView();
                 case allAnimals.Egg egg -> egg.getImageView();
                 case allAnimals.Orca orca -> orca.getImageView();
+                case allAnimals.OceanicPuffer oceanicPuffer -> oceanicPuffer.getImageView();
                 default -> null;
             };
 

@@ -75,6 +75,8 @@ public class WorldSetup {
             return new Shark(position);
         }else if (name.equals("Orca")) {
             return new Orca(position);
+        }else if (name.equals("OceanicPuffer")) {
+            return new OceanicPuffer(position);
         }
         //itd
         else {

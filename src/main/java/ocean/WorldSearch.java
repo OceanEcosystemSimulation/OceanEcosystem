@@ -4,6 +4,7 @@ import body.*;
 import map.Coord;
 import map.MapType;
 import map.Tile;
+import movement.IFight;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +38,7 @@ public class WorldSearch {
 
 
     //szuka najbliższego organizmu do zjedzenia (ofiarę)
-    public static Coord nearestPrey(World world, Coord position, int radius, Carnivorous predator) {
+    public static Coord nearestPrey(World world, Coord position, int radius, IFight predator) {
         Animal nearestPrey = null; //zmenna z najblizszą ofiarą
         int minDist = Integer.MAX_VALUE; //najmniejsza odległość od pozycji
 

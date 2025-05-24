@@ -52,12 +52,21 @@ public abstract class Animal {
 
     //zostawiam to tutaj bo za wykładzie było że fajnie robić chyba takie pomiędzy a nie 1 do 1 połączenia
     protected void processLifeCycle(World world) {
+        poison();
         AnimalLifeManager.lifeCycle(world, this);
     }
 
     /* -------------------------------ZATRUCIE OD OCEANIC PUFFER------------------------------- */
 
     private int poisonTicks = 4; // ile tur efekt zatrucia ma się utrzymywać na rybce
+
+    public void setPoisoned(boolean poisoned) {
+        if (poisoned) {
+            this.poisonTicks = 4;
+        } else {
+            this.poisonTicks = 0; //koniec zatrucia
+        }
+    }
 
     private void poison() {
         if (poisonTicks > 0) {
