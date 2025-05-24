@@ -251,9 +251,8 @@ public class Main extends Application {
         statsText += "\n---> Stan końcowy na mapie: <---";
         System.out.println("\n" + statsText);
         for (Map.Entry<String, Integer> entry : speciesCount.entrySet()) {
-            if (statsText == "Skeleton") {
-                continue;
-            } else {
+            if (entry.getKey() == "Skeleton") continue;
+            else {
                 statsText += "\n" + entry.getKey() + ": " + entry.getValue() + "    ";
                 System.out.println(entry.getKey() + ": " + entry.getValue()); //na chwile - testy
             }
