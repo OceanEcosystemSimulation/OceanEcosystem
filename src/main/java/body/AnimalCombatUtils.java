@@ -22,12 +22,12 @@ public class AnimalCombatUtils {
     }
 
 
-    static void takeDamage(Animal animal, double amount) {
+    static void takeDamage(World world, Animal animal, double amount) {
         int newHealth = (int)(animal.getHealth() - amount);
         animal.setHealth(Math.max(newHealth, 0));
 
         if (animal.getHealth() <= 0) {
-            animal.die(); //nie żyje
+            AnimalLifeManager.SkeletonSettings(world, animal);
         }
     }
 

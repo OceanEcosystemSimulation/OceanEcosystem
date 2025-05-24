@@ -48,7 +48,9 @@ public abstract class Animal {
 
     public abstract Animal giveBirth(Coord pos, Animal parent1, Animal parent2);
 
-    public void die() {alive = false;}
+    public void die() {
+        alive = false;
+    }
 
     //zostawiam to tutaj bo za wykładzie było że fajnie robić chyba takie pomiędzy a nie 1 do 1 połączenia
     protected void processLifeCycle(World world) {

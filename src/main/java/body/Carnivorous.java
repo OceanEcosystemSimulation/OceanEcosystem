@@ -58,13 +58,13 @@ public abstract class Carnivorous extends Animal implements IFight, IMove, IMate
 
         int rounds = 5; //maksymalnie X wymian ciosów
         for (int i = 0; i < rounds; i++) {
-            AnimalCombatUtils.takeDamage(prey, attackerPower);
+            AnimalCombatUtils.takeDamage(world, prey, attackerPower);
             if (!prey.isAlive()) {
                 System.out.println(this.getName() + " id: " + this.getId() + "  killed " + prey.getName() + " id: " + prey.getId());
                 return true; //prey padł
             }
 
-            AnimalCombatUtils.takeDamage(this, preyPower);
+            AnimalCombatUtils.takeDamage(world,this, preyPower);
             if (!this.isAlive()) {
                 System.out.println(prey.getName() + " id: " + prey.getId() + "  killed " + this.getName() + " id: " + this.getId());
                 return false; //predator padł
