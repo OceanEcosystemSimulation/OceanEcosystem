@@ -17,7 +17,7 @@ import static com.sun.javafx.scene.control.skin.Utils.getResource;
 public class WorldSetup {
     private static Random random = new Random();
 
-    /* -------------------------------CORAL REEFS - SAFETY PLACE------------------------------- */
+    /* -------------------------------RAFY KORALOWE------------------------------- */
 
     //inicjuje pola mapy jako NORMAL i losuje miejsca raf
     static void initTiles(World world, int noCoral) {
@@ -25,21 +25,53 @@ public class WorldSetup {
         int width = world.getWidth();
         int height = world.getHeight();
 
-        for (int x = 0; x < width; x++)
-            for (int y = 0; y < height; y++)
-               grid[x][y] = new Tile(x, y, MapType.NORMAL); //ustawia pole na NORMAL
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                grid[x][y] = new Tile(x, y, MapType.NORMAL); //ustawia pole na NORMAL
+            }
+        }
 
-        // simple rozmieszczenie raf (otoczenie 3x3 na razie - jeśli dobrze ustawiłąm lol) //dobrze
-        for (int i = 0; i < noCoral; i++) {
+        //zastanawiam się, czy powinien być warunek sprawdzający, czy mapa nie jest mniejsza niż wymiary rafy
+
+        int coralreef_counter = 0, countOfReefs = noCoral;
+
+        while (coralreef_counter <= countOfReefs) {
+
             int cx = random.nextInt(width); //losuje centralne pole x rafy
             int cy = random.nextInt(height); //losuje centralne pole y rafy
-            for (int dx = -1; dx <= 1; dx++)
+
+            //sprawdza czy w zasięgu mapy
+            if (!world.inBounds(cx - 1, cy - 1) || !world.inBounds(cx + 1, cy + 1)) continue;
+
+            // simple rozmieszczenie raf (otoczenie 3x3 na razie - jeśli dobrze ustawiłąm lol) //dobrze
+            boolean IsEmpty = true; // sprawdza, czy jest wolna przestrzeń, na postawienie rafy
+            for (int dx = -1; dx <= 1 && IsEmpty; dx++)
                 for (int dy = -1; dy <= 1; dy++)
-                    if (world.inBounds(cx + dx, cy + dy)) //sprawdza czy w zasięgu mapy
-                        grid[cx + dx][cy + dy].setMapType(MapType.CORAL); //ustawia pole na CORAL
+                    if (grid[cx + dx][cy + dy].getMapType() == MapType.CORAL) { // sprawdza, czy pole to CORAL
+                        IsEmpty = false;
+                    }
+
+            if (!IsEmpty) continue; // pomija, jeśli pole jest zajęte
+
+            // dodanie rafy koralowej na 9 polach
+            for (int dx = -1; dx <= 1; dx++) {
+                for (int dy = -1; dy <= 1; dy++) {
+                    grid[cx + dx][cy + dy].setMapType(MapType.CORAL);
+                }
+            }
+
+            world.addCoralReefCenter(new Coord(cx, cy)); //pobiera współrzędne środka mapy
+            coralreef_counter++; //inkrementuje licznik raf
         }
+
+        // informacja zwrotna odnośnie ilości raf
+        // przypadek, w którym nie uda się wstawić tyle raf ile zostało zadane
+        /*if (coralreef_counter < countOfReefs) {
+            //TODO: ERROR
+        }*/
     }
 
+    /* -------------------------------ZWIERZĘTA------------------------------- */
 
     //dodaje okreslona liczbe dowolnych (rarity) zwierząt do listy w losowych pozycjach
     static void spawnAnimals(World world, int count) {
@@ -82,6 +114,7 @@ public class WorldSetup {
         }
     }
 
+    /* -------------------------------JEDZENIE------------------------------- */
 
     //losowo rozmieszcza jedzenie
     static void spawnFood(World world, int noFood) {
@@ -104,6 +137,8 @@ public class WorldSetup {
             tile.setFoodType(foodType);
         }
     }
+
+    /* -------------------------------KOORDYNATY------------------------------- */
 
     //generuje losowe współrzedne Coord na swiecie - w granicach ofc bo random.nextInt(bound) zawsze zwraca liczbę w zakresie [0, bound)
     private static Coord randomCoord(World world) {

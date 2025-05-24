@@ -19,6 +19,7 @@ import map.*;
 
 import java.io.File;
 import java.util.*;
+import java.util.List;
 
 
 public class Main extends Application {
@@ -31,6 +32,7 @@ public class Main extends Application {
     private GridPane grid; //deklaracja grid
 
     public static void main(String[] args) {
+        // parametry, zaciągane z pliku .csv
         Map<String, Integer> config = new HashMap<>(); //stwierdzilam ze hashmap bo tak to by musiały byc w konkretnej kolejności i wgl i jakby któregoś zabraklo to problem i wgl
 
         try{
@@ -87,6 +89,9 @@ public class Main extends Application {
             }
         }
 
+
+
+
         updateGrid(); //update rzeczy ustawionych
 
         VBox bottomPanel = new VBox(); //tworzy taki kontener?? strukturę??? (VBox układa rzeczy jeden pod drugim)
@@ -125,11 +130,8 @@ public class Main extends Application {
                 Tile tile = world.getTile(coord); //pobranie info o polu z world
                 Rectangle rect = tilesTab[x][y]; //pobranie kafelka z tabicy kafelków
 
-                if (tile.getMapType() == MapType.CORAL) { //pole to coral
-                    rect.setFill(Color.DARKCYAN);
-                } else {
-                    rect.setFill(Color.color(0, 0, 0, 0)); //reszta pól - woda
-                }
+                //rect.setFill(Color.color(0, 0, 0, 0)); //reszta pól - woda
+                rect.setFill(Color.TRANSPARENT); //reszta pól - woda
             }
         }
 
@@ -145,7 +147,22 @@ public class Main extends Application {
         grid.getChildren().removeAll(toRemove);
 
         /* -------------------------------OTOCZENIE - ŚRODOWISKO------------------------------- */
-        //TODO: RAFA KORALOWA
+        Image CoralReefImage = new Image(getClass().getResource("/images/CoralReef.png").toExternalForm());
+
+        for (Coord center : world.getCoralReefCenter()) {
+            ImageView CoralImage = new ImageView(CoralReefImage);
+
+            CoralImage.setPreserveRatio(true); // 3 x 3
+            CoralImage.setFitHeight(tileSize * 3); // 3 kratki wysokości
+            CoralImage.setFitWidth(tileSize * 3); // 3 kratki szerokości
+
+            GridPane.setColumnIndex(CoralImage, center.getX() - 1);
+            GridPane.setRowIndex(CoralImage, center.getY() - 1);
+            GridPane.setColumnSpan(CoralImage, 3);
+            GridPane.setRowSpan(CoralImage, 3);
+
+            grid.getChildren().add(CoralImage);
+        }
 
         /* -------------------------------GRAFIKI JEDZENIA------------------------------- */
 
