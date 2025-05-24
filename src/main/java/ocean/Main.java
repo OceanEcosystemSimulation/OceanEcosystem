@@ -19,6 +19,7 @@ import map.*;
 
 import java.io.File;
 import java.util.*;
+import java.util.List;
 
 
 public class Main extends Application {
@@ -31,6 +32,7 @@ public class Main extends Application {
     private GridPane grid; //deklaracja grid
 
     public static void main(String[] args) {
+        // parametry, zaciągane z pliku .csv
         Map<String, Integer> config = new HashMap<>(); //stwierdzilam ze hashmap bo tak to by musiały byc w konkretnej kolejności i wgl i jakby któregoś zabraklo to problem i wgl
 
         try{
@@ -63,7 +65,7 @@ public class Main extends Application {
         double windowWidth = bounds.getWidth() * 0.8; //szerokość okna aplikacji na X%
         double windowHeight = bounds.getHeight() * 0.8; //wysokość okna aplikacji na X%
 
-        tileSize = (int) Math.min( (windowWidth/width), ((windowHeight-150)/height) ); //-100pkt około na label itp
+        tileSize = (int) Math.ceil(Math.min( (windowWidth/width), ((windowHeight-150)/height) )); //-100pkt około na label itp
 
 
         launch(args); //uruchamia JavaFX ???
@@ -101,7 +103,7 @@ public class Main extends Application {
 
         //tworzenie i wyswietlanie okna
         Scene scene = new Scene(root); //tworzy scene i dodaje root cały (wszystkie elementy)
-        primaryStage.setWidth(tileSize * width); //ustawia szerokość okna aplikacji
+        primaryStage.setWidth(tileSize * width + width*(width>20?1.2:2)); //ustawia szerokość okna aplikacji - POPIEPRZONE WIEC UWAGA
         primaryStage.setHeight(tileSize * height + 110); //ustawia wysokość okna aplikacji
         primaryStage.setScene(scene); //przypisuje scene do Stage - ustawia główną zawartość okna - określa co ma byc wyświetlane
         primaryStage.setTitle("Ocean Ecosystem Simulation"); //tytuł
@@ -125,11 +127,8 @@ public class Main extends Application {
                 Tile tile = world.getTile(coord); //pobranie info o polu z world
                 Rectangle rect = tilesTab[x][y]; //pobranie kafelka z tabicy kafelków
 
-                if (tile.getMapType() == MapType.CORAL) { //pole to coral
-                    rect.setFill(Color.DARKCYAN);
-                } else {
-                    rect.setFill(Color.color(0, 0, 0, 0)); //reszta pól - woda
-                }
+                //rect.setFill(Color.color(0, 0, 0, 0)); //reszta pól - woda
+                rect.setFill(Color.TRANSPARENT); //reszta pól - woda
             }
         }
 
@@ -145,7 +144,22 @@ public class Main extends Application {
         grid.getChildren().removeAll(toRemove);
 
         /* -------------------------------OTOCZENIE - ŚRODOWISKO------------------------------- */
-        //TODO: RAFA KORALOWA
+        Image CoralReefImage = new Image(getClass().getResource("/images/CoralReef.png").toExternalForm());
+
+        for (Coord center : world.getCoralReefCenter()) {
+            ImageView CoralImage = new ImageView(CoralReefImage);
+
+            CoralImage.setPreserveRatio(true); // 3 x 3
+            CoralImage.setFitHeight(tileSize * 3); // 3 kratki wysokości
+            CoralImage.setFitWidth(tileSize * 3); // 3 kratki szerokości
+
+            GridPane.setColumnIndex(CoralImage, center.getX() - 1);
+            GridPane.setRowIndex(CoralImage, center.getY() - 1);
+            GridPane.setColumnSpan(CoralImage, 3);
+            GridPane.setRowSpan(CoralImage, 3);
+
+            grid.getChildren().add(CoralImage);
+        }
 
         /* -------------------------------GRAFIKI JEDZENIA------------------------------- */
 
