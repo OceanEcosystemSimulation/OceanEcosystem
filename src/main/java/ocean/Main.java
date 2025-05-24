@@ -65,7 +65,7 @@ public class Main extends Application {
         double windowWidth = bounds.getWidth() * 0.8; //szerokość okna aplikacji na X%
         double windowHeight = bounds.getHeight() * 0.8; //wysokość okna aplikacji na X%
 
-        tileSize = (int) Math.min( (windowWidth/width), ((windowHeight-150)/height) ); //-100pkt około na label itp
+        tileSize = (int) Math.ceil(Math.min( (windowWidth/width), ((windowHeight-150)/height) )); //-100pkt około na label itp
 
 
         launch(args); //uruchamia JavaFX ???
@@ -89,9 +89,6 @@ public class Main extends Application {
             }
         }
 
-
-
-
         updateGrid(); //update rzeczy ustawionych
 
         VBox bottomPanel = new VBox(); //tworzy taki kontener?? strukturę??? (VBox układa rzeczy jeden pod drugim)
@@ -106,7 +103,7 @@ public class Main extends Application {
 
         //tworzenie i wyswietlanie okna
         Scene scene = new Scene(root); //tworzy scene i dodaje root cały (wszystkie elementy)
-        primaryStage.setWidth(tileSize * width); //ustawia szerokość okna aplikacji
+        primaryStage.setWidth(tileSize * width + width*(width>20?1.2:2)); //ustawia szerokość okna aplikacji - POPIEPRZONE WIEC UWAGA
         primaryStage.setHeight(tileSize * height + 110); //ustawia wysokość okna aplikacji
         primaryStage.setScene(scene); //przypisuje scene do Stage - ustawia główną zawartość okna - określa co ma byc wyświetlane
         primaryStage.setTitle("Ocean Ecosystem Simulation"); //tytuł
