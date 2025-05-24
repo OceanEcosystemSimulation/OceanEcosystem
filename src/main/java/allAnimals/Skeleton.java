@@ -11,41 +11,39 @@ import ocean.World;
 import java.awt.*;
 import java.util.Objects;
 
-public class Egg extends Animal {
+public class Skeleton extends Animal {
 
     /* -------------------------------STAŁE------------------------------- */
 
-    private final Genes genes;
-    private int hatching;
-    private Animal mother;
+    private int decompositionTime = 5; // czas w turach, wyznaczający ile czasu będzie się wyświetlał szkielet
 
     /* -------------------------------KONSTUKTOR------------------------------- */
 
-    public Egg(Coord position, Genes genes, int hatching) {
-        super(position, genes);
-        this.genes = genes;
-        this.hatching = hatching;
+    public Skeleton(Coord position) {
+        super(position,  genesForSkeleton());
+        setName("Skeleton");
         settings();
     }
 
     /* -------------------------------GRAFIKI------------------------------- */
 
-    private static Image EggImage;
+    private static Image SkeletonImage;
 
     private final ImageView imageView = new ImageView();
 
     private static void loadImagesIfNeeded() {
-        if (EggImage == null) {
+        if (SkeletonImage == null) {
             if (!GraphicsEnvironment.isHeadless()) { //sprawdza czy jest srodowisko graficzne (testy go nie mają)
-                EggImage = new Image(Objects.requireNonNull(Egg.class.getResource("/images/Egg.png")).toExternalForm());
+                SkeletonImage = new Image(Objects.requireNonNull(Skeleton.class.getResource("/images/Skeleton.png")).toExternalForm());
             }
         }
     }
 
+    // dodanie grafiki
     private void settings() {
         loadImagesIfNeeded();
 
-        imageView.setImage(EggImage);
+        imageView.setImage(SkeletonImage);
         imageView.setPreserveRatio(true);
         imageView.setFitWidth(Main.getTileSize() * 0.9);
         imageView.setFitHeight(Main.getTileSize() * 0.9);
@@ -56,26 +54,21 @@ public class Egg extends Animal {
 
     /* -------------------------------MECHANIKA------------------------------- */
 
+    private static Genes genesForSkeleton() {
+        return null; // szkielet nie ma JUŻ genów :<
+    }
+
     @Override
-    public void update(World world) {
-        hatching--;
-        if (hatching == 0) {
-            Animal baby = giveBirth(getPosition(), mother, mother.getFatherDuringPregnancy());
-            world.addAnimal(baby);
-            world.getAnimals().remove(this);
+    public void update(World world) { // czas rozkładu szkieletu, co turę się zmniejsza, finalnie się usunie
+        decompositionTime--; // dekrementacja
+        if (decompositionTime == 0) {
+            world.getAnimals().remove(this); // usunięcie szkieletu
         }
     }
 
     @Override
-    public Animal giveBirth(Coord position, Animal parent1, Animal parent2) {
-        return mother.giveBirth(position, parent1, parent2);
+    public Animal giveBirth(Coord pos, Animal parent1, Animal parent2) {
+        return null; // null, bo to szkielet
     }
 
-    public Animal getMother() {
-        return mother;
-    }
-
-    public void setMother(Animal mother) {
-        this.mother = mother;
-    }
 }

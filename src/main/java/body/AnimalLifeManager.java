@@ -1,5 +1,6 @@
 package body;
 
+import allAnimals.Skeleton;
 import ocean.World;
 
 import java.util.List;
@@ -12,7 +13,7 @@ public class AnimalLifeManager {
         updateEnergy(animal);
 
         if (animal.getFoodLevel() <= 0 || animal.getEnergy() <= 0 || animal.getAge() > animal.getGenes().getMaxAge()) {
-            animal.die();
+            SkeletonSettings(world, animal);
             return; //koniec
         }
 
@@ -20,7 +21,7 @@ public class AnimalLifeManager {
         updateHealth(animal);
 
         if (animal.getHealth() <= 0){
-            animal.die();
+            SkeletonSettings(world, animal);
         }
     }
 
@@ -61,5 +62,11 @@ public class AnimalLifeManager {
         if (animal.getFoodLevel()>70 && animal.getEnergy()>20) { //zdrowie się odnawia (tak jakies 120% ale do zmiany)
             animal.setHealth((int) (Math.min(animal.getHealth()*1.2, 100)));
         }
+    }
+
+    static void SkeletonSettings(World world, Animal animal) {
+        world.addAnimal(new Skeleton(animal.getPosition())); // dodajemy szkielet, dla konkretnego zwierzęcia, na konkretnej pozycji
+        world.getAnimals().remove(animal); // usuwwamy ze świata
+        animal.die(); // alive = false
     }
 }

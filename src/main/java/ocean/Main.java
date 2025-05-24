@@ -190,8 +190,7 @@ public class Main extends Application {
         /* -------------------------------GRAFIKI ZWIERZĄT------------------------------- */
 
         for (Animal animal : world.getAnimals()) {
-            if (!animal.isAlive()) continue; // sprawdzenie czy są w ogóle żywe (dla pewności)
-            //TODO: dodać grafikę dla martwych (Skeleton)
+            if (!animal.isAlive() && !(animal instanceof allAnimals.Skeleton)) continue; // sprawdzenie czy są w ogóle żywe (dla pewności)
 
             // dopasowanie grafiki do zwierzęcia
             ImageView image = switch (animal) { //intellij stwierdził że lepiej dać switch case + będzei to czytelniejsze raczej
@@ -199,6 +198,7 @@ public class Main extends Application {
                 case allAnimals.Shark shark -> shark.getImageView();
                 case allAnimals.Egg egg -> egg.getImageView();
                 case allAnimals.Orca orca -> orca.getImageView();
+                case allAnimals.Skeleton skeleton -> skeleton.getImageView();
                 case allAnimals.OceanicPuffer oceanicPuffer -> oceanicPuffer.getImageView();
                 default -> null;
             };
@@ -247,12 +247,15 @@ public class Main extends Application {
     //statystyki końcowe
     void showEndStats(Label statsLabel, Stage stage, int finalTick) {
         String statsText = ">>> KONIEC SYMULACJI " + (world.isSimulationEnded()?" (z powodu braku miejsca) ":"") + "<<<\n" + "\nWykonane tury: " + finalTick + "/" + noTicks;
-        statsText += "\nLiczba zjedzonego jedzenia: " + world.totalEatenFood + "\nUmarlych: " + world.deadAnimalCounter + "\n";
+        statsText += "\nLiczba zjedzonego jedzenia: " + world.totalEatenFood + "\nIlość zmarłych zwierząt: " + world.deadAnimalCounter + "\n";
         statsText += "\n---> Stan końcowy na mapie: <---";
         System.out.println("\n" + statsText);
         for (Map.Entry<String, Integer> entry : speciesCount.entrySet()) {
-            statsText += "\n" + entry.getKey() + ": " + entry.getValue() + "    ";
-            System.out.println(entry.getKey() + ": " + entry.getValue()); //na chwile - testy
+            if (entry.getKey() == "Skeleton") continue;
+            else {
+                statsText += "\n" + entry.getKey() + ": " + entry.getValue() + "    ";
+                System.out.println(entry.getKey() + ": " + entry.getValue()); //na chwile - testy
+            }
         }
         statsLabel.setText(statsText);
 
