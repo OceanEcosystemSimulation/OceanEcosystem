@@ -19,7 +19,6 @@ public abstract class Carnivorous extends Animal implements IFight, IMove, IMate
     }
 
 
-
     //mechanika ruchu
     @Override
     public void move(World world) {

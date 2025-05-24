@@ -128,7 +128,7 @@ public class Main extends Application {
                 Rectangle rect = tilesTab[x][y]; //pobranie kafelka z tabicy kafelków
 
                 //rect.setFill(Color.color(0, 0, 0, 0)); //reszta pól - woda
-                rect.setFill(Color.TRANSPARENT); //reszta pól - woda // czytelniejszy zapis
+                rect.setFill(Color.TRANSPARENT); //reszta pól - woda
             }
         }
 
@@ -190,7 +190,8 @@ public class Main extends Application {
         /* -------------------------------GRAFIKI ZWIERZĄT------------------------------- */
 
         for (Animal animal : world.getAnimals()) {
-            if (!animal.isAlive() && !(animal instanceof allAnimals.Skeleton)) continue; // sprawdzenie czy są w ogóle żywe (dla pewności)
+            if (!animal.isAlive()) continue; // sprawdzenie czy są w ogóle żywe (dla pewności)
+            //TODO: dodać grafikę dla martwych (Skeleton)
 
             // dopasowanie grafiki do zwierzęcia
             ImageView image = switch (animal) { //intellij stwierdził że lepiej dać switch case + będzei to czytelniejsze raczej
@@ -198,7 +199,6 @@ public class Main extends Application {
                 case allAnimals.Shark shark -> shark.getImageView();
                 case allAnimals.Egg egg -> egg.getImageView();
                 case allAnimals.Orca orca -> orca.getImageView();
-                case allAnimals.Skeleton skeleton -> skeleton.getImageView();
                 default -> null;
             };
 
