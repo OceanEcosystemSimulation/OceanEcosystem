@@ -35,11 +35,12 @@ public class WorldSetup {
 
         int coralreef_counter = 0, countOfReefs = noCoral;
 
+        int coralGeneratingLimit = (int) (height * 0.35); // max wysokość, by nie tworzyły się na grafice wody // zakres
         while (coralreef_counter <= countOfReefs) {
 
             int cx = random.nextInt(width); //losuje centralne pole x rafy
-            int cy = random.nextInt(height); //losuje centralne pole y rafy
-
+            int cy = coralGeneratingLimit + random.nextInt(height -coralGeneratingLimit); //losuje centralne pole y rafy //UPDATE: rafy mają
+                                                                                                // ograniczony zakres wysokości, przez co nie tworzą się na wodzie
             //sprawdza czy w zasięgu mapy
             if (!world.inBounds(cx - 1, cy - 1) || !world.inBounds(cx + 1, cy + 1)) continue;
 
