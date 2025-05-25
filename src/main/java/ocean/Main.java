@@ -209,6 +209,7 @@ public class Main extends Application {
                 case allAnimals.Skeleton skeleton -> skeleton.getImageView();
                 case allAnimals.OceanicPuffer oceanicPuffer -> oceanicPuffer.getImageView();
                 case allAnimals.Whale whale -> whale.getImageView();
+                case allAnimals.Octopus octopus -> octopus.getImageView();
                 default -> null;
             };
 

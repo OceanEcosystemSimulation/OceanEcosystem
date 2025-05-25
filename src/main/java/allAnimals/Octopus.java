@@ -14,18 +14,18 @@ import java.util.List;
 import java.util.Objects;
 
 
-public class Shark extends Carnivorous implements IEat {
-    public Shark(Coord position) {
+public class Octopus extends Carnivorous implements IEat {
+    public Octopus(Coord position) {
         super(position, generateGenes());
-        setName("Shark");
+        setName("Octopus");
         settings();
 
     }
 
     //konstruktor dziecka
-    public Shark(Coord position, Animal parent1, Animal parent2) {
+    public Octopus(Coord position, Animal parent1, Animal parent2) {
         super(position, parent1, parent2);
-        setName("Shark");
+        setName("Octopus");
         settings();
     }
 
@@ -49,7 +49,7 @@ public class Shark extends Carnivorous implements IEat {
     @Override
     public void update(World world) {
         processLifeCycle(world); //duperele o życiu
-        updateSharkGraphics();
+        updateOctopusGraphics();
         if (!isAlive()) return;
 
         Reproduction.pregnancyTick(world, this);
@@ -64,14 +64,14 @@ public class Shark extends Carnivorous implements IEat {
     // tylko tata, bo kobieta rodzi
     @Override
     public Animal giveBirth(Coord position, Animal parent1, Animal parent2) {
-        return new Shark(position, parent1, parent2);
+        return new Octopus(position, parent1, parent2);
     }
 
 
 
 
     //stwierdziłam że dam tak bo bez sensu sie ma robić ciągle od nowa jak jest niezmienna
-    private static final List<String> preyList = List.of("Nemo"); //lista kogo atakuje - do zmiany wartości (dodawane po przecinku jak coś)
+    private static final List<String> preyList = List.of("Nemo", "Shark"); //lista kogo atakuje - do zmiany wartości (dodawane po przecinku jak coś)
 
 
     @Override
@@ -85,6 +85,7 @@ public class Shark extends Carnivorous implements IEat {
     public int calculateGain(Animal animal) {
         return switch (animal.getName()) {
             case "Nemo" -> 30;
+            case "Shark" -> 60;
             //itd inne
             default -> 0;
         };
@@ -114,8 +115,8 @@ public class Shark extends Carnivorous implements IEat {
 
     /* -------------------------------GRAPHICS------------------------------- */
 
-    private static Image YoungShark;
-    private static Image OldShark;
+    private static Image babyOctopus;
+    private static Image Octopus;
     private static final int AGE_OLD = 18; // one turn = one month
 
     private final ImageView imageView = new ImageView();
@@ -124,24 +125,24 @@ public class Shark extends Carnivorous implements IEat {
     /* -------------------------------GUI------------------------------- */
 
     private static void loadImagesIfNeeded() {
-        if (YoungShark == null || OldShark == null) {
+        if (babyOctopus == null || Octopus == null) {
             if (!GraphicsEnvironment.isHeadless()) { //sprawdza czy jest srodowisko graficzne (testy go nie mają)
-                YoungShark = new Image(Objects.requireNonNull(Shark.class.getResource("/images/YoungShark.png")).toExternalForm());
-                OldShark = new Image(Objects.requireNonNull(Shark.class.getResource("/images/OldShark.png")).toExternalForm());
+                babyOctopus = new Image(Objects.requireNonNull(Octopus.class.getResource("/images/babyOctopus.png")).toExternalForm());
+                Octopus = new Image(Objects.requireNonNull(Octopus.class.getResource("/images/Octopus.png")).toExternalForm());
             }
         }
     }
 
     private void settings() {
         imageView.setPreserveRatio(true);
-        updateSharkGraphics();
+        updateOctopusGraphics();
     }
 
-    private void updateSharkGraphics() {
+    private void updateOctopusGraphics() {
         loadImagesIfNeeded();
 
         boolean isYoung = getAge() < AGE_OLD;
-        imageView.setImage(isYoung ? YoungShark : OldShark);
+        imageView.setImage(isYoung ? babyOctopus : Octopus);
 
         double scale = isYoung ? 0.8 : 1.0;
         imageView.setFitWidth(Main.getTileSize() * scale);

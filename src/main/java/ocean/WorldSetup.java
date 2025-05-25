@@ -114,6 +114,9 @@ public class WorldSetup {
         else if (name.equals("Whale")) {
             return new Whale(position);
         }
+        else if (name.equals("Octopus")) {
+            return new Octopus(position);
+        }
         //itd
         else {
             return null;  //na wypadek błędu
