@@ -39,6 +39,7 @@ public class Orca extends Carnivorous {
         g.setMaxEnergy(100);
         return g;
     }
+    //
 
     @Override
     public void update(World world) {
