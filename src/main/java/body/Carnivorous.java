@@ -1,5 +1,6 @@
 package body;
 
+import extendedMechanics.Reproduction;
 import map.*;
 import movement.*;
 import ocean.World;
@@ -8,7 +9,6 @@ import ocean.WorldSearch;
 import static body.AnimalCombatUtils.randomMove;
 
 
-//abstract bo nie ma update
 public abstract class Carnivorous extends Animal implements IFight, IMove, IMate {
     public Carnivorous(Coord position, Genes genes) {
         super(position, genes);
@@ -79,6 +79,22 @@ public abstract class Carnivorous extends Animal implements IFight, IMove, IMate
             System.out.println(this.getName() + " id: " + this.getId() + "  escape from  " + prey.getName() + " id: " + prey.getId() + "  after " + rounds + " turns");
         }
         return false; //nikt nie został zabity w walce
+    }
+
+    @Override
+    public void tryToMate(World world) {
+        int range = this.getGenes().getSpeed();
+        Animal mate = WorldSearch.nearestMate(world, this.getPosition(), range, this);
+        if (mate != null) {
+            if (Reproduction.isDistanceOne(this, mate)) { //jeżeli są w kratkach obok
+                Reproduction.ReproductionProcess(this, mate); //mechanika reprodukcji
+            } else {
+                boolean move = Reproduction.moveToMate(this, mate, world);
+                if (move && Reproduction.isDistanceOne(this, mate)) { //czy się przesunął i na wszelki czy mate jest obok
+                    Reproduction.ReproductionProcess(this, mate); //mechanika reprodukcji
+                }
+            }
+        }
     }
 }
 

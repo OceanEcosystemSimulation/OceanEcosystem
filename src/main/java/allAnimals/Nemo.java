@@ -55,7 +55,7 @@ public class Nemo extends Herbivorous {
         Reproduction.pregnancyTick(world, this);
 
         tryToEat(world, this); //wywołanie mechaniki jedzenia
-        tryToMate(world, this); //wywołanie mechaniki rozmnażania
+        tryToMate(world); //wywołanie mechaniki rozmnażania
         move(world); //wywołanie mechaniki ruchu
     }
 

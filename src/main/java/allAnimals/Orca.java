@@ -7,10 +7,13 @@ import ocean.World;
 import extendedMechanics.Reproduction;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import ocean.WorldSearch;
 
 import java.awt.*;
 import java.util.List;
 import java.util.Objects;
+
+import static body.AnimalCombatUtils.randomMove;
 
 
 public class Orca extends Carnivorous {
@@ -36,6 +39,7 @@ public class Orca extends Carnivorous {
         g.setMaxEnergy(100);
         return g;
     }
+    //
 
     @Override
     public void update(World world) {
@@ -47,7 +51,7 @@ public class Orca extends Carnivorous {
 
         Reproduction.pregnancyTick(world, this);
 
-        tryToMate(world, this);
+        tryToMate(world);
         move(world);
         tryToAttack(world, this);
     }
@@ -75,31 +79,49 @@ public class Orca extends Carnivorous {
         };
     }
 
+    @Override
+    public void move(World world) {
+        int speed = isFoodNearby(world) ? getGenes().getSpeed() + 10 : getGenes().getSpeed();
+        System.out.println(getName() + " [" + getId() + "] is chasing food");
 
-    //przyspieszenie gdy znajdzie jedzenie w odleglosci do 3 kratek
-    public int getSpeedForFood(World world) {
-        if (world != null) {
-            int x = getPosition().x;
-            int y = getPosition().y;
-            int range = 3;
-
-            for (int dx = -range; dx <= range; dx++) {
-                for (int dy = -range; dy <= range; dy++) {
-                    int newX = x + dx;
-                    int newY = y + dy;
-
-                    if (newX >= 0 && newX < world.getWidth() && newY >= 0 && newY < world.getHeight()) {
-                        Coord candidate = new Coord(newX, newY);
-                        Tile tile = world.getTile(candidate);
-
-                        if (tile != null && tile.hasFood()) {
-                            return getGenes().getSpeed() + 10; //boost
-                        }
-                    }
+        if (getFoodLevel() < 70) {
+            Coord preyPos = WorldSearch.nearestPrey(world, getPosition(), speed, this);
+            if (preyPos != null) {
+                setPosition(preyPos);
+                return;
+            } else if (getFoodLevel() < 30) {
+                Tile foodTile = WorldSearch.nearestFood(world, getPosition(), speed);
+                if (foodTile != null) {
+                    Coord foodPos = new Coord(foodTile.getX(), foodTile.getY());
+                    setPosition(foodPos);
+                    return;
                 }
             }
         }
-        return getGenes().getSpeed(); // brak boosta
+
+        randomMove(world, this);
+    }
+
+
+    //przyspieszenie gdy znajdzie jedzenie w odleglosci do 3 kratek
+    private boolean isFoodNearby(World world) {
+        int x = getPosition().x;
+        int y = getPosition().y;
+        int range = 3;
+
+        for (int dx = -range; dx <= range; dx++) {
+            for (int dy = -range; dy <= range; dy++) {
+                int newX = x + dx;
+                int newY = y + dy;
+
+                if (newX >= 0 && newX < world.getWidth() && newY >= 0 && newY < world.getHeight()) {
+                    Coord candidate = new Coord(newX, newY);
+                    Tile tile = world.getTile(candidate);
+                    if (tile != null && tile.hasFood()) return true;
+                }
+            }
+        }
+        return false;
     }
 
     //grafika
@@ -140,5 +162,4 @@ public class Orca extends Carnivorous {
         imageView.setFitWidth(Main.getTileSize() * scale);
         imageView.setFitHeight(Main.getTileSize() * scale);
     }
-
 }

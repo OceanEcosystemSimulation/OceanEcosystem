@@ -1,5 +1,6 @@
 package body;
 
+import extendedMechanics.Reproduction;
 import map.*;
 import movement.*;
 import ocean.World;
@@ -50,7 +51,9 @@ public abstract class Omnivorous extends Animal implements IEat, IFight, IMate {
         randomMove(world, this);
     }
 
+
     //atak
+    @Override
     public boolean attack(Animal prey, World world) {
         double attackerSpeed = AnimalCombatUtils.getEffectiveSpeed(this);
         double preySpeed = AnimalCombatUtils.getEffectiveSpeed(prey);
@@ -97,20 +100,21 @@ public abstract class Omnivorous extends Animal implements IEat, IFight, IMate {
         return false;
     }
 
-    /*
+
     @Override
-    public void eat(Tile tile, World world) { //whatever - do zmiany i tak
-        int gain = switch (tile.getFoodType()) {
-            case PLANKTON -> 10;
-            case ALGAE -> 15;
-            default -> 0;
-        };
-        if (getAge()+gain <= 100){
-            setFoodLevel(getFoodLevel() + gain);
-            tile.clearFood(world);
+    public void tryToMate(World world) {
+        int range = this.getGenes().getSpeed();
+        Animal mate = WorldSearch.nearestMate(world, this.getPosition(), range, this);
+        if (mate != null) {
+            if (Reproduction.isDistanceOne(this, mate)) { //jeżeli są w kratkach obok
+                Reproduction.ReproductionProcess(this, mate); //mechanika reprodukcji
+            } else {
+                boolean move = Reproduction.moveToMate(this, mate, world);
+                if (move && Reproduction.isDistanceOne(this, mate)) { //czy się przesunął i na wszelki czy mate jest obok
+                    Reproduction.ReproductionProcess(this, mate); //mechanika reprodukcji
+                }
+            }
         }
     }
-    */
-
 }
 
