@@ -1,6 +1,7 @@
 package extendedMechanics;
 
 import body.Animal;
+import body.Carnivorous;
 import body.Gender;
 import body.Genes;
 import map.Coord;
@@ -124,9 +125,19 @@ public final class Reproduction {
     }
 
     /* -------------------------------SAFE SPACE------------------------------- */
-    // TODO: trzeba dorobić agresorów
-    public static boolean IsAreaSafe(World world, Animal self) {
-        return true;
+    public static boolean IsAreaSafe(World world, Animal animal, Genes genes) {
+        int safetyRadius = genes.getSpeed(); // ile widzi organizm
+
+        Coord position = animal.getPosition();
+
+        List<Animal> nearby = world.getNearbyAnimals(position, safetyRadius);
+        for (Animal other : nearby) {
+            if (other instanceof Carnivorous && other.isAlive() && other.getId() != animal.getId()) {
+                return false; // w poblizu jest drapieznik
+            }
+        }
+
+        return true; // mogą się rozmnażać - brak drapieżników
     }
 
     public static Coord findFreeTile(World world, Coord pos) { //szuka wolnego miejsca, by złożyć jajo
@@ -135,9 +146,9 @@ public final class Reproduction {
 
         List<Coord> possibleTiles = new ArrayList<>();
         for (int[] d: directions) {
-            Coord c = new Coord(pos.getX() + d[0], pos.getY() + d[1]);
-            if (world.inBounds(c.x, c.y) && !world.isOccupied(c)) {
-                possibleTiles.add(c);
+            Coord coord = new Coord(pos.getX() + d[0], pos.getY() + d[1]);
+            if (world.inBounds(coord.x, coord.y) && !world.isOccupied(coord)) {
+                possibleTiles.add(coord);
             }
         }
 
