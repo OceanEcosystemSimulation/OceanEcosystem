@@ -3,16 +3,11 @@ package ocean;
 import allAnimals.*;
 import body.*;
 import extendedMechanics.*;
-import javafx.scene.image.Image;
 import map.Coord;
 import map.FoodType;
 import map.MapType;
 import map.Tile;
-
-import java.util.Objects;
 import java.util.Random;
-
-import static com.sun.javafx.scene.control.skin.Utils.getResource;
 
 public class WorldSetup {
     private static Random random = new Random();
@@ -34,44 +29,74 @@ public class WorldSetup {
         //zastanawiam się, czy powinien być warunek sprawdzający, czy mapa nie jest mniejsza niż wymiary rafy
 
         int coralreef_counter = 0, countOfReefs = noCoral;
+        int maxCountOfCorals = maxCountOnMap(width, height);
 
         int coralGeneratingLimit = (int) (height * 0.35); // max wysokość, by nie tworzyły się na grafice wody // zakres
-        while (coralreef_counter <= countOfReefs) {
 
-            int cx = random.nextInt(width); //losuje centralne pole x rafy
-            int cy = coralGeneratingLimit + random.nextInt(height -coralGeneratingLimit); //losuje centralne pole y rafy //UPDATE: rafy mają
-                                                                                                // ograniczony zakres wysokości, przez co nie tworzą się na wodzie
-            //sprawdza czy w zasięgu mapy
-            if (!world.inBounds(cx - 1, cy - 1) || !world.inBounds(cx + 1, cy + 1)) continue;
 
-            // simple rozmieszczenie raf (otoczenie 3x3 na razie - jeśli dobrze ustawiłąm lol) //dobrze
-            boolean IsEmpty = true; // sprawdza, czy jest wolna przestrzeń, na postawienie rafy
-            for (int dx = -1; dx <= 1 && IsEmpty; dx++)
-                for (int dy = -1; dy <= 1; dy++)
-                    if (grid[cx + dx][cy + dy].getMapType() == MapType.CORAL) { // sprawdza, czy pole to CORAL
-                        IsEmpty = false;
+        if (noCoral > maxCountOfCorals) {
+            System.out.printf("Zadany wymiar mapy jest zbyt mały, nie można umieścić tylu raf");
+        } else {
+
+            int countOfAttempts = 0;
+            int MaxCountOfAttempts = (int) combination(maxCountOfCorals, noCoral);
+
+            while (coralreef_counter < countOfReefs && countOfAttempts < MaxCountOfAttempts) {
+                countOfAttempts++;
+
+                int cx = random.nextInt(width); //losuje centralne pole x rafy
+                int cy = coralGeneratingLimit + random.nextInt(height -coralGeneratingLimit); //losuje centralne pole y rafy //UPDATE: rafy mają
+                // ograniczony zakres wysokości, przez co nie tworzą się na wodzie
+                //sprawdza czy w zasięgu mapy
+                if (!world.inBounds(cx - 1, cy - 1) || !world.inBounds(cx + 1, cy + 1)) continue;
+
+                // simple rozmieszczenie raf (otoczenie 3x3 na razie - jeśli dobrze ustawiłąm lol) //dobrze
+                boolean IsEmpty = true; // sprawdza, czy jest wolna przestrzeń, na postawienie rafy
+                for (int dx = -1; dx <= 1 && IsEmpty; dx++)
+                    for (int dy = -1; dy <= 1; dy++)
+                        if (grid[cx + dx][cy + dy].getMapType() == MapType.CORAL) { // sprawdza, czy pole to CORAL
+                            IsEmpty = false;
+                        }
+
+                if (!IsEmpty) continue; // pomija, jeśli pole jest zajęte
+
+                // dodanie rafy koralowej na 9 polach
+                for (int dx = -1; dx <= 1; dx++) {
+                    for (int dy = -1; dy <= 1; dy++) {
+                        grid[cx + dx][cy + dy].setMapType(MapType.CORAL);
                     }
-
-            if (!IsEmpty) continue; // pomija, jeśli pole jest zajęte
-
-            // dodanie rafy koralowej na 9 polach
-            for (int dx = -1; dx <= 1; dx++) {
-                for (int dy = -1; dy <= 1; dy++) {
-                    grid[cx + dx][cy + dy].setMapType(MapType.CORAL);
                 }
+
+                world.addCoralReefCenter(new Coord(cx, cy)); //pobiera współrzędne środka mapy
+                coralreef_counter++; //inkrementuje licznik raf
             }
-
-            world.addCoralReefCenter(new Coord(cx, cy)); //pobiera współrzędne środka mapy
-            coralreef_counter++; //inkrementuje licznik raf
         }
-
-        // informacja zwrotna odnośnie ilości raf
-        // przypadek, w którym nie uda się wstawić tyle raf ile zostało zadane
-        /*if (coralreef_counter < countOfReefs) {
-            //TODO: ERROR
-        }*/
     }
-    //TODO: rozwiązać problem z pętlą nieskończoną
+
+    public static int maxCountOnMap(int width, int height) {
+        int maxHeight = (int) (height * 0.35);
+        int spawningAreaHeight = height - maxHeight;
+
+        int tilesX = (width - 2) / 3; // -2 - uwzględniam krawędzie, bo wtedy rafa się nie zmieści
+        int tilesY = (spawningAreaHeight - 2) / 3; // /3, poniewaz nie może być np. rozciągnięte w pionie/poziomie, tylko 3x3
+        // mam nadzieję, że dobra logika :C
+        int possibleCount = tilesX * tilesY;
+        return possibleCount;
+    }
+
+    // DEMON KOMBINATORYKI NADCIĄGA XDD BĘDZIE BŁĄD PEWNIE
+
+    public static long combination (int maxReefsCount, int knownValue) {
+        int n = maxReefsCount;
+        int k = knownValue;
+        if (k > n) return 0;
+        if (k == 0 || k == n) return 1;
+        long result = 1;
+        for (int i = 1; i <= k; i++) {
+            result = result * (n - i + 1) / i; // wzór Newtona omijający silnie dla lepszej złożoności
+        }
+        return result;
+    }
 
     /* -------------------------------ZWIERZĘTA------------------------------- */
 
@@ -105,11 +130,14 @@ public class WorldSetup {
         //wywalało żółty że nie == i faktycznie chyba bo == poówbuje chyba adresy a equals wartości wieć zmieniam
         if (name.equals("Nemo")) {
             return new Nemo(position);
-        } else if (name.equals("Shark")) {
+        }
+        else if (name.equals("Shark")) {
             return new Shark(position);
-        }else if (name.equals("Orca")) {
+        }
+        else if (name.equals("Orca")) {
             return new Orca(position);
-        }else if (name.equals("OceanicPuffer")) {
+        }
+        else if (name.equals("OceanicPuffer")) {
             return new OceanicPuffer(position);
         }
         else if (name.equals("Whale")) {
