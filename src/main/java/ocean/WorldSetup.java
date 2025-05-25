@@ -28,38 +28,38 @@ public class WorldSetup {
 
         //zastanawiam się, czy powinien być warunek sprawdzający, czy mapa nie jest mniejsza niż wymiary rafy
 
-        int coralreef_counter = 0, countOfReefs = noCoral;
+
         int maxCountOfCorals = maxCountOnMap(width, height);
 
         int coralGeneratingLimit = (int) (height * 0.35); // max wysokość, by nie tworzyły się na grafice wody // zakres
 
-
         if (noCoral > maxCountOfCorals) {
-            System.out.printf("Zadany wymiar mapy jest zbyt mały, nie można umieścić tylu raf");
-        } else {
+            System.out.printf("Zadany wymiar mapy jest zbyt mały, nie można umieścić tylu raf\n");
+            System.out.printf("Zmniejszam ilość raf, do największego możliwego... Ilość raf: %d\n", maxCountOfCorals);
+            noCoral = maxCountOfCorals;
+        }
+        int coralreef_counter = 0;
+        int countOfAttempts = 0;
+        int MaxCountOfAttempts = 1000;
 
-            int countOfAttempts = 0;
-            int MaxCountOfAttempts = (int) combination(maxCountOfCorals, noCoral);
 
-            while (coralreef_counter < countOfReefs && countOfAttempts < MaxCountOfAttempts) {
-                countOfAttempts++;
+        while (coralreef_counter < noCoral && countOfAttempts < MaxCountOfAttempts) {
+            countOfAttempts++;
 
-                int cx = random.nextInt(width); //losuje centralne pole x rafy
-                int cy = coralGeneratingLimit + random.nextInt(height -coralGeneratingLimit); //losuje centralne pole y rafy //UPDATE: rafy mają
-                // ograniczony zakres wysokości, przez co nie tworzą się na wodzie
-                //sprawdza czy w zasięgu mapy
-                if (!world.inBounds(cx - 1, cy - 1) || !world.inBounds(cx + 1, cy + 1)) continue;
+            int cx = random.nextInt(width); //losuje centralne pole x rafy
+            int cy = coralGeneratingLimit + random.nextInt(height - coralGeneratingLimit); //losuje centralne pole y rafy //UPDATE: rafy mają
+            // ograniczony zakres wysokości, przez co nie tworzą się na wodzie
+            //sprawdza czy w zasięgu mapy
+            if (!world.inBounds(cx - 1, cy - 1) || !world.inBounds(cx + 1, cy + 1)) continue;
 
-                // simple rozmieszczenie raf (otoczenie 3x3 na razie - jeśli dobrze ustawiłąm lol) //dobrze
-                boolean IsEmpty = true; // sprawdza, czy jest wolna przestrzeń, na postawienie rafy
-                for (int dx = -1; dx <= 1 && IsEmpty; dx++)
-                    for (int dy = -1; dy <= 1; dy++)
-                        if (grid[cx + dx][cy + dy].getMapType() == MapType.CORAL) { // sprawdza, czy pole to CORAL
-                            IsEmpty = false;
-                        }
-
-                if (!IsEmpty) continue; // pomija, jeśli pole jest zajęte
-
+            // simple rozmieszczenie raf (otoczenie 3x3 na razie - jeśli dobrze ustawiłąm lol) //dobrze
+            boolean IsEmpty = true; // sprawdza, czy jest wolna przestrzeń, na postawienie rafy
+            for (int dx = -1; dx <= 1 && IsEmpty; dx++)
+                for (int dy = -1; dy <= 1; dy++)
+                    if (grid[cx + dx][cy + dy].getMapType() == MapType.CORAL) { // sprawdza, czy pole to CORAL
+                        IsEmpty = false;
+                    }
+            if (IsEmpty) {
                 // dodanie rafy koralowej na 9 polach
                 for (int dx = -1; dx <= 1; dx++) {
                     for (int dy = -1; dy <= 1; dy++) {
@@ -69,6 +69,7 @@ public class WorldSetup {
 
                 world.addCoralReefCenter(new Coord(cx, cy)); //pobiera współrzędne środka mapy
                 coralreef_counter++; //inkrementuje licznik raf
+
             }
         }
     }
@@ -82,20 +83,6 @@ public class WorldSetup {
         // mam nadzieję, że dobra logika :C
         int possibleCount = tilesX * tilesY;
         return possibleCount;
-    }
-
-    // DEMON KOMBINATORYKI NADCIĄGA XDD BĘDZIE BŁĄD PEWNIE
-
-    public static long combination (int maxReefsCount, int knownValue) {
-        int n = maxReefsCount;
-        int k = knownValue;
-        if (k > n) return 0;
-        if (k == 0 || k == n) return 1;
-        long result = 1;
-        for (int i = 1; i <= k; i++) {
-            result = result * (n - i + 1) / i; // wzór Newtona omijający silnie dla lepszej złożoności
-        }
-        return result;
     }
 
     /* -------------------------------ZWIERZĘTA------------------------------- */
