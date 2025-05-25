@@ -29,13 +29,7 @@ public class Tile {
     }
 
     public boolean isBarrier() {
-
-        if (barrierCount > 0) {
-            return true;
-        }
-        else {
-            return false;
-        }
+        return barrierCount > 0;
     }
 
     public void activeBarrier() {

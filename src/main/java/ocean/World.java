@@ -21,7 +21,7 @@ public class World {
     private boolean simulationEnded = false;
 
     //rozmieszczenie pól i zwierząt (na razie zawiera liczbę turn konkretną)
-    public World(int width, int height, int noFood, int noCoral, int noAnimals, int ticks) {
+    public World(int width, int height, int noFood, int noCoral, int noAnimals) {
         this.width = width;
         this.height = height;
         this.grid = new Tile[width][height];
@@ -32,23 +32,21 @@ public class World {
 
 
     //główna symulacja świata - w każdym cyklu aktualizuje zwierzęta - dead alive
-    public void runSimulation(int ticks) {
-        for (int t = 0; t < ticks; t++) {
-            List<Animal> currentAnimals = new ArrayList<>(animals); //tworzenie kopii by nie aktualizować m.in. dopiero co urodzonych
+    public void runSimulation(int tick) {
+        List<Animal> currentAnimals = new ArrayList<>(animals); //tworzenie kopii by nie aktualizować m.in. dopiero co urodzonych
 
-            if (t % 5 == 0 ) {  //co X tą turę dodaje brakujące jedzenie
-                WorldSetup.spawnFood(this, eatenFoodCounter); //dodawanie jedzenia na mapę
-                eatenFoodCounter = 0; //zerowanie licznika
-            }
+        if (tick % 5 == 0 ) {  //co X tą turę dodaje brakujące jedzenie
+            WorldSetup.spawnFood(this, eatenFoodCounter); //dodawanie jedzenia na mapę
+            eatenFoodCounter = 0; //zerowanie licznika
+        }
 
-            for (Animal animal : currentAnimals) {  //iteracja po kopii animals - żeby nie było problemów później bo niektóre rzeczy usuwamy itp to sie rozwali inaczej
-                animal.update(this); // aktualizuje stan zwierzęcia
+        for (Animal animal : currentAnimals) {  //iteracja po kopii animals - żeby nie było problemów później bo niektóre rzeczy usuwamy itp to sie rozwali inaczej
+            animal.update(this); // aktualizuje stan zwierzęcia
 
-                if (!animal.isAlive()) {
-                    System.out.println(animal.getName() + " id: " + animal.getId() + " is dead ");
-                    deadAnimalCounter++;
-                    animals.remove(animal); //usuwa martwe
-                }
+            if (!animal.isAlive()) {
+                System.out.println(animal.getName() + " id: " + animal.getId() + " is dead ");
+                deadAnimalCounter++;
+                animals.remove(animal); //usuwa martwe
             }
         }
     }

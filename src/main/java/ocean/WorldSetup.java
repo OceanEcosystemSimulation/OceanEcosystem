@@ -81,8 +81,7 @@ public class WorldSetup {
         int tilesX = (width - 2) / 3; // -2 - uwzględniam krawędzie, bo wtedy rafa się nie zmieści
         int tilesY = (spawningAreaHeight - 2) / 3; // /3, poniewaz nie może być np. rozciągnięte w pionie/poziomie, tylko 3x3
         // mam nadzieję, że dobra logika :C
-        int possibleCount = tilesX * tilesY;
-        return possibleCount;
+        return tilesX * tilesY;
     }
 
     /* -------------------------------ZWIERZĘTA------------------------------- */
@@ -114,32 +113,16 @@ public class WorldSetup {
 
     //tworzenie zwierząt
     static Animal createAnimalFromName(String name, Coord position) {
-        //wywalało żółty że nie == i faktycznie chyba bo == poówbuje chyba adresy a equals wartości wieć zmieniam
-        if (name.equals("Nemo")) {
-            return new Nemo(position);
-        }
-        else if (name.equals("Shark")) {
-            return new Shark(position);
-        }
-        else if (name.equals("Orca")) {
-            return new Orca(position);
-        }
-        else if (name.equals("OceanicPuffer")) {
-            return new OceanicPuffer(position);
-        }
-        else if (name.equals("Whale")) {
-            return new Whale(position);
-        }
-        else if (name.equals("Octopus")) {
-            return new Octopus(position);
-        }
-        else if (name.equals("Dolphin")) {
-            return new Dolphin(position);
-        }
-        //itd
-        else {
-            return null;  //na wypadek błędu
-        }
+        return switch (name) {
+            case "Nemo" -> new Nemo(position);
+            case "Shark" -> new Shark(position);
+            case "Orca" -> new Orca(position);
+            case "OceanicPuffer" -> new OceanicPuffer(position);
+            case "Whale" -> new Whale(position);
+            case "Octopus" -> new Octopus(position);
+            case "Dolphin" -> new Dolphin(position);
+            default -> null;  //na wypadek błędu
+        };
     }
 
     /* -------------------------------JEDZENIE------------------------------- */

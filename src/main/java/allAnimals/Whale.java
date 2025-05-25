@@ -131,8 +131,9 @@ public class Whale extends Herbivorous {
 
     private static Image youngWhale;
     private static Image oldWhale;
+    private static Image barrierImage;
     private static final int AGE_OLD = 18; // one turn = one month
-    private static Image barrierImage = new Image(Objects.requireNonNull(Whale.class.getResource("/images/barrier.png")).toExternalForm());
+
     private final ImageView imageView = new ImageView();
     public ImageView getImageView() { return imageView; } // getter
     private final ImageView barrierLayer = new ImageView(barrierImage);
@@ -142,10 +143,11 @@ public class Whale extends Herbivorous {
 
 
     private static void loadImagesIfNeeded() {
-        if (youngWhale == null || oldWhale == null) {
+        if (youngWhale == null || oldWhale == null || barrierImage == null) {
             if (!GraphicsEnvironment.isHeadless()) { //sprawdza czy jest srodowisko graficzne (testy go nie mają)
                 youngWhale = new Image(Objects.requireNonNull(Whale.class.getResource("/images/BabyWhale.png")).toExternalForm());
                 oldWhale = new Image(Objects.requireNonNull(Whale.class.getResource("/images/Whale.png")).toExternalForm());
+                barrierImage = new Image(Objects.requireNonNull(Whale.class.getResource("/images/barrier.png")).toExternalForm());
             }
         }
     }
