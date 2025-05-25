@@ -15,7 +15,6 @@ public class Egg extends Animal {
 
     /* -------------------------------STAŁE------------------------------- */
 
-    private final Genes genes;
     private int hatching;
     private Animal mother;
 
@@ -23,7 +22,6 @@ public class Egg extends Animal {
 
     public Egg(Coord position, Genes genes, int hatching) {
         super(position, genes);
-        this.genes = genes;
         this.hatching = hatching;
         settings();
     }
@@ -69,10 +67,6 @@ public class Egg extends Animal {
     @Override
     public Animal giveBirth(Coord position, Animal parent1, Animal parent2) {
         return mother.giveBirth(position, parent1, parent2);
-    }
-
-    public Animal getMother() {
-        return mother;
     }
 
     public void setMother(Animal mother) {

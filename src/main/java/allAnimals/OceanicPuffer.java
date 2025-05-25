@@ -52,19 +52,21 @@ public class OceanicPuffer extends Omnivorous implements IEat, IFight {
         Reproduction.pregnancyTick(world, this);
 
         tryToEat(world, this);
-        tryToMate(world, this);
+        tryToMate(world);
         move(world);
         tryToAttack(world, this);
     }
 
-    //dalam nemo zeby zobaczyc czy dziala i pewnie zapomnialam usunac jak to czytacie
-    private static final List<String> preyList = List.of("Nemo", "Alga","Crab");
+
+    private static final List<String> preyList = List.of("Crab");
+
 
     //walka
     @Override
     public boolean canAttack(Animal other) {
         return other != null && other.getName() != null && preyList.contains(other.getName());
     }
+
 
     @Override
     public boolean attack(Animal target, World world) {
@@ -80,10 +82,8 @@ public class OceanicPuffer extends Omnivorous implements IEat, IFight {
             System.out.println(target.getName() + " id: " + target.getId() + " killed " + getName() + " id: " + getId());
 
             //jesli przegra to zatrywa przeciwnika
-            if (this instanceof OceanicPuffer) {
-                target.setPoisoned(true);
-                System.out.println(target.getName() + " id: " + target.getId() + " got poisoned by dying Puffer!");
-            }
+            target.setPoisoned(true);
+            System.out.println(target.getName() + " id: " + target.getId() + " got poisoned by dying Puffer!");
 
             return false;
         }
@@ -93,17 +93,18 @@ public class OceanicPuffer extends Omnivorous implements IEat, IFight {
     @Override
     public int calculateGain(Animal animal) {
         return switch (animal.getName()) {
-            case "Alga" -> 10;
             case "Crab" -> 25;
             default -> 5;
         };
     }
+
 
     //jedzenie
     @Override
     public boolean canEat(Tile tile) {
         return getFoodLevel() <= 70 && ( tile.getFoodType() == FoodType.PLANKTON || tile.getFoodType() == FoodType.ALGAE);
     }
+
 
     @Override
     public void eat(Tile tile, World world) {
@@ -120,9 +121,10 @@ public class OceanicPuffer extends Omnivorous implements IEat, IFight {
         }
     }
 
+
     //grafika
-    private static Image babyImage = new Image(Objects.requireNonNull(OceanicPuffer.class.getResource("/images/BabyOceanicPuffer1.png")).toExternalForm());
-    private static Image adultImage = new Image(Objects.requireNonNull(OceanicPuffer.class.getResource("/images/AdultOceanicPuffer.png")).toExternalForm());
+    private static Image babyImage;
+    private static Image adultImage;
     private static final int AGE_OLD = 18;
 
     private final ImageView imageView = new ImageView();

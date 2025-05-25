@@ -1,6 +1,6 @@
 package body;
 
-
+import extendedMechanics.Reproduction;
 import map.*;
 import movement.*;
 import ocean.World;
@@ -9,7 +9,6 @@ import ocean.WorldSearch;
 import static body.AnimalCombatUtils.randomMove;
 
 
-//abstract bo nie ma dalej update
 public abstract class Herbivorous extends Animal implements IEat, IMove, IMate {
     public Herbivorous(Coord position, Genes genes) {
         super(position, genes);
@@ -40,6 +39,23 @@ public abstract class Herbivorous extends Animal implements IEat, IMove, IMate {
             }
         }
         randomMove(world, this); //randomowo gdy nie głodny lub brak jedzenia
+    }
+
+
+    @Override
+    public void tryToMate(World world) {
+        int range = this.getGenes().getSpeed();
+        Animal mate = WorldSearch.nearestMate(world, this.getPosition(), range, this);
+        if (mate != null) {
+            if (Reproduction.isDistanceOne(this, mate)) { //jeżeli są w kratkach obok
+                Reproduction.ReproductionProcess(this, mate); //mechanika reprodukcji
+            } else {
+                boolean move = Reproduction.moveToMate(this, mate, world);
+                if (move && Reproduction.isDistanceOne(this, mate)) { //czy się przesunął i na wszelki czy mate jest obok
+                    Reproduction.ReproductionProcess(this, mate); //mechanika reprodukcji
+                }
+            }
+        }
     }
 }
 

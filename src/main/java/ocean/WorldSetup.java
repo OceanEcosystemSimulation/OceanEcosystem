@@ -3,16 +3,12 @@ package ocean;
 import allAnimals.*;
 import body.*;
 import extendedMechanics.*;
-import javafx.scene.image.Image;
 import map.Coord;
 import map.FoodType;
 import map.MapType;
 import map.Tile;
 
-import java.util.Objects;
 import java.util.Random;
-
-import static com.sun.javafx.scene.control.skin.Utils.getResource;
 
 public class WorldSetup {
     private static Random random = new Random();
@@ -101,20 +97,13 @@ public class WorldSetup {
 
     //tworzenie zwierząt
     static Animal createAnimalFromName(String name, Coord position) {
-        //wywalało żółty że nie == i faktycznie chyba bo == poówbuje chyba adresy a equals wartości wieć zmieniam
-        if (name.equals("Nemo")) {
-            return new Nemo(position);
-        } else if (name.equals("Shark")) {
-            return new Shark(position);
-        }else if (name.equals("Orca")) {
-            return new Orca(position);
-        }else if (name.equals("OceanicPuffer")) {
-            return new OceanicPuffer(position);
-        }
-        //itd
-        else {
-            return null;  //na wypadek błędu
-        }
+        return switch (name) {
+            case "Nemo" -> new Nemo(position);
+            case "Shark" -> new Shark(position);
+            case "Orca" -> new Orca(position);
+            case "OceanicPuffer" -> new OceanicPuffer(position);
+            default -> null;  //na wypadek błędu
+        };
     }
 
     /* -------------------------------JEDZENIE------------------------------- */
