@@ -35,7 +35,7 @@ class SimulationThread extends Thread {
             Platform.runLater(() -> { //uruchomienie kodu na głównym wątku JavaFX
                 //normalnie przyjmuje Runnable które jest do definiowania kodu który ma byc wywołany w wątku i która ma metodę run()
                 mainInstance.updateGrid(); //wywołanie update
-                mainInstance.updateStats(statsLabel); //wywołanie update statów liczby zwierzat
+                SimulationStatsManager.updateStats(mainInstance.world, statsLabel);  //wywołanie update statów liczby zwierzat
             });
             tick++;
         }
@@ -44,7 +44,7 @@ class SimulationThread extends Thread {
 
         //wyświetlenie statystyk końcowych
         Platform.runLater(() -> {
-            mainInstance.showEndStats(statsLabel, finalTick);
+            SimulationStatsManager.showEndStats(mainInstance.world, statsLabel, finalTick);
         });
     }
 }

@@ -56,7 +56,7 @@ public class Shark extends Carnivorous implements IEat {
 
 
         tryToEat(world, this); //wywołanie mechaniki jedzenia
-        tryToMate(world, this); //wywołanie mechaniki rozmnażania
+        tryToMate(world); //wywołanie mechaniki rozmnażania
         move(world); //wywołanie mechaniki ruchu
         tryToAttack(world, this); //wywołanie mechaniki ataku
     }

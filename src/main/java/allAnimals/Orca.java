@@ -50,7 +50,7 @@ public class Orca extends Carnivorous {
 
         Reproduction.pregnancyTick(world, this);
 
-        tryToMate(world, this);
+        tryToMate(world);
         move(world);
         tryToAttack(world, this);
     }
@@ -161,5 +161,4 @@ public class Orca extends Carnivorous {
         imageView.setFitWidth(Main.getTileSize() * scale);
         imageView.setFitHeight(Main.getTileSize() * scale);
     }
-
 }

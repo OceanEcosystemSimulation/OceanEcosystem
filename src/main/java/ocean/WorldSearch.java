@@ -6,9 +6,6 @@ import map.MapType;
 import map.Tile;
 import movement.IFight;
 
-import java.util.ArrayList;
-import java.util.List;
-
 //wszystkie przeszukiwania mapy
 public class WorldSearch {
 
@@ -56,19 +53,6 @@ public class WorldSearch {
     }
 
 
-    //znajduje wszystkich mate w promieniu
-    public static List<Animal> allMatesInRange(World world, Animal self, Coord position, int radius) {
-        List<Animal> mates = new ArrayList<>(); //lista na mates
-        for (Animal animal : world.getNearbyAnimals(position, radius)) { //iteracja po zwierzetach w promieniu
-            if (animal!=null && animal!=self && animal.getName() != null && self.getName() != null && animal.getName().equals(self.getName())) { //porównywanie gatunków
-                mates.add(animal);
-            }
-        }
-        return mates; //zwraca tabelę z mates
-    }
-
-
-    //DO USUNIECIA PRAWDOPODOBNIE ALE NA RAZIE NIECH BEDZIE
     //znajduje zwierze w pobliżu - prawdopodobnie mozna to połączyć z nearestPrey <-- do zmiany póżniej moze
     public static Animal nearestMate(World world, Coord position, int radius, Animal self) {
         Animal nearestMate = null; //zmenna z najblizszym mate

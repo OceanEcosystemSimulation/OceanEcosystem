@@ -39,10 +39,9 @@ public class Coord {
             int newY = Math.max(0, Math.min(height - 1, y + moveY)); //albo granica albo wartość losowana
 
             newCoord = new Coord(newX, newY);
-            System.out.println("attempt no: " + attempts);
 
             attempts++;
-            if (attempts >= 100) { //kiedy przy X próbach nie będzie miejsca
+            if (attempts >= 500) { //kiedy przy X próbach nie będzie miejsca
                 return null;
             }
         } while (world.isOccupied(newCoord));

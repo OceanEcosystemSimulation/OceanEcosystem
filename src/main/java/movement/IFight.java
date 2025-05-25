@@ -8,7 +8,7 @@ import java.util.List;
 public interface IFight {
     boolean canAttack(Animal other);
     boolean attack(Animal target, World world);
-    int calculateGain(Animal animal) ;
+    int calculateGain(Animal animal);
 
     default void tryToAttack(World world, Animal self) {
         List<Animal> nearbyAnimals = world.getNearbyAnimals(self.getPosition(), 0); //pobiera zwierzęta na aktualnym polu

@@ -13,7 +13,7 @@ public class World {
     private final int width, height; //powirzchnia mapy
     private Tile[][] grid; //siatka - różne typy mapy i objekty
     private List<Animal> animals = new ArrayList<>(); //lista zwierząt na świecie
-    private final List<Coord> CoralReefCenter = new ArrayList<>(); // przechowuje współrzędne środka rafy koralowej
+    private final List<Coord> coralReefCenter = new ArrayList<>(); // przechowuje współrzędne środka rafy koralowej
 
     private int eatenFoodCounter = 0; //do liczenia ile jedzenia zostało zjedzone od ostatnego uzupełnienia
     public int totalEatenFood = 0;
@@ -102,8 +102,6 @@ public class World {
 
     public void setEatenFoodCounter(int eatenFoodCounter) {this.eatenFoodCounter = eatenFoodCounter;}
 
-    private final List<Coord> coralReefCenter = new ArrayList<>();
-
     public List<Coord> getCoralReefCenter() { return coralReefCenter; }
-    public void addCoralReefCenter(Coord c) { coralReefCenter.add(c); }
+    public void addCoralReefCenter(Coord coord) { coralReefCenter.add(coord); }
 }

@@ -28,7 +28,6 @@ import java.util.List;
 public class Main extends Application {
     private static int tileSize; //piksele
     static int width, height, noFood, noCoral, noAnimals, noTicks; //parametry wejsciowe
-    private final Map<String, Integer> speciesCount = new HashMap<>(); //tworzy HashMap: gatunek->ilość
 
     public World world; //deklaracja objektu world
     private Rectangle[][] tilesTab; //tablica kafelków
@@ -246,47 +245,6 @@ public class Main extends Application {
                 tilesTab[pos.getX()][pos.getY()].setFill(Color.RED);
             }
         }
-    }
-
-    //update statystyk w każdej turze
-    void updateStats(Label statsLabel) {
-        speciesCount.clear(); //czyści mapę - można jak będzie dużo rzeczy to zmienić to na jesli nie zywe to -1 i usuwa (zmienic z runSimulation) ale przy kilkuset podobno powinno byc git
-
-        for (Animal animal : world.getAnimals()) {
-            if (animal.isAlive()) { //sprawdza czy żywe
-                speciesCount.put(animal.getName(), speciesCount.getOrDefault(animal.getName(), 0) + 1); //dodaje
-                //pobiera nazwę, aktualną liczbę i powieksza o 1 - jesli nie ma jeszcze (deafult) to 0 (bo domysnie jest null wiec trzeba to tak
-                //jak się nie podoba to getordefault to można ifem sprawdzac czy klucz istnieje containsKey i speciecCount.get...
-            }
-        }
-
-        String statsText = "---> Stan na mapie: <---\n";
-        statsText += "\nLiczba zjedzonego jedzenia: " + world.totalEatenFood + "\nIlość zmarłych zwierząt: " + world.deadAnimalCounter + "\n";
-        System.out.println(statsText);
-        for (Map.Entry<String, Integer> entry : speciesCount.entrySet()) {
-            if (!entry.getKey().equals("Skeleton")) {
-                statsText += "\n" + entry.getKey() + ": " + entry.getValue() + "    ";
-                System.out.println(entry.getKey() + ": " + entry.getValue()); //na chwile - testy
-            }
-        }
-
-        statsLabel.setText(statsText); //ustawianie nowego tekstu w Label
-    }
-
-
-    //statystyki końcowe
-    void showEndStats(Label statsLabel, int finalTick) {
-        String statsText = ">>> KONIEC SYMULACJI <<<" + (world.isSimulationEnded()?"\n           (brak miejsca)":"");
-        statsText += "\n\nWykonane tury: " + finalTick + "/" + noTicks + "\nLiczba zjedzonego jedzenia: " + world.totalEatenFood + "\nIlość zmarłych zwierząt: " + world.deadAnimalCounter + "\n";
-        statsText += "\n---> Stan końcowy na mapie: <---";
-        System.out.println("\n" + statsText);
-        for (Map.Entry<String, Integer> entry : speciesCount.entrySet()) {
-            if (!entry.getKey().equals("Skeleton")) {
-                statsText += "\n" + entry.getKey() + ": " + entry.getValue() + "    ";
-                System.out.println(entry.getKey() + ": " + entry.getValue()); //na chwile - testy
-            }
-        }
-        statsLabel.setText(statsText);
     }
 
 
