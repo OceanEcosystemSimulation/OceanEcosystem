@@ -12,6 +12,7 @@ public class DrawningAnimalsByTheirRarity implements IAnimalDrawer {
         rarityDrawning.put(Rarity.SUPER_RARE, List.of("Shark", "Dolphin", "Orca"));
         rarityDrawning.put(Rarity.RARE, List.of("Nemo","OceanicPuffer", "Noname fish cuz it does not exists yet"));
     }
+    //TODO: Aktualizować mechaniki by dodawał się Tralalero tralala w trakcie
 
     @Override
     public String drawnAnimalByRarity(Rarity rarity) {

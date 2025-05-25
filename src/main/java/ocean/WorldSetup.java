@@ -70,6 +70,7 @@ public class WorldSetup {
             //TODO: ERROR
         }*/
     }
+    //TODO: rozwiązać problem z pętlą nieskończoną
 
     /* -------------------------------ZWIERZĘTA------------------------------- */
 

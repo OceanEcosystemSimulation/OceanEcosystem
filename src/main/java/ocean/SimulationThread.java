@@ -2,18 +2,18 @@ package ocean;
 
 import javafx.application.Platform;
 import javafx.scene.control.Label;
-import javafx.stage.Stage;
+import javafx.scene.control.Slider;
 
 class SimulationThread extends Thread {
-    private Main mainInstance; //instancja main <-> przechowuje referencje do main bo potrzeba jej parametrów
-    private Label statsLabel;
-    private Stage primaryStage;
+    private final Main mainInstance; //instancja main <-> przechowuje referencje do main bo potrzeba jej parametrów
+    private final Label statsLabel;
+    private final Slider speedSlider;
 
     // szczerze już nwm co robię, teoretycznie przekazuje referencję do obiektu main żeby wątek miał dostęp do metod i danych
-    public SimulationThread(Main mainInstance, Label statsLabel, Stage primaryStage) {
+    public SimulationThread(Main mainInstance, Label statsLabel, Slider speedSlider) {
         this.mainInstance = mainInstance;
         this.statsLabel = statsLabel;
-        this.primaryStage = primaryStage;
+        this.speedSlider = speedSlider;
     }
 
 
@@ -23,7 +23,8 @@ class SimulationThread extends Thread {
         int tick = 0;
         while (tick < Main.noTicks && !mainInstance.world.isSimulationEnded()) { //wykonuje ticks (ile zadane) lub dopuki nie zakończy się symulacja
             try {
-                Thread.sleep(500); //każdy tick trwa 500ms (do zmiany)
+                int speed = (int) speedSlider.getValue();
+                Thread.sleep(speed); //każdy tick trwa 500ms (do zmiany)
             } catch (InterruptedException e) {
                 e.printStackTrace(); //obsługuje sytuację gdy wątek zostanie przerwany w trakcie
             }
@@ -43,7 +44,7 @@ class SimulationThread extends Thread {
 
         //wyświetlenie statystyk końcowych
         Platform.runLater(() -> {
-            mainInstance.showEndStats(statsLabel, primaryStage, finalTick);
+            mainInstance.showEndStats(statsLabel, finalTick);
         });
     }
 }
