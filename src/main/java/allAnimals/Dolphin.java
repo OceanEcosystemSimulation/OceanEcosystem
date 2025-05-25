@@ -50,6 +50,7 @@ public class Dolphin extends Carnivorous implements IEat {
     public void update(World world) {
         processLifeCycle(world); //duperele o życiu
         updateDolphinGraphics();
+        updateSlowEffect();
         if (!isAlive()) return;
 
         Reproduction.pregnancyTick(world, this);
@@ -111,6 +112,18 @@ public class Dolphin extends Carnivorous implements IEat {
         }
     }
 
+    /* -------------------------------MOVE------------------------------- */
+
+    @Override
+    public void move(World world) {
+        if (getSlowCounter() > 0) {
+            System.out.println("Dolphin id: " + getId() + " is slowed by ink");
+            return;
+        }
+
+        //jak nie jest spowolniony to ruch bez zmian
+        super.move(world);
+    }
 
     /* -------------------------------GRAPHICS------------------------------- */
 

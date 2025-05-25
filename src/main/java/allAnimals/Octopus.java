@@ -2,14 +2,17 @@ package allAnimals;
 
 import body.*;
 import extendedMechanics.Reproduction;
+import javafx.application.Platform;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.GridPane;
 import map.*;
 import movement.IEat;
 import ocean.Main;
 import ocean.World;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -29,7 +32,6 @@ public class Octopus extends Carnivorous implements IEat {
         settings();
     }
 
-
     /* -------------------------------GENES------------------------------- */
 
     //do tworzenia genów w nowych
@@ -42,23 +44,47 @@ public class Octopus extends Carnivorous implements IEat {
         genes.setMaxEnergy(80);
         return genes;
     }
+    //ink
+    private void releaseInk(World world) {
+        int radius = 2;
+        boolean released = false;
 
+        //wypuszcza atrament jesli poczuje sie zgrozona
+        for (Animal other : world.getAnimals()) {
+            if (!other.isAlive() || other == this) continue;
+
+            if ("Dolphin".equals(other.getName())
+                    && getPosition().distance(other.getPosition()) <= radius) {
+                other.setSlowCounter(3);
+                released = true;
+                System.out.println("Octopus id: " + getId() + " released ink cloud to Dolphin id:" + other.getId());
+            }
+        }
+
+        if (released) {
+            InkCloud cloud = new InkCloud(getPosition());
+            world.addAnimal(cloud);
+        }
+    }
 
     /* -------------------------------LIFE------------------------------- */
 
     @Override
     public void update(World world) {
+
         processLifeCycle(world); //duperele o życiu
         updateOctopusGraphics();
+
         if (!isAlive()) return;
 
         Reproduction.pregnancyTick(world, this);
-
 
         tryToEat(world, this); //wywołanie mechaniki jedzenia
         tryToMate(world); //wywołanie mechaniki rozmnażania
         move(world); //wywołanie mechaniki ruchu
         tryToAttack(world, this); //wywołanie mechaniki ataku
+        releaseInk(world);
+
     }
 
     // tylko tata, bo kobieta rodzi

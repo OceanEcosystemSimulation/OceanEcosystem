@@ -237,6 +237,8 @@ public class Main extends Application {
                 case allAnimals.Whale whale -> whale.getImageView();
                 case allAnimals.Octopus octopus -> octopus.getImageView();
                 case allAnimals.Dolphin dolphin -> dolphin.getImageView();
+                case allAnimals.Seal seal -> seal.getImageView();
+                case allAnimals.InkCloud ink -> ink.getImageView();
                 default -> null;
             };
 

@@ -81,6 +81,23 @@ public abstract class Animal {
         }
     }
 
+    /* -------------------------------INK------------------------------- */
+
+    private int slowCounter = 0;
+
+    public int getSlowCounter() {
+        return slowCounter;
+    }
+
+    public void setSlowCounter(int turns) {
+        this.slowCounter = turns;
+    }
+
+    public void updateSlowEffect() {
+        if (slowCounter > 0) slowCounter--;
+    }
+
+
 
     /* -------------------------------GETTERY------------------------------- */
 
