@@ -121,8 +121,8 @@ public class OceanicPuffer extends Omnivorous implements IEat, IFight {
     }
 
     //grafika
-    private static Image babyImage = new Image(Objects.requireNonNull(OceanicPuffer.class.getResource("/images/BabyOceanicPuffer1.png")).toExternalForm());
-    private static Image adultImage = new Image(Objects.requireNonNull(OceanicPuffer.class.getResource("/images/AdultOceanicPuffer.png")).toExternalForm());
+    private static Image babyImage;
+    private static Image adultImage;
     private static final int AGE_OLD = 18;
 
     private final ImageView imageView = new ImageView();

@@ -52,6 +52,10 @@ public abstract class Animal {
         alive = false;
     }
 
+    public void die(World world) {
+        die();
+    }
+
     //zostawiam to tutaj bo za wykładzie było że fajnie robić chyba takie pomiędzy a nie 1 do 1 połączenia
     protected void processLifeCycle(World world) {
         poison();

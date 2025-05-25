@@ -6,6 +6,8 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
@@ -97,9 +99,14 @@ public class Main extends Application {
         bottomPanel.setSpacing(50); //ustawienie odległości elementów od siebie
         Label statsLabel = new Label(); //tworzy label - takie do podstawowych tekstów (można zmienić na Text jeśli chcemy formatowania itp)
 
+        barierSettings.setPrefSize(width * tileSize, height * tileSize);
+        barierSettings.setClip(new Rectangle(width * tileSize, height * tileSize));
+        barierSettings.setMouseTransparent(true);
+
         bottomPanel.getChildren().add(statsLabel); //dodaje statsLabel (element) do bottomPanel
-        VBox root = new VBox(grid, bottomPanel); //dodaje elementy siatka i panel do głównego jakby kontenera z elementami?? idk jak to się określa
-        grid.setId("pane");
+        StackPane layouts = new StackPane(grid, barierSettings); // stos, układa elementy warstwami 0 - warstwa na dole - grid, 1 warstwa wyżej - bariera
+        VBox root = new VBox( layouts, bottomPanel); //dodaje elementy siatka i panel do głównego jakby kontenera z elementami?? idk jak to się określa
+        grid.setId("pane"); //zmienam na StackPane, by znajdowalo się na odpowiedniej warstwie
 
         //tworzenie i wyswietlanie okna
         Scene scene = new Scene(root); //tworzy scene i dodaje root cały (wszystkie elementy)
@@ -114,9 +121,10 @@ public class Main extends Application {
         new SimulationThread(this, statsLabel, primaryStage).start();
     }
 
+    private static final Pane barierSettings = new Pane(); // klasa odpowiedzialna za pozycjonowanie
 
-    private boolean isImageView(Node change) {
-        return change instanceof ImageView;
+    public static Pane getOverlay() {
+        return barierSettings;
     }
 
     //aktualizuje wyglad kafelków
@@ -200,6 +208,7 @@ public class Main extends Application {
                 case allAnimals.Orca orca -> orca.getImageView();
                 case allAnimals.Skeleton skeleton -> skeleton.getImageView();
                 case allAnimals.OceanicPuffer oceanicPuffer -> oceanicPuffer.getImageView();
+                case allAnimals.Whale whale -> whale.getImageView();
                 default -> null;
             };
 

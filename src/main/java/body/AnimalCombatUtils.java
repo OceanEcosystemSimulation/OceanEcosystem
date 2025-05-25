@@ -21,6 +21,9 @@ public class AnimalCombatUtils {
         return getEffectiveStrength(animal) * 0.7 + getEffectiveSpeed(animal) * 0.3;
     }
 
+    public static Coord getPosition(Animal animal) {
+        return animal.getPosition();
+    }
 
     static void takeDamage(World world, Animal animal, double amount) {
         int newHealth = (int)(animal.getHealth() - amount);

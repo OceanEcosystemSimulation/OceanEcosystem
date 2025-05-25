@@ -25,6 +25,11 @@ public class Coord {
         return Math.max(dx, dy);  // max( |x1 - x2|; |y1 - y2| )
     }
 
+    //zwracanie współrzędnych z podanym przesunięciem
+    public Coord shifted_coordinate(int x, int y) {
+        return new Coord(this.x + x, this.y + y);
+    }
+
 
     //losuje nowe współrzędne od -speed do +speed (ofc w granicach świata) - jesli juz ktos tam jest to losuje dalej
     public Coord randomAdjacent(int width, int height, int speed, World world) {

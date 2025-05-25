@@ -76,7 +76,7 @@ public class Nemo extends Herbivorous {
             case ALGAE -> 15;
             default -> 0; //NONE
         };
-        if (getAge()+gain <= 100){
+        if (getFoodLevel()+gain <= 100){
             setFoodLevel(getFoodLevel() + gain); //je
             System.out.println(this.getName() + " id: " + this.getId() + " eats " + tile.foodType);
             tile.clearFood(world);

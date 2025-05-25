@@ -7,6 +7,7 @@ public class Tile {
     private final int x, y; //współrzędne
     private MapType mapType; //typ pola
     public FoodType foodType = FoodType.NONE; //typ jedzenia, domyślnie brak jedzenia
+    private int barrierCount = 0; // zmienna, przechowująca informację, czy na danej kratce jest aktualnie bariera
 
     public Tile(int x, int y, MapType mapType) {
         this.x = x;
@@ -25,6 +26,26 @@ public class Tile {
         foodType = FoodType.NONE;
         world.setEatenFoodCounter(world.getEatenFoodCounter() + 1);
         world.totalEatenFood++;
+    }
+
+    public boolean isBarrier() {
+
+        if (barrierCount > 0) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    public void activeBarrier() {
+        barrierCount++; // jeśli znajduje się wieloryb z barierą, inkrementacja
+    }
+
+    public void disactiveBarrier() {
+        if (barrierCount > 0) {
+            barrierCount--; // jeśli bariera już się znajduje, dekrementacja
+        }
     }
 
     public int getX() { return x; }

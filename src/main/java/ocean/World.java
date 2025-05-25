@@ -85,6 +85,10 @@ public class World {
         return x >= 0 && x < width && y >= 0 && y < height;
     }
 
+    public boolean coordsInBounds(Coord coord) { // to samo co inBounds, po prostu zwraca oba pola
+        return inBounds(coord.getX(), coord.getY());
+    }
+
     //sprawdza czy dane pole jest zajete, zwraca true jeśli not empty
     public boolean isOccupied(Coord coord) { return !getNearbyAnimals(coord, 0).isEmpty(); }
 
@@ -105,5 +109,5 @@ public class World {
     private final List<Coord> coralReefCenter = new ArrayList<>();
 
     public List<Coord> getCoralReefCenter() { return coralReefCenter; }
-    public void addCoralReefCenter(Coord c) { coralReefCenter.add(c); }
+    public void addCoralReefCenter(Coord coord) { coralReefCenter.add(coord); }
 }

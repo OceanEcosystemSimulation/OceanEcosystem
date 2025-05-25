@@ -55,6 +55,13 @@ public abstract class Omnivorous extends Animal implements IEat, IFight, IMate {
         double attackerSpeed = AnimalCombatUtils.getEffectiveSpeed(this);
         double preySpeed = AnimalCombatUtils.getEffectiveSpeed(prey);
 
+        Coord attackerPosition = AnimalCombatUtils.getPosition(this);
+        Coord preyPosition = AnimalCombatUtils.getPosition(prey);
+
+        if (world.getTile(attackerPosition).isBarrier() || world.getTile(preyPosition).isBarrier()) {
+            return false;
+        }
+
         if (attackerSpeed < preySpeed) {
             AnimalCombatUtils.escape(world, prey);
             System.out.println(prey.getName() + " id: " + prey.getId() + " escaped from " + this.getName() + " id: " + this.getId());

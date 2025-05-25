@@ -23,7 +23,7 @@ class SimulationThread extends Thread {
         int tick = 0;
         while (tick < Main.noTicks && !mainInstance.world.isSimulationEnded()) { //wykonuje ticks (ile zadane) lub dopuki nie zakończy się symulacja
             try {
-                Thread.sleep(500); //każdy tick trwa 500ms (do zmiany)
+                Thread.sleep(1000); //każdy tick trwa 500ms (do zmiany)
             } catch (InterruptedException e) {
                 e.printStackTrace(); //obsługuje sytuację gdy wątek zostanie przerwany w trakcie
             }

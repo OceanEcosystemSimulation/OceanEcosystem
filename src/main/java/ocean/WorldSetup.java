@@ -111,6 +111,9 @@ public class WorldSetup {
         }else if (name.equals("OceanicPuffer")) {
             return new OceanicPuffer(position);
         }
+        else if (name.equals("Whale")) {
+            return new Whale(position);
+        }
         //itd
         else {
             return null;  //na wypadek błędu
