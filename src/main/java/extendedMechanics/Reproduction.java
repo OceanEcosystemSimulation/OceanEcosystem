@@ -15,7 +15,6 @@ public final class Reproduction {
 
     public static final int MINIMAL_AGE_TO_GET_PREGNANT = 18;
     public static final double ENERGY_NEEDED = 0.8; // 80% * MaxEnergy
-    public static final int SAFETY_DISTANCE = 5; // kratki góra, dół, boki, przekątne
     public static final int PREGNANCY_DURATION = 9; // 9 MONTHS - 9 TURNS
 
     /* -------------------------------CONDITIONS------------------------------- */
@@ -54,6 +53,7 @@ public final class Reproduction {
     /* -------------------------------MECHANICS------------------------------- */
 
     public static void ReproductionProcess(World world, Animal animal1, Animal animal2, Genes genes) {
+        //funkcja sprawdza podstawowe warunki, by stwierdzić, czy może dojść do reprodukcji
         // PŁEĆ I GATUNEK
         if (animal2 == null) {return;} // brak partnera/partnerki
         if (!animal1.getClass().equals(animal2.getClass())) {return;} // ten sam gatunek
@@ -100,6 +100,8 @@ public final class Reproduction {
 
     /* -------------------------------PREGNANCY------------------------------- */
     public static void pregnancyTick(World world, Animal animal) {
+        // funkcja zapobiega podwójnej lub miliardowej ciąży, sprawdza czy organizm jest w ciąży, dodaje licznik
+        // z biegiem tur go dekrementuje
         if (animal.getGender() != Gender.FEMALE || !animal.isPregnant()) {return;} // czy kobietka i czy w ciąży obecnie
         animal.setPregnancyCounter(animal.getPregnancyCounter() - 1); // odejmowanie 'miesiąca' co turę
 
@@ -112,6 +114,8 @@ public final class Reproduction {
     /* -------------------------------BIRTH------------------------------- */
 
     public static void spawnBaby(World world, Animal mother, Animal father) {
+        // funkcja dodaje jajko, z którego przy zadanym czasie (u nas po 5 turach) wykluje się z niego młody organizm
+        // logika niezbyt spójna z faktami, ale dla wizualizacji przyjęłyśmy, że tak jest
         Coord spawn = findFreeTile(world, mother.getPosition());
         if (spawn == null) {return;} // idk, nie zrespi się
 
@@ -125,6 +129,8 @@ public final class Reproduction {
 
     /* -------------------------------SAFE SPACE------------------------------- */
     public static boolean isAreaSafe(World world, Animal animal, Genes genes) {
+        // funkcja sprawdza, czy "na wysokości wzorku ryby", ogólniej mówiąc w zadanym promieniu znajduje się drapieżnik
+        // jeśli się znajduje, rozmnażanie jest niemożliwe
         int safetyRadius = genes.getSpeed(); // ile widzi organizm
 
         Coord position = animal.getPosition();
@@ -132,7 +138,8 @@ public final class Reproduction {
         List<Animal> nearby = world.getNearbyAnimals(position, safetyRadius);
         for (Animal other : nearby) {
             if (other instanceof Carnivorous || other instanceof Omnivorous && other.isAlive() && other.getId() != animal.getId()) {
-                if (!other.getName().equals(animal.getName())) {
+                if (!other.getName().equals(animal.getName())) { // drapieżnik, wszystkożerca TEGO SAMEGO GATUNKU
+                    // to było koniecznie, bo w przeciwym wypadku blokowało rozmnażanie drapieżnikom
                     return false; // w poblizu jest drapieznik
                 }
             }
@@ -141,18 +148,19 @@ public final class Reproduction {
     }
 
     public static Coord findFreeTile(World world, Coord pos) { //szuka wolnego miejsca, by złożyć jajo
-        int[][] directions = {{1,0}, {-1,0}, {0,1}, {0,-1}}; // kierunki: góra, dół, prawo, lewo
+        int[][] directions = {{1,0}, {-1,0}, {0,1}, {0,-1}}; // kierunki: prawo, lewo, góra, dół
 
-        List<Coord> possibleTiles = new ArrayList<>();
+        List<Coord> possibleTiles = new ArrayList<>(); //lista pól, na których może złożyć jajo
         for (int[] d: directions) {
-            Coord coord = new Coord(pos.getX() + d[0], pos.getY() + d[1]);
-            if (world.inBounds(coord.x, coord.y) && !world.isOccupied(coord)) {
-                possibleTiles.add(coord);
+            Coord coord = new Coord(pos.getX() + d[0], pos.getY() + d[1]); //pobiera aktualne wolne miejsca
+            if (world.inBounds(coord.x, coord.y) && !world.isOccupied(coord)) { // jeśli znajduje się w granicach świata
+                possibleTiles.add(coord); // dodaje do listy
             }
         }
 
-        if (possibleTiles.isEmpty()) {return null;}
+        if (possibleTiles.isEmpty()) {return null;} //jeśli nie ma wolnego miejsca w liście
+        // zwraca null, bo nie ma gdzie postawić
 
-        return possibleTiles.get(World.random.nextInt(possibleTiles.size()));
+        return possibleTiles.get(World.random.nextInt(possibleTiles.size())); //wybiera losowe pole z tych, znajdujących się w liście
     }
 }
