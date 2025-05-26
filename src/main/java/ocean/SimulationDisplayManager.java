@@ -26,7 +26,7 @@ public class SimulationDisplayManager {
 
 
     //ustawienia siatki
-    public void setupGrid() {
+    void setupGrid() {
         //GridPane pozwala na organizację elementów w formie siatki a nie jakiś węzłów więc to wzięłam ale nwm szczerze co robię XD
         grid = new GridPane(); //tworzenie układu siatki na której będą wyświetlane kafelki
         tilesTab = new Rectangle[width][height]; //tablica kafelków update wielkości
@@ -46,7 +46,7 @@ public class SimulationDisplayManager {
 
 
     //ustawienia panelu ze statami
-    public VBox setupStatsPanel() {
+    private VBox setupStatsPanel() {
         statsPanel = new VBox(); //tworzy taki kontener?? strukturę??? (VBox układa rzeczy jeden pod drugim)
         statsPanel.setTranslateY(5); //przesuwa statsPanel o 5px niżej
         statsPanel.setTranslateX(10); //przesuwa statsPanel o 10px w prawo
@@ -60,7 +60,7 @@ public class SimulationDisplayManager {
 
 
     //ustawienia slidera
-    public Slider setupSpeedSlider() {
+    private Slider setupSpeedSlider() {
         speedSlider = new Slider();
         speedSlider.setMin(100);
         speedSlider.setMax(2000);
@@ -77,7 +77,7 @@ public class SimulationDisplayManager {
 
 
     //ustawienia bariery
-    public void setupBarrierLayer() {
+    void setupBarrierLayer() {
         barierSettings = new StackPane();
         barierSettings.setPrefSize(width * tileSize, height * tileSize);
         barierSettings.setClip(new Rectangle(width * tileSize, height * tileSize));
@@ -86,7 +86,7 @@ public class SimulationDisplayManager {
 
 
     //ustawienia tła
-    public void applyBackgroundStyles(Scene scene) {
+    private void applyBackgroundStyles(Scene scene) {
         URL cssUrl = getClass().getResource("/style.css");
         if (cssUrl != null) {
             scene.getStylesheets().add(cssUrl.toExternalForm());

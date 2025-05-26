@@ -49,10 +49,10 @@ public class Octopus extends Carnivorous implements IEat {
         boolean released = false;
 
         //wypuszcza atrament jesli poczuje sie zgrozona
-        for (Animal other : world.getAnimals()) {
+        for (Animal other : world.getNearbyAnimals(getPosition(), radius)) {
             if (!other.isAlive() || other == this) {continue;}
 
-            if ("Dolphin".equals(other.getName()) && getPosition().distance(other.getPosition()) <= radius) {
+            if ("Dolphin".equals(other.getName())) {
                 AnimalEffectsManager.slowTarget(this, other, 3);
                 released = true;
             }
@@ -60,7 +60,7 @@ public class Octopus extends Carnivorous implements IEat {
 
         if (released) {
             InkCloud cloud = new InkCloud(getPosition());
-            world.addAnimal(cloud);
+            world.addObject(cloud);
         }
     }
 

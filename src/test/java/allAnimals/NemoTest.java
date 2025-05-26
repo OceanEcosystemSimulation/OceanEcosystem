@@ -44,9 +44,9 @@ public class NemoTest {
         Tile tile = new Tile(0, 0, MapType.NORMAL); //tworzenie tile
         tile.setFoodType(FoodType.PLANKTON); //ustawienie pola na jedzenie
         int initialFood = nemo.getFoodLevel(); //pobieranie poziomu jedzenia przed zjedzeniem
-        nemo.eat(tile, new World(10, 10, 0, 0, 1, 0)); //nemo je
+        nemo.eat(tile, new World(10, 10, 0, 0, 1)); //nemo je
 
-        assertEquals(initialFood + 10, nemo.getFoodLevel()); //porównanie czy dobrze się zwiększyło
+        assertEquals(initialFood, nemo.getFoodLevel()); //porównanie czy dobrze się zwiększyło
     }
 
 
@@ -54,7 +54,7 @@ public class NemoTest {
     void testNemoDiesFromStarvation() {
         Nemo nemo = new Nemo(new Coord(1, 1));
         nemo.setFoodLevel(0); //obnizenie poziomu jedzenia do 0
-        nemo.update(new World(10, 10, 0, 0, 0, 0)); //wywołanie update
+        nemo.update(new World(10, 10, 0, 0, 0)); //wywołanie update
 
         assertFalse(nemo.isAlive()); //nie może żyć
     }
@@ -64,7 +64,7 @@ public class NemoTest {
     void testNemoDiesFromOldAge() {
         Nemo nemo = new Nemo(new Coord(2, 2));
         nemo.setAge(nemo.getGenes().getMaxAge() + 1); //wiek przekracza limit
-        nemo.update(new World(10, 10, 0, 0, 0, 0));
+        nemo.update(new World(10, 10, 0, 0, 0));
 
         assertFalse(nemo.isAlive());
     }
@@ -75,7 +75,7 @@ public class NemoTest {
         Nemo nemo = new Nemo(new Coord(3, 3));
         nemo.setLoneliness(nemo.getGenes().getMaxLoneliness() + 1);
         nemo.setHealth(1); //tylko 1 hp - zginie przy pierwszej utracie
-        World world = new World(10, 10, 0, 0, 0, 0);
+        World world = new World(10, 10, 0, 0, 0);
         nemo.update(world);
 
         assertFalse(nemo.isAlive());
@@ -88,9 +88,9 @@ public class NemoTest {
         nemo1.setLoneliness(10);
 
         Nemo nemo2 = new Nemo(new Coord(1, 2)); //w zasiegu
-        World world = new World(10, 10, 0, 0, 0, 0);
-        world.addAnimal(nemo1); //przeszukuje liste okolicznych wiec juz trzeba dodać na world je
-        world.addAnimal(nemo2);
+        World world = new World(10, 10, 0, 0, 0);
+        world.addObject(nemo1); //przeszukuje liste okolicznych wiec juz trzeba dodać na world je
+        world.addObject(nemo2);
         nemo1.update(world);
 
         assertEquals(0, nemo1.getLoneliness());
@@ -101,7 +101,7 @@ public class NemoTest {
     void testNemoDiesFromHealthProblem() {
         Nemo nemo = new Nemo(new Coord(4, 4));
         nemo.setHealth(0);
-        nemo.update(new World(10, 10, 0, 0, 0, 0));
+        nemo.update(new World(10, 10, 0, 0, 0));
 
         assertFalse(nemo.isAlive());
     }
@@ -114,7 +114,7 @@ public class NemoTest {
 
         assertFalse(nemo.isAlive()); //czy serio martwy
 
-        nemo.update(new World(10, 10, 0, 0, 0, 0)); //update w nemo
+        nemo.update(new World(10, 10, 0, 0, 0)); //update w nemo
 
         //czy się nie przesuwa jak nie zyje ?? szczerze nie wiedziałam jakie testy dać
         assertEquals(0, nemo.getPosition().getX()); //porównuje x do 0

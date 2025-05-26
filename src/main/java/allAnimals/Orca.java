@@ -33,13 +33,13 @@ public class Orca extends Carnivorous {
     private static Genes generateGenes() {
         Genes g = new Genes();
         g.setStrength(70 + rand.nextInt(11));
-        g.setSpeed(70 + rand.nextInt(11)); //mozna zmienic
+        g.setSpeed(70 + rand.nextInt(11));
         g.setMaxAge(80 + rand.nextInt(20));
         g.setMaxLoneliness(50 + rand.nextInt(10));
         g.setMaxEnergy(100);
         return g;
     }
-    //
+
 
     @Override
     public void update(World world) {
@@ -62,22 +62,26 @@ public class Orca extends Carnivorous {
         return new Orca(position, parent1, parent2);
     }
 
-    //taka sama zasada jak w rekinie haha
+
+
     private static final List<String> preyList = List.of("Nemo", "Shark");
+
 
     @Override
     public boolean canAttack(Animal other) {
         return other != null && preyList.contains(other.getName());
     }
 
+
     @Override
     public int calculateGain(Animal animal) {
         return switch (animal.getName()) {
-            case "Nemo" -> 30; //przykladowo
+            case "Nemo" -> 30;
             case "Shark" -> 40;
             default -> 0;
         };
     }
+
 
     @Override
     public void move(World world) {

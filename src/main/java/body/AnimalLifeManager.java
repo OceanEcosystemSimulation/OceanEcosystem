@@ -67,8 +67,8 @@ public class AnimalLifeManager {
     }
 
     static void SkeletonSettings(World world, Animal animal) {
-        world.addAnimal(new Skeleton(animal.getPosition())); // dodajemy szkielet, dla konkretnego zwierzęcia, na konkretnej pozycji
-        world.getAnimals().remove(animal); // usuwwamy ze świata
+        world.addObject(new Skeleton(animal.getPosition())); // dodajemy szkielet, dla konkretnego zwierzęcia, na konkretnej pozycji
         animal.die(); // alive = false
+        //world.removeObject(animal); // usuwwamy ze świata (idk czy to jest konieczne wiec na razie tak ~ M)
     }
 }

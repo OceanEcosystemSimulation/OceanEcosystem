@@ -46,6 +46,7 @@ public class Coord {
             newCoord = new Coord(newX, newY);
 
             attempts++;
+            System.out.println(attempts);
             if (attempts >= 500) { //kiedy przy X próbach nie będzie miejsca
                 return null;
             }

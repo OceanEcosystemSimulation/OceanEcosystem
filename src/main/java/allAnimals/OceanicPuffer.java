@@ -126,9 +126,7 @@ public class OceanicPuffer extends Omnivorous implements IEat, IFight {
     private static final int AGE_OLD = 18;
 
     private final ImageView imageView = new ImageView();
-    public ImageView getImageView() {
-        return imageView;
-    }
+    public ImageView getImageView() { return imageView; }
 
 
     private static void loadImagesIfNeeded() {

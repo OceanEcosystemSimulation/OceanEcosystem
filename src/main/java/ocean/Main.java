@@ -1,6 +1,7 @@
 package ocean;
 
 import body.Animal;
+import body.WorldObject;
 import javafx.application.Application;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -180,12 +181,12 @@ public class Main extends Application {
 
         /* -------------------------------GRAFIKI ZWIERZĄT------------------------------- */
 
-        List<Animal> animalListCopy = new ArrayList<>(world.getAnimals()); //kopia bo wątek jednocześnie działa na tamtej liście
-        for (Animal animal : animalListCopy) {
-            if (!animal.isAlive() && !(animal instanceof allAnimals.Skeleton)) {continue;} // sprawdzenie czy są w ogóle żywe (dla pewności)
+        List<WorldObject> objectslListCopy = new ArrayList<>(world.getObjects()); //kopia bo wątek jednocześnie działa na tamtej liście
+        for (WorldObject object : objectslListCopy) {
+            if (object instanceof Animal animal && !animal.isAlive()) {continue;} // sprawdzenie czy są w ogóle żywe (dla pewności)
 
             // dopasowanie grafiki do zwierzęcia
-            ImageView image = switch (animal) {
+            ImageView image = switch (object) {
                 case allAnimals.Nemo nemo -> nemo.getImageView();
                 case allAnimals.Shark shark -> shark.getImageView();
                 case allAnimals.Egg egg -> egg.getImageView();
@@ -203,15 +204,15 @@ public class Main extends Application {
             if (image != null) {
                 image.setPreserveRatio(true);
 
-                GridPane.setColumnIndex(image, animal.getPosition().getX());
-                GridPane.setRowIndex(image, animal.getPosition().getY());
+                GridPane.setColumnIndex(image, object.getPosition().getX());
+                GridPane.setRowIndex(image, object.getPosition().getY());
 
                 GridPane.setHalignment(image, javafx.geometry.HPos.CENTER); //centering by nie były w lewym górnym
                 GridPane.setValignment(image, javafx.geometry.VPos.CENTER);
 
                 grid.getChildren().add(image);
             } else {  // jeśli nie ma grafiki, pojawi się czerwony kafelek
-                Coord pos = animal.getPosition();
+                Coord pos = object.getPosition();
                 tilesTab[pos.getX()][pos.getY()].setFill(Color.RED);
             }
         }

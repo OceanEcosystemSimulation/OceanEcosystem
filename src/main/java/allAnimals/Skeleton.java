@@ -1,7 +1,6 @@
 package allAnimals;
 
-import body.Animal;
-import body.Genes;
+import body.WorldObject;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import map.Coord;
@@ -11,7 +10,7 @@ import ocean.World;
 import java.awt.*;
 import java.util.Objects;
 
-public class Skeleton extends Animal {
+public class Skeleton extends WorldObject {
 
     /* -------------------------------STAŁE------------------------------- */
 
@@ -20,8 +19,7 @@ public class Skeleton extends Animal {
     /* -------------------------------KONSTUKTOR------------------------------- */
 
     public Skeleton(Coord position) {
-        super(position,  genesForSkeleton());
-        setName("Skeleton");
+        super(position);
         settings();
     }
 
@@ -49,26 +47,17 @@ public class Skeleton extends Animal {
         imageView.setFitHeight(Main.getTileSize() * 0.9);
     }
 
+    @Override
     public ImageView getImageView() { return imageView; } // getter
 
 
     /* -------------------------------MECHANIKA------------------------------- */
 
-    private static Genes genesForSkeleton() {
-        return null; // szkielet nie ma JUŻ genów :<
-    }
-
     @Override
     public void update(World world) { // czas rozkładu szkieletu, co turę się zmniejsza, finalnie się usunie
         decompositionTime--; // dekrementacja
         if (decompositionTime == 0) {
-            world.getAnimals().remove(this); // usunięcie szkieletu
+            world.removeObject(this); // usunięcie szkieletu
         }
     }
-
-    @Override
-    public Animal giveBirth(Coord pos, Animal parent1, Animal parent2) {
-        return null; // null, bo to szkielet
-    }
-
 }

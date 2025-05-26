@@ -5,11 +5,7 @@ import ocean.World;
 
 import java.util.*;
 
-public abstract class Animal {
-
-    /* -------------------------------STAŁE------------------------------- */
-
-    private Coord position; //aktualne współrzędne w świecie
+public abstract class Animal extends WorldObject {
     private int foodLevel, age, loneliness;
     private int energy, health;
     private final Genes genes; //przechowuje geny - także raczej się nie zmienia po ustawieniu
@@ -28,7 +24,7 @@ public abstract class Animal {
 
     // konstruktor dla zwierząt startowych
     public Animal(Coord position, Genes genes) {
-        this.position = position;
+        super(position);
         this.age = 0;
         this.foodLevel = 100;
         this.energy = 100;
@@ -43,8 +39,6 @@ public abstract class Animal {
         this(position, Genes.inherit(parent1.genes, parent2.genes));
     }
 
-
-    public abstract void update(World world);
 
     public abstract Animal giveBirth(Coord pos, Animal parent1, Animal parent2);
 
@@ -65,8 +59,8 @@ public abstract class Animal {
 
     private int poisonTicks = 0; // ile tur efekt zatrucia ma się utrzymywać na rybce
 
-    public int getPoisonTicks() { return poisonTicks; }
-    public void setPoisonTicks(int ticks) { this.poisonTicks = ticks; }
+    public int getPoisonTicks() {return poisonTicks;}
+    public void setPoisonTicks(int ticks) {this.poisonTicks = ticks;}
 
 
 
@@ -74,14 +68,13 @@ public abstract class Animal {
 
     private int slowCounter = 0;  //ile tur efekt spowolnienia ma się utrzymywać na rybce
 
-    public int getSlowCounter() { return slowCounter; }
-    public void setSlowCounter(int turns) { this.slowCounter = turns; }
+    public int getSlowCounter() {return slowCounter;}
+    public void setSlowCounter(int turns) {this.slowCounter = turns;}
 
 
 
     /* -------------------------------GETTERY------------------------------- */
 
-    public Coord getPosition() {return position;}
     public int getAge() {return age;}
     public int getFoodLevel() {return foodLevel;}
     public int getLoneliness() {return loneliness;}
@@ -98,8 +91,9 @@ public abstract class Animal {
 
     /* -------------------------------SETTERY------------------------------- */
 
+    @Override
     public void setPosition(Coord newPosition) {
-        this.position = newPosition;
+        super.setPosition(newPosition);
         System.out.println(this.getName() + " id: " + this.getId() + "  jumped to [" + this.getPosition().x + "," + this.getPosition().y + "]");
     }
 

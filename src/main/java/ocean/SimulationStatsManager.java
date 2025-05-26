@@ -28,10 +28,8 @@ public class SimulationStatsManager {
     private static String animalStatsText() {
         String statsText = "";
         for (Map.Entry<String, Integer> entry : speciesCount.entrySet()) {
-            if (!entry.getKey().equals("Skeleton")) {
-                statsText += "\n" + entry.getKey() + ": " + entry.getValue() + "    ";
-                System.out.println(entry.getKey() + ": " + entry.getValue()); //na chwile - testy
-            }
+            statsText += "\n" + entry.getKey() + ": " + entry.getValue() + "    ";
+            System.out.println(entry.getKey() + ": " + entry.getValue()); //na chwile - testy
         }
         return statsText;
     }
@@ -42,7 +40,7 @@ public class SimulationStatsManager {
         updateSpeciesCount(world);
 
         String statsText = "---> Stan na mapie: <---\n";
-        statsText += "\nLiczba zjedzonego jedzenia: " + world.totalEatenFood + "\nIlość zmarłych zwierząt: " + world.deadAnimalCounter + "\n";
+        statsText += "\nLiczba zjedzonego jedzenia: " + world.totalEatenFood + "\nIlosc zmarlych zwierzat: " + world.deadAnimalCounter + "\n";
         System.out.println(statsText);
         statsText += animalStatsText();
 

@@ -2,6 +2,7 @@ package map;
 
 import javafx.scene.image.Image;
 
+import java.awt.*;
 import java.net.URL;
 
 public enum FoodType {
@@ -13,7 +14,9 @@ public enum FoodType {
 
     // pętla eliminująca przypadek 'null' i dobierająca ścieżkę grafiki
     FoodType(String FoodPath) {
-        if (FoodPath != null) { // sprawdzenie, czy to jedzenie
+        if (FoodPath == null || GraphicsEnvironment.isHeadless()) {
+            FoodImage = null; //nie ładuje gdy nie może
+        } else {
             URL foodImageUrl = getClass().getResource(FoodPath);
             if (foodImageUrl != null) { //sprawdzenie czy na pewno istnieje plik
                 this.FoodImage = new Image(foodImageUrl.toExternalForm()); //załadowanie go
@@ -21,9 +24,6 @@ public enum FoodType {
                 System.out.println("food image not found!: " + FoodPath); //pokaze tez który nie zaladowało
                 this.FoodImage = null;
             }
-        }
-        else {
-            this.FoodImage = null;
         }
     }
 

@@ -12,7 +12,8 @@ import static ocean.WorldSetup.*;
 public class World {
     private final int width, height; //powirzchnia mapy
     private Tile[][] grid; //siatka - różne typy mapy i objekty
-    private List<Animal> animals = new ArrayList<>(); //lista zwierząt na świecie
+    private final List<Animal> animals = new ArrayList<>(); //lista zwierząt na świecie
+    private final List<WorldObject> objects = new ArrayList<>(); //lista objektów na świecie aka wszystko co jest
     private final List<Coord> coralReefCenter = new ArrayList<>(); // przechowuje współrzędne środka rafy koralowej
     private int currentTick = 0;
 
@@ -35,7 +36,7 @@ public class World {
 
     //główna symulacja świata - w każdym cyklu aktualizuje zwierzęta - dead alive
     public void runSimulation(int tick) {
-        List<Animal> currentAnimals = new ArrayList<>(animals); //tworzenie kopii by nie aktualizować m.in. dopiero co urodzonych
+        List<WorldObject> currentObjects = new ArrayList<>(objects); //tworzenie kopii by nie aktualizować m.in. dopiero co urodzonych
         this.currentTick = tick; //zapamietuje ture
 
         if (tick % 5 == 0 ) {  //co X tą turę dodaje brakujące jedzenie
@@ -43,13 +44,13 @@ public class World {
             eatenFoodCounter = 0; //zerowanie licznika
         }
 
-        for (Animal animal : currentAnimals) {  //iteracja po kopii animals - żeby nie było problemów później bo niektóre rzeczy usuwamy itp to sie rozwali inaczej
-            animal.update(this); // aktualizuje stan zwierzęcia
+        for (WorldObject object : currentObjects) {  //iteracja po kopii animals - żeby nie było problemów później bo niektóre rzeczy usuwamy itp to sie rozwali inaczej
+            object.update(this); // aktualizuje stan zwierzęcia
 
-            if (!animal.isAlive()) {
+            if (object instanceof Animal animal && !animal.isAlive()) { //jeżeli to zwierze i nie żyje
                 System.out.println(animal.getName() + " id: " + animal.getId() + " is dead ");
                 deadAnimalCounter++;
-                animals.remove(animal); //usuwa martwe
+                removeObject(animal);
             }
         }
     }
@@ -69,15 +70,17 @@ public class World {
         return result;
     }
 
+
+    public void setEatenFoodCounter(int eatenFoodCounter) {this.eatenFoodCounter = eatenFoodCounter;}
+
     public int getWidth() { return width; }
     public int getHeight() { return height; }
     public int getEatenFoodCounter() { return eatenFoodCounter; }
     public Tile[][] getGrid() { return grid; }
     public List<Animal> getAnimals() { return animals; }
+    public List<WorldObject> getObjects() { return objects; }
     public boolean isSimulationEnded() { return simulationEnded; }
-    public int getTicks() {
-        return currentTick;
-    }//zapamietuje ture
+    public int getTicks() { return currentTick; }//zapamietuje ture
 
 
     //zwraca komórkę jeśli jest w granicach
@@ -98,18 +101,30 @@ public class World {
     public boolean isOccupied(Coord coord) { return !getNearbyAnimals(coord, 0).isEmpty(); }
 
 
-    //dodaje zwierzeta do listy - potrzebuje ale może póżniej się da jakoś inaczej to załatwić
-    public void addAnimal(Animal animal) {
-        if (animal != null && animal.isAlive()) {
-            animals.add(animal); //dodaje jeśli żywe
+    //dodaje objekty do listy
+    public void addObject(WorldObject object) {
+        if (object == null) { return; }
+
+        objects.add(object); //wszystkie
+        if (object instanceof Animal animal && animal.isAlive()) {  //tylko zwierzeta
+            animals.add(animal);
         }
     }
 
-    public void addEgg(Egg egg) {
-        addAnimal(egg);
+
+    //usuwa objekty z lisy - potrzebuje ale może póżniej się da jakoś inaczej to załatwić
+    public void removeObject(WorldObject object) {
+        if (object instanceof Animal animal && !animal.isAlive()) { //tylko zwierzeta
+            animals.remove(animal);
+            objects.remove(object);
+        } else { objects.remove(object); } //wszystko
     }
 
-    public void setEatenFoodCounter(int eatenFoodCounter) {this.eatenFoodCounter = eatenFoodCounter;}
+
+    public void addEgg(Egg egg) {
+        addObject(egg);
+    }
+
 
     public List<Coord> getCoralReefCenter() { return coralReefCenter; }
     public void addCoralReefCenter(Coord coord) { coralReefCenter.add(coord); }

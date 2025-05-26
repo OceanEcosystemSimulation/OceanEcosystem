@@ -34,7 +34,7 @@ public class WorldSetup {
         int coralGeneratingLimit = (int) (height * 0.35); // max wysokość, by nie tworzyły się na grafice wody // zakres
 
         if (noCoral > maxCountOfCorals) {
-            System.out.printf("Zadany wymiar mapy jest zbyt mały, nie można umieścić tylu raf\n");
+            System.out.println("Zadany wymiar mapy jest zbyt mały, nie można umieścić tylu raf");
             System.out.printf("Zmniejszam ilość raf, do największego możliwego... Ilość raf: %d\n", maxCountOfCorals);
             noCoral = maxCountOfCorals;
         }
@@ -103,7 +103,7 @@ public class WorldSetup {
 
             Animal animal = createAnimalFromName(animalType, coord); //tworzy zwierzę
             if (animal != null) {
-                world.addAnimal(animal);
+                world.addObject(animal);
                 added++;
             }
         }

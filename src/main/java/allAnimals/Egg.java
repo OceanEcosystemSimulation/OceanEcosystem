@@ -49,7 +49,8 @@ public class Egg extends Animal {
         imageView.setFitHeight(Main.getTileSize() * 0.9);
     }
 
-    public ImageView getImageView() { return imageView; } // getter
+    @Override
+    public ImageView getImageView() { return imageView; }
 
 
     /* -------------------------------MECHANIKA------------------------------- */
@@ -59,8 +60,8 @@ public class Egg extends Animal {
         hatching--;
         if (hatching == 0) {
             Animal baby = giveBirth(getPosition(), mother, mother.getFatherDuringPregnancy());
-            world.addAnimal(baby);
-            world.getAnimals().remove(this);
+            world.addObject(baby);
+            world.removeObject(this);
         }
     }
 
