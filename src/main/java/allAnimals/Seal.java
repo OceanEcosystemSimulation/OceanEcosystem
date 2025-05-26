@@ -61,38 +61,38 @@ public class Seal extends Carnivorous {
 
     private void scareNearbySharks(World world) {
         int radius = 3;
-        int x = getPosition().x;
-        int y = getPosition().y;
+        int sealX = getPosition().x;
+        int sealY = getPosition().y;
 
         for (int dx = -radius; dx <= radius; dx++) {
             for (int dy = -radius; dy <= radius; dy++) {
-                Coord coord = new Coord(x + dx, y + dy);
-                if (world.coordsInBounds(coord)) {
-                    //szuka rekina (sprawdza, czy na konkretnej kratce stoi jakies żywe zwierze – wcześniej ta kratka zostala wybrana z promienia 3 kratek wokół foki)
-                    Animal a = world.getAnimals().stream()
-                            .filter(animal -> animal.getPosition().x == coord.x && animal.getPosition().y == coord.y && animal.isAlive())
-                            .findFirst()
-                            .orElse(null);
+                int x = sealX + dx;
+                int y = sealY + dy;
 
-                    //jak znajdzie rekina to go "odstrasza"
-                    if (a != null && a.getName().equals("Shark")) {
-                        System.out.println("Seal id: " + getId() + " scared away Shark id: " + a.getId());
-                        //"odstrasza" na dwa razy wieksza odleglosc
-                        Coord away = a.getPosition().shifted_coordinate(dx * 2, dy * 2);
-                        if (world.coordsInBounds(away)) {
-                            //odstraszenie
-                            a.setPosition(away);
-                        } else {
-                            //zeby nie wyrzucalo poza mape
-                            int rx = World.random.nextInt(world.getWidth());
-                            int ry = World.random.nextInt(world.getHeight());
-                            a.setPosition(new Coord(rx, ry));
+                //sprawdza czy kratka nie wychodzi poza mape
+                if (x >= 0 && x < world.getWidth() && y >= 0 && y < world.getHeight()) {
+                    //szuka czy jest rekin na tej pozycji
+                    for (Animal animal : world.getAnimals()) {
+                        if (animal.isAlive() &&
+                                animal.getPosition().x == x &&
+                                animal.getPosition().y == y &&
+                                animal.getName().equals("Shark")) {
+
+                            System.out.println("Seal id: " + getId() + " scared away Shark id: " + animal.getId());
+
+                            //przesuwa rekina na wylosowana kratke o wspolrzednych  rx i ry
+                            int rx = (int)(Math.random() * world.getWidth());
+                            int ry = (int)(Math.random() * world.getHeight());
+                            animal.setPosition(new Coord(rx, ry));
+
+                            break; //jak znajdzie rekina to konczy
                         }
                     }
                 }
             }
         }
     }
+
 
 
     @Override
