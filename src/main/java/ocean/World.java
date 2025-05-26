@@ -15,7 +15,6 @@ public class World {
     private final List<Animal> animals = new ArrayList<>(); //lista zwierząt na świecie
     private final List<WorldObject> objects = new ArrayList<>(); //lista objektów na świecie aka wszystko co jest
     private final List<Coord> coralReefCenter = new ArrayList<>(); // przechowuje współrzędne środka rafy koralowej
-    private int currentTick = 0;
 
     private int eatenFoodCounter = 0; //do liczenia ile jedzenia zostało zjedzone od ostatnego uzupełnienia
     public int totalEatenFood = 0;
@@ -39,7 +38,6 @@ public class World {
     //główna symulacja świata - w każdym cyklu aktualizuje zwierzęta - dead alive
     public void runSimulation(int tick) {
         List<WorldObject> currentObjects = new ArrayList<>(objects); //tworzenie kopii by nie aktualizować m.in. dopiero co urodzonych
-        this.currentTick = tick; //zapamietuje ture
 
         if (tick % 5 == 0 ) {  //co X tą turę dodaje brakujące jedzenie
             WorldSetup.spawnFood(this, eatenFoodCounter); //dodawanie jedzenia na mapę
@@ -82,7 +80,6 @@ public class World {
     public List<Animal> getAnimals() { return animals; }
     public List<WorldObject> getObjects() { return objects; }
     public boolean isSimulationEnded() { return simulationEnded; }
-    public int getTicks() { return currentTick; }//zapamietuje ture
 
 
     //zwraca komórkę jeśli jest w granicach

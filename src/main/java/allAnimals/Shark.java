@@ -5,7 +5,6 @@ import extendedMechanics.Reproduction;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import map.*;
-import movement.IEat;
 import ocean.Main;
 import ocean.World;
 
@@ -14,7 +13,7 @@ import java.util.List;
 import java.util.Objects;
 
 
-public class Shark extends Carnivorous implements IEat {
+public class Shark extends Carnivorous {
     public Shark(Coord position) {
         super(position, generateGenes());
         setName("Shark");
@@ -54,8 +53,6 @@ public class Shark extends Carnivorous implements IEat {
 
         Reproduction.pregnancyTick(world, this);
 
-
-        tryToEat(world, this); //wywołanie mechaniki jedzenia
         tryToMate(world); //wywołanie mechaniki rozmnażania
         move(world); //wywołanie mechaniki ruchu
         tryToAttack(world, this); //wywołanie mechaniki ataku
@@ -66,7 +63,6 @@ public class Shark extends Carnivorous implements IEat {
     public Animal giveBirth(Coord position, Animal parent1, Animal parent2) {
         return new Shark(position, parent1, parent2);
     }
-
 
 
 
@@ -90,32 +86,14 @@ public class Shark extends Carnivorous implements IEat {
         };
     }
 
-    /* -------------------------------EATING------------------------------- */
-
-    @Override
-    public boolean canEat(Tile tile) { //also przykładowe
-        return getFoodLevel() <= 30 &&
-                (tile.getFoodType() == FoodType.PLANKTON || tile.getFoodType() == FoodType.ALGAE);
-    }
-
-    @Override
-    public void eat(Tile tile, World world) { //przykładowe jak pisać
-        int gain = switch (tile.getFoodType()) {
-            case PLANKTON, ALGAE -> 5;
-            default -> 0; //NONE
-        };
-        if (getFoodLevel()+gain <= 100){ //tak na wszelki
-            setFoodLevel(getFoodLevel() + gain);
-            System.out.println(this.getName() + " id: " + this.getId() + " eats " + tile.getFoodType());
-            tile.clearFood(world);
-        }
-    }
 
     @Override
     public void move(World world) {
         // Rekin ignoruje spowolnienie chmurk z atramentem
         super.move(world);
     }
+
+
 
     /* -------------------------------GRAPHICS------------------------------- */
 

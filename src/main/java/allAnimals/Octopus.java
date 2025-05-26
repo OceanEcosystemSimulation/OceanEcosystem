@@ -5,7 +5,6 @@ import extendedMechanics.Reproduction;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import map.*;
-import movement.IEat;
 import ocean.Main;
 import ocean.World;
 
@@ -14,7 +13,7 @@ import java.util.List;
 import java.util.Objects;
 
 
-public class Octopus extends Carnivorous implements IEat {
+public class Octopus extends Carnivorous {
     public Octopus(Coord position) {
         super(position, generateGenes());
         setName("Octopus");
@@ -76,7 +75,6 @@ public class Octopus extends Carnivorous implements IEat {
 
         Reproduction.pregnancyTick(world, this);
 
-        tryToEat(world, this); //wywołanie mechaniki jedzenia
         tryToMate(world); //wywołanie mechaniki rozmnażania
         move(world); //wywołanie mechaniki ruchu
         tryToAttack(world, this); //wywołanie mechaniki ataku
@@ -109,27 +107,6 @@ public class Octopus extends Carnivorous implements IEat {
             case "Shark" -> 60;
             default -> 0;
         };
-    }
-
-    /* -------------------------------EATING------------------------------- */
-
-    @Override
-    public boolean canEat(Tile tile) {
-        return getFoodLevel() <= 30 &&
-                (tile.getFoodType() == FoodType.PLANKTON || tile.getFoodType() == FoodType.ALGAE);
-    }
-
-    @Override
-    public void eat(Tile tile, World world) {
-        int gain = switch (tile.getFoodType()) {
-            case PLANKTON, ALGAE -> 5;
-            default -> 0; //NONE
-        };
-        if (getFoodLevel()+gain <= 100){ //tak na wszelki
-            setFoodLevel(getFoodLevel() + gain);
-            System.out.println(this.getName() + " id: " + this.getId() + " eats " + tile.getFoodType());
-            tile.clearFood(world);
-        }
     }
 
 
