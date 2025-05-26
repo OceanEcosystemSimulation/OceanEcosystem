@@ -122,14 +122,15 @@ public class Main extends Application {
         }
 
         // czyści wszystkie stare obrazki, czyli te ktore zostaną po poprzedniej turze - zeby sie nie nakladaly na stare
+        //
         List<Node> toRemove = new ArrayList<>();
-        for (Node node : grid.getChildren()) {
-            if (node instanceof ImageView) {
-                toRemove.add(node);
+        for (Node imageToClear : grid.getChildren()) {
+            if (imageToClear instanceof ImageView) {
+                toRemove.add(imageToClear);
             }
         }
 
-        grid.getChildren().removeAll(toRemove);
+        grid.getChildren().removeAll(toRemove); // usuwa wszystkie grafiki
 
 
         /* -------------------------------OTOCZENIE - ŚRODOWISKO------------------------------- */
@@ -146,6 +147,7 @@ public class Main extends Application {
             CoralImage.setFitHeight(tileSize * 3); // 3 kratki wysokości
             CoralImage.setFitWidth(tileSize * 3); // 3 kratki szerokości
 
+            //wyśrodkowanie grafiki
             GridPane.setColumnIndex(CoralImage, center.getX() - 1);
             GridPane.setRowIndex(CoralImage, center.getY() - 1);
             GridPane.setColumnSpan(CoralImage, 3);
