@@ -8,6 +8,8 @@ import java.util.List;
 //obsługuje staty i cykl
 public class AnimalLifeManager {
     static void lifeCycle(World world, Animal animal) {
+        AnimalEffectsManager.applyPoisonEffect(animal);
+
         animal.setAge(animal.getAge() + 1);
         animal.setFoodLevel(animal.getFoodLevel() - 1);
         updateEnergy(animal);

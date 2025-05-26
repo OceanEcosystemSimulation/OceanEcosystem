@@ -50,7 +50,8 @@ public class Dolphin extends Carnivorous implements IEat {
     public void update(World world) {
         processLifeCycle(world); //duperele o życiu
         updateDolphinGraphics();
-        updateSlowEffect();
+        AnimalEffectsManager.updateInkEffect(this);
+
         if (!isAlive()) return;
 
         Reproduction.pregnancyTick(world, this);
@@ -62,15 +63,14 @@ public class Dolphin extends Carnivorous implements IEat {
         tryToAttack(world, this); //wywołanie mechaniki ataku
     }
 
-    // tylko tata, bo kobieta rodzi
+
     @Override
     public Animal giveBirth(Coord position, Animal parent1, Animal parent2) {
         return new Dolphin(position, parent1, parent2);
     }
 
 
-    //stwierdziłam że dam tak bo bez sensu sie ma robić ciągle od nowa jak jest niezmienna
-    private static final List<String> preyList = List.of("Nemo", "Shark", "Orca"); //lista kogo atakuje - do zmiany wartości (dodawane po przecinku jak coś)
+    private static final List<String> preyList = List.of("Nemo", "Shark", "Orca"); //lista kogo atakuje
 
 
     @Override
@@ -78,15 +78,13 @@ public class Dolphin extends Carnivorous implements IEat {
         return other != null && other.getName() != null && preyList.contains(other.getName());
     }
 
-    //przykładowe to wpisywania ile jakie jedzenie daje
-    //można zrobić ifem jak wcześniej było jak wam nie pasuje takie
+
     @Override
     public int calculateGain(Animal animal) {
         return switch (animal.getName()) {
             case "Nemo" -> 30;
             case "Shark" -> 55;
             case "Orca" -> 90; // bo raczej nie wygra
-            //itd inne
             default -> 0;
         };
     }
@@ -100,7 +98,7 @@ public class Dolphin extends Carnivorous implements IEat {
     }
 
     @Override
-    public void eat(Tile tile, World world) { //przykładowe jak pisać
+    public void eat(Tile tile, World world) {
         int gain = switch (tile.getFoodType()) {
             case PLANKTON, ALGAE -> 5;
             default -> 0; //NONE

@@ -81,9 +81,7 @@ public class OceanicPuffer extends Omnivorous implements IEat, IFight {
             this.die();
             System.out.println(target.getName() + " id: " + target.getId() + " killed " + getName() + " id: " + getId());
 
-            //jesli przegra to zatrywa przeciwnika
-            target.setPoisoned(true);
-            System.out.println(target.getName() + " id: " + target.getId() + " got poisoned by dying Puffer!");
+            AnimalEffectsManager.poisonTarget(target); //jesli przegra to zatruwa przeciwnika
 
             return false;
         }

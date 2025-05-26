@@ -58,44 +58,24 @@ public abstract class Animal {
 
     //zostawiam to tutaj bo za wykładzie było że fajnie robić chyba takie pomiędzy a nie 1 do 1 połączenia
     protected void processLifeCycle(World world) {
-        poison();
         AnimalLifeManager.lifeCycle(world, this);
     }
 
     /* -------------------------------ZATRUCIE OD OCEANIC PUFFER------------------------------- */
 
-    private int poisonTicks = 4; // ile tur efekt zatrucia ma się utrzymywać na rybce
+    private int poisonTicks = 0; // ile tur efekt zatrucia ma się utrzymywać na rybce
 
-    public void setPoisoned(boolean poisoned) {
-        if (poisoned) {
-            this.poisonTicks = 4;
-        } else {
-            this.poisonTicks = 0; //koniec zatrucia
-        }
-    }
+    public int getPoisonTicks() { return poisonTicks; }
+    public void setPoisonTicks(int ticks) { this.poisonTicks = ticks; }
 
-    private void poison() {
-        if (poisonTicks > 0) {
-            setHealth(getHealth() - 5); // odejmuje 5HP co turę
-            poisonTicks--; // dekrementuje licznik co turę
-        }
-    }
+
 
     /* -------------------------------INK------------------------------- */
 
-    private int slowCounter = 0;
+    private int slowCounter = 0;  //ile tur efekt spowolnienia ma się utrzymywać na rybce
 
-    public int getSlowCounter() {
-        return slowCounter;
-    }
-
-    public void setSlowCounter(int turns) {
-        this.slowCounter = turns;
-    }
-
-    public void updateSlowEffect() {
-        if (slowCounter > 0) slowCounter--;
-    }
+    public int getSlowCounter() { return slowCounter; }
+    public void setSlowCounter(int turns) { this.slowCounter = turns; }
 
 
 

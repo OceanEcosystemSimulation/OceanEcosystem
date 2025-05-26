@@ -2,17 +2,14 @@ package allAnimals;
 
 import body.*;
 import extendedMechanics.Reproduction;
-import javafx.application.Platform;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.GridPane;
 import map.*;
 import movement.IEat;
 import ocean.Main;
 import ocean.World;
 
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -44,6 +41,8 @@ public class Octopus extends Carnivorous implements IEat {
         genes.setMaxEnergy(80);
         return genes;
     }
+
+
     //ink
     private void releaseInk(World world) {
         int radius = 2;
@@ -51,13 +50,11 @@ public class Octopus extends Carnivorous implements IEat {
 
         //wypuszcza atrament jesli poczuje sie zgrozona
         for (Animal other : world.getAnimals()) {
-            if (!other.isAlive() || other == this) continue;
+            if (!other.isAlive() || other == this) {continue;}
 
-            if ("Dolphin".equals(other.getName())
-                    && getPosition().distance(other.getPosition()) <= radius) {
-                other.setSlowCounter(3);
+            if ("Dolphin".equals(other.getName()) && getPosition().distance(other.getPosition()) <= radius) {
+                AnimalEffectsManager.slowTarget(this, other, 3);
                 released = true;
-                System.out.println("Octopus id: " + getId() + " released ink cloud to Dolphin id:" + other.getId());
             }
         }
 
@@ -87,7 +84,7 @@ public class Octopus extends Carnivorous implements IEat {
 
     }
 
-    // tylko tata, bo kobieta rodzi
+
     @Override
     public Animal giveBirth(Coord position, Animal parent1, Animal parent2) {
         return new Octopus(position, parent1, parent2);
@@ -96,8 +93,7 @@ public class Octopus extends Carnivorous implements IEat {
 
 
 
-    //stwierdziłam że dam tak bo bez sensu sie ma robić ciągle od nowa jak jest niezmienna
-    private static final List<String> preyList = List.of("Nemo", "Shark"); //lista kogo atakuje - do zmiany wartości (dodawane po przecinku jak coś)
+    private static final List<String> preyList = List.of("Nemo", "Shark"); //lista kogo atakuje
 
 
     @Override
@@ -105,14 +101,12 @@ public class Octopus extends Carnivorous implements IEat {
         return other != null && other.getName() != null && preyList.contains(other.getName());
     }
 
-    //przykładowe to wpisywania ile jakie jedzenie daje
-    //można zrobić ifem jak wcześniej było jak wam nie pasuje takie
+
     @Override
     public int calculateGain(Animal animal) {
         return switch (animal.getName()) {
             case "Nemo" -> 30;
             case "Shark" -> 60;
-            //itd inne
             default -> 0;
         };
     }
@@ -120,13 +114,13 @@ public class Octopus extends Carnivorous implements IEat {
     /* -------------------------------EATING------------------------------- */
 
     @Override
-    public boolean canEat(Tile tile) { //also przykładowe
+    public boolean canEat(Tile tile) {
         return getFoodLevel() <= 30 &&
                 (tile.getFoodType() == FoodType.PLANKTON || tile.getFoodType() == FoodType.ALGAE);
     }
 
     @Override
-    public void eat(Tile tile, World world) { //przykładowe jak pisać
+    public void eat(Tile tile, World world) {
         int gain = switch (tile.getFoodType()) {
             case PLANKTON, ALGAE -> 5;
             default -> 0; //NONE
