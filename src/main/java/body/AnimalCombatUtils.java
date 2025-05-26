@@ -4,8 +4,6 @@ import map.*;
 import ocean.World;
 import ocean.WorldSearch;
 
-import static body.Animal.rand;
-
 //narzedzia do mechaniki walki
 public class AnimalCombatUtils {
 
@@ -44,8 +42,8 @@ public class AnimalCombatUtils {
         if (coralPos!=null) { //gdy istnieje rafa w zasięgu
             animal.setPosition(coralPos); //skok na rafę
         } else { //gdy nie ma rafy to losowy kierunek ucieczki na pełną odległość dlatego nie randomMove
-            int dx = rand.nextBoolean() ? distance : -distance;
-            int dy = rand.nextBoolean() ? distance : -distance;
+            int dx = World.random.nextBoolean() ? distance : -distance;
+            int dy = World.random.nextBoolean() ? distance : -distance;
             Coord escapePos = new Coord(pos.x + dx, pos.y + dy);
 
             //jesli w granicach i nikogo tam nie ma to skacze na pełną odl w innym wypadku losowo

@@ -24,7 +24,7 @@ import java.util.List;
 
 public class Main extends Application {
     private static int tileSize; //piksele
-    static int width, height, noFood, noCoral, noAnimals, noTicks; //parametry wejsciowe
+    static int width, height, noFood, noCoral, noAnimals, noTicks, seed; //parametry wejsciowe
 
     public World world; //deklaracja objektu world
     private Rectangle[][] tilesTab; //tablica kafelków
@@ -57,7 +57,9 @@ public class Main extends Application {
         noCoral = config.getOrDefault("noCoral", 0);
         noAnimals = config.getOrDefault("noAnimals", 0);
         noTicks = config.getOrDefault("ticks", 0);
+        seed = config.getOrDefault("seed", 0); //idk jak defaultowo się to bierze, co dać najlepiej - 0 będzie chyba zawsze taka sama
 
+        World.random = new Random(seed);
 
         Screen screen = Screen.getPrimary(); //pobiera główny ekran
         Rectangle2D bounds = screen.getVisualBounds(); //pobiera wymiary ekranu bez paska zadań itp

@@ -3,8 +3,6 @@ package body;
 import map.*;
 import ocean.World;
 
-import java.util.*;
-
 public abstract class Animal extends WorldObject {
     private int foodLevel, age, loneliness;
     private int energy, health;
@@ -18,8 +16,6 @@ public abstract class Animal extends WorldObject {
     private int pregnancyCounter = 0;
     private Animal fatherDuringPregnancy = null;
 
-    public static final Random rand = new Random();
-
     /* -------------------------------KONSTRUKTORY------------------------------- */
 
     // konstruktor dla zwierząt startowych
@@ -29,7 +25,7 @@ public abstract class Animal extends WorldObject {
         this.foodLevel = 100;
         this.energy = 100;
         this.health = 100;
-        this.gender = rand.nextBoolean() ? Gender.MALE : Gender.FEMALE;
+        this.gender = World.random.nextBoolean() ? Gender.MALE : Gender.FEMALE;
         this.genes = genes; //losowanie w zwierzetach poszczegolnych
         this.id = nextId++;
     }

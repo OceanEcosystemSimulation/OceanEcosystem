@@ -1,18 +1,14 @@
 package body;
 
-import java.util.Random;
+import ocean.World;
 
-/* -------------------------------CONSTANTS------------------------------- */
-
-//geny i ich mechanika (ogólnie wydaje mi się że latwo tak dodawać inne nowe jak trzeba)
+//geny i ich mechanika
 public class Genes {
     private int strength;
-    private int speed; //wartości max 5 kratek - zależy od tego ile się przesuwa/widzi
+    private int speed; //wartości X kratek - zależy od tego ile się przesuwa/widzi
     private int maxAge;
     private int maxLoneliness;
     private int maxEnergy;
-
-    private static final Random rand = new Random();
 
 
     /* -------------------------------INHERIT------------------------------- */
@@ -30,8 +26,8 @@ public class Genes {
 
     //losowa mutacja do genów
     private static int mutate(int value) {
-        if (rand.nextDouble() < 0.3) { //nie zawsze (losowo) zachodzi - 30%
-            return value + rand.nextInt(5) - 2; //mutuje w zakresie +-2
+        if (World.random.nextDouble() < 0.3) { //nie zawsze (losowo) zachodzi - 30%
+            return value + World.random.nextInt(5) - 2; //mutuje w zakresie +-2
         }
         return value;
     }

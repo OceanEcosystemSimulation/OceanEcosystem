@@ -5,8 +5,6 @@ import extendedMechanics.Reproduction;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import map.*;
-import movement.IFight;
-import movement.IEat;
 import ocean.Main;
 import ocean.World;
 
@@ -14,7 +12,7 @@ import java.awt.*;
 import java.util.List;
 import java.util.Objects;
 
-public class OceanicPuffer extends Omnivorous implements IEat, IFight {
+public class OceanicPuffer extends Omnivorous {
     public OceanicPuffer(Coord position) {
         super(position, generateGenes());
         setName("OceanicPuffer");

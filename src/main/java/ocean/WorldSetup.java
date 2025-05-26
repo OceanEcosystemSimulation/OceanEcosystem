@@ -7,10 +7,8 @@ import map.Coord;
 import map.FoodType;
 import map.MapType;
 import map.Tile;
-import java.util.Random;
 
 public class WorldSetup {
-    private static Random random = new Random();
 
     /* -------------------------------RAFY KORALOWE------------------------------- */
 
@@ -46,8 +44,8 @@ public class WorldSetup {
         while (coralreef_counter < noCoral && countOfAttempts < MaxCountOfAttempts) {
             countOfAttempts++;
 
-            int cx = random.nextInt(width); //losuje centralne pole x rafy
-            int cy = coralGeneratingLimit + random.nextInt(height - coralGeneratingLimit); //losuje centralne pole y rafy //UPDATE: rafy mają
+            int cx = World.random.nextInt(width); //losuje centralne pole x rafy
+            int cy = coralGeneratingLimit + World.random.nextInt(height - coralGeneratingLimit); //losuje centralne pole y rafy //UPDATE: rafy mają
             // ograniczony zakres wysokości, przez co nie tworzą się na wodzie
             //sprawdza czy w zasięgu mapy
             if (!world.inBounds(cx - 1, cy - 1) || !world.inBounds(cx + 1, cy + 1)) continue;
@@ -140,7 +138,7 @@ public class WorldSetup {
             } while (tile.hasFood()); //losuje dopóki wylosowane bedzie wolne
 
             //losowanie typu jedzenia na kafelku
-            int foodTypeRoll = random.nextInt(2); //losuje wartość (0,1)
+            int foodTypeRoll = World.random.nextInt(2); //losuje wartość (0,1)
             FoodType foodType = switch (foodTypeRoll) {
                 case 0 -> FoodType.PLANKTON;
                 case 1 -> FoodType.ALGAE;
@@ -154,6 +152,6 @@ public class WorldSetup {
 
     //generuje losowe współrzedne Coord na swiecie - w granicach ofc bo random.nextInt(bound) zawsze zwraca liczbę w zakresie [0, bound)
     private static Coord randomCoord(World world) {
-        return new Coord(random.nextInt(world.getWidth()), random.nextInt(world.getHeight()));
+        return new Coord(World.random.nextInt(world.getWidth()), World.random.nextInt(world.getHeight()));
     }
 }

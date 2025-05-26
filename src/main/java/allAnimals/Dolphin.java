@@ -37,8 +37,8 @@ public class Dolphin extends Carnivorous implements IEat {
         Genes genes = new Genes();
         genes.setStrength(40);
         genes.setSpeed(5);
-        genes.setMaxAge(100 + rand.nextInt(50));
-        genes.setMaxLoneliness(40 + rand.nextInt(20));
+        genes.setMaxAge(100 + World.random.nextInt(50));
+        genes.setMaxLoneliness(40 + World.random.nextInt(20));
         genes.setMaxEnergy(80);
         return genes;
     }

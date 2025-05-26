@@ -11,7 +11,6 @@ import ocean.World;
 import java.awt.*;
 import java.util.List;
 import java.util.Objects;
-import java.util.Random;
 
 
 public class Seal extends Carnivorous {
@@ -85,9 +84,8 @@ public class Seal extends Carnivorous {
                             a.setPosition(away);
                         } else {
                             //zeby nie wyrzucalo poza mape
-                            Random rand = new Random();
-                            int rx = rand.nextInt(world.getWidth());
-                            int ry = rand.nextInt(world.getHeight());
+                            int rx = World.random.nextInt(world.getWidth());
+                            int ry = World.random.nextInt(world.getHeight());
                             a.setPosition(new Coord(rx, ry));
                         }
                     }

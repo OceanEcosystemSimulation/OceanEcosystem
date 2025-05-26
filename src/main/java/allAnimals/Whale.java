@@ -1,4 +1,5 @@
 package allAnimals;
+
 import javafx.application.Platform;
 import extendedMechanics.Reproduction;
 import map.Coord;
@@ -40,8 +41,8 @@ public class Whale extends Herbivorous {
         Genes genes = new Genes();
         genes.setStrength(5);
         genes.setSpeed(2);
-        genes.setMaxAge(100 + rand.nextInt(50));
-        genes.setMaxLoneliness(40 + rand.nextInt(20));
+        genes.setMaxAge(100 + World.random.nextInt(50));
+        genes.setMaxLoneliness(40 + World.random.nextInt(20));
         genes.setMaxEnergy(80);
         return genes;
     }

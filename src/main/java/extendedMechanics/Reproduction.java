@@ -10,7 +10,6 @@ import allAnimals.Egg;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 
 public final class Reproduction {
@@ -142,7 +141,6 @@ public final class Reproduction {
 
     public static Coord findFreeTile(World world, Coord pos) { //szuka wolnego miejsca, by złożyć jajo
         int[][] directions = {{1,0}, {-1,0}, {0,1}, {0,-1}}; // kierunki: góra, dół, prawo, lewo
-        Random random = new Random();
 
         List<Coord> possibleTiles = new ArrayList<>();
         for (int[] d: directions) {
@@ -154,6 +152,6 @@ public final class Reproduction {
 
         if (possibleTiles.isEmpty()) {return null;}
 
-        return possibleTiles.get(random.nextInt(possibleTiles.size()));
+        return possibleTiles.get(World.random.nextInt(possibleTiles.size()));
     }
 }

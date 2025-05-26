@@ -17,11 +17,13 @@ public class World {
     private final List<Coord> coralReefCenter = new ArrayList<>(); // przechowuje współrzędne środka rafy koralowej
     private int currentTick = 0;
 
-
     private int eatenFoodCounter = 0; //do liczenia ile jedzenia zostało zjedzone od ostatnego uzupełnienia
     public int totalEatenFood = 0;
     public int deadAnimalCounter = 0;
     private boolean simulationEnded = false;
+
+    public static Random random;
+
 
     //rozmieszczenie pól i zwierząt (na razie zawiera liczbę turn konkretną)
     public World(int width, int height, int noFood, int noCoral, int noAnimals) {

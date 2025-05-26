@@ -2,14 +2,12 @@ package map;
 
 import ocean.World;
 
-import java.util.Random;
 import java.util.*;
 
 
 // reprezentacja współrzędnych
 public class Coord {
     public int x, y;
-    private static Random random = new Random();
 
     //inicjalizacja współrzędnych
     public Coord(int x, int y) {
@@ -37,8 +35,8 @@ public class Coord {
         int attempts = 0;
 
         do {
-            int moveX = random.nextInt(speed * 2 + 1) - speed; //od 0 do speed*2 i odejmując speed daje to +- speed
-            int moveY = random.nextInt(speed * 2 + 1) - speed;
+            int moveX = World.random.nextInt(speed * 2 + 1) - speed; //od 0 do speed*2 i odejmując speed daje to +- speed
+            int moveY = World.random.nextInt(speed * 2 + 1) - speed;
 
             int newX = Math.max(0, Math.min(width - 1, x + moveX)); //w granicach mapy (nie mniejsze od 0 i nie wieksze od granicy)
             int newY = Math.max(0, Math.min(height - 1, y + moveY)); //albo granica albo wartość losowana
