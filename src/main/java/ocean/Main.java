@@ -4,14 +4,12 @@ import body.Animal;
 import javafx.application.Application;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Slider;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.stage.Screen;
-import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.geometry.Rectangle2D;
 
@@ -71,85 +69,44 @@ public class Main extends Application {
         launch(args); //uruchamia JavaFX ???
     }
 
+
+
     @Override
     public void start(Stage primaryStage) {
         world = new World(width, height, noFood, noCoral, noAnimals);
 
-        //GridPane pozwala na organizację elementów w formie siatki a nie jakiś węzłów więc to wzięłam ale nwm szczerze co robię XD
-        grid = new GridPane(); //tworzenie układu siatki na której będą wyświetlane kafelki
-        tilesTab = new Rectangle[width][height]; //tablica kafelków update wielkości
+        SimulationDisplayManager displayManager = new SimulationDisplayManager(width, height, tileSize, barierSettings);
 
-        //tworzenie kafelków i dodawanie do GridPane
-        for (int x = 0; x < width; x++) { //przechodzi po kolei width x height
-            for (int y = 0; y < height; y++) {
-                Rectangle rectangle = new Rectangle(tileSize, tileSize); //tworzy kafelek (rectancle)
-                rectangle.setStroke(Color.GRAY); //robi go szarym na obwodzie (na razie) //TRANSPARENT - jak któraś chce bez gridu
-                tilesTab[x][y] = rectangle; //dodaje do tablicy by móc później nim zarzadzac
-                grid.add(rectangle, x, y); //dodaje obiekt rectangle do siatki na współrzędne xy
-            }
-        }
+        displayManager.setupGrid();
+        displayManager.setupBarrierLayer();
+
+        this.tilesTab = displayManager.getTilesTab();
+        this.grid = displayManager.getGrid();
 
         updateGrid(); //update rzeczy ustawionych
-        grid.setId("pane");
 
-        VBox statsPanel = new VBox(); //tworzy taki kontener?? strukturę??? (VBox układa rzeczy jeden pod drugim)
-        statsPanel.setTranslateY(5); //przesuwa statsPanel o 5px niżej
-        statsPanel.setTranslateX(10); //przesuwa statsPanel o 10px w prawo
-        statsPanel.setSpacing(50); //ustawienie odległości elementów od siebie
-        Label statsLabel = new Label(); //tworzy label - takie do podstawowych tekstów (można zmienić na Text jeśli chcemy formatowania itp)
-        statsPanel.getChildren().add(statsLabel); //dodaje statsLabel (element) do statsPanel
+        Scene scene = displayManager.createScene(); //wszystkie ustawienia elementów aplikacji - tworzenie sceny
 
-        Slider speedSlider = new Slider();
-        speedSlider.setMin(100);
-        speedSlider.setMax(2000);
-        speedSlider.setValue(500); //wartość początkowa
-        speedSlider.setShowTickLabels(true);
-        speedSlider.setShowTickMarks(true);
-        speedSlider.setSnapToTicks(true);
-        speedSlider.setMajorTickUnit(100); //co ile się zmienia
-        speedSlider.setMinorTickCount(0); //ilośc wartości pośrednich
-        speedSlider.setPrefWidth(tileSize * width - 100); //ustawia szerokość slidera na szerokość mapy
-
-        HBox bottomSection = new HBox();
-        bottomSection.setTranslateY(8);
-        bottomSection.setTranslateX(20);
-        bottomSection.setSpacing(20);
-        Label sliderLabel = new Label("Sleep time: ");
-        sliderLabel.setTranslateY(5);
-        bottomSection.getChildren().addAll(sliderLabel, speedSlider);
-
-        barierSettings.setPrefSize(width * tileSize, height * tileSize);
-        barierSettings.setClip(new Rectangle(width * tileSize, height * tileSize));
-        barierSettings.setMouseTransparent(true);
-
-        StackPane layouts = new StackPane(grid, barierSettings); // stos, układa elementy warstwami 0 - warstwa na dole - grid, 1 warstwa wyżej - bariera
-        VBox root = new VBox();
-        HBox topSection = new HBox(layouts, statsPanel);
-        root.getChildren().addAll(topSection, bottomSection); //dodaje elementy siatka i panel do głównego jakby kontenera z elementami?? idk jak to się określa
-
-
-        //tworzenie i wyswietlanie okna
-        Scene scene = new Scene(root); //tworzy scene i dodaje root cały (wszystkie elementy)
         primaryStage.setWidth(tileSize * width + 250); //ustawia szerokość okna aplikacji - POPIEPRZONE WIEC UWAGA
         primaryStage.setHeight(tileSize * height + 110); //ustawia wysokość okna aplikacji
         primaryStage.setScene(scene); //przypisuje scene do Stage - ustawia główną zawartość okna - określa co ma byc wyświetlane
         primaryStage.setTitle("Ocean Ecosystem Simulation"); //tytuł
 
-        URL cssUrl = getClass().getResource("/style.css");
-        if (cssUrl != null) { scene.getStylesheets().add(cssUrl.toExternalForm()); }  //obsługa błędu jeśli nie ma style.css
-        else { System.out.println("style.css not found!"); }
-
         primaryStage.show();
 
         //uruchamianie osobnego wątku symulacji (w tle by działało gładko????) który co X ms wykonuje nowy cykl i odświeża interfejs
-        new SimulationThread(this, statsLabel, speedSlider).start();
+        new SimulationThread(this, displayManager.getStatsLabel(), displayManager.getSpeedSlider()).start();
     }
+
+
 
     private static final Pane barierSettings = new Pane(); // klasa odpowiedzialna za pozycjonowanie
 
     public static Pane getOverlay() {
         return barierSettings;
     }
+
+
 
     //aktualizuje wyglad kafelków
     void updateGrid() {
@@ -223,8 +180,9 @@ public class Main extends Application {
 
         /* -------------------------------GRAFIKI ZWIERZĄT------------------------------- */
 
-        for (Animal animal : world.getAnimals()) {
-            if (!animal.isAlive() && !(animal instanceof allAnimals.Skeleton)) continue; // sprawdzenie czy są w ogóle żywe (dla pewności)
+        List<Animal> animalListCopy = new ArrayList<>(world.getAnimals()); //kopia bo wątek jednocześnie działa na tamtej liście
+        for (Animal animal : animalListCopy) {
+            if (!animal.isAlive() && !(animal instanceof allAnimals.Skeleton)) {continue;} // sprawdzenie czy są w ogóle żywe (dla pewności)
 
             // dopasowanie grafiki do zwierzęcia
             ImageView image = switch (animal) {
