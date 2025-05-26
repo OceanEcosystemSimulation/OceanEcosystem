@@ -111,11 +111,6 @@ public class Shark extends Carnivorous implements IEat {
         }
     }
 
-    @Override
-    public void move(World world) {
-        // Rekin ignoruje spowolnienie chmurk z atramentem
-        super.move(world);
-    }
 
     /* -------------------------------GRAPHICS------------------------------- */
 

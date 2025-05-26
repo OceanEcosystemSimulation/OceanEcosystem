@@ -8,9 +8,9 @@ public class DrawningAnimalsByTheirRarity implements IAnimalDrawer {
 
     static {
         rarityDrawning.put(Rarity.LEGENDARY, List.of("TralaleroTralala"));
-        rarityDrawning.put(Rarity.MYTHIC, List.of("Starfish", "Crab")); //dla testu usuwam Orca i Whale z MYTHIC i daje do SUPER_RARE
-        rarityDrawning.put(Rarity.SUPER_RARE, List.of( "OceanicPuffer","Orca","Whale","Shark", "Seal"));
-        rarityDrawning.put(Rarity.RARE, List.of("Nemo","Octopus", "Dolphin"));
+        rarityDrawning.put(Rarity.MYTHIC, List.of("Octopus","Starfish", "Crab")); //dla testu usuwam Orca i Whale z MYTHIC i daje do SUPER_RARE
+        rarityDrawning.put(Rarity.SUPER_RARE, List.of( "OceanicPuffer","Orca","Whale", "Seal", "Dolphin"));
+        rarityDrawning.put(Rarity.RARE, List.of("Nemo","Shark", "Turtle"));
     }
     //TODO: Aktualizować mechaniki by dodawał się Tralalero tralala w trakcie (1% rarity itd)
 

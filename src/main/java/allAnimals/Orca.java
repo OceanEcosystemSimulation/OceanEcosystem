@@ -86,7 +86,7 @@ public class Orca extends Carnivorous {
     @Override
     public void move(World world) {
         int speed = isFoodNearby(world) ? getGenes().getSpeed() + 10 : getGenes().getSpeed();
-        System.out.println(getName() + " [" + getId() + "] is chasing food");
+        System.out.println(getName() + " id : " + getId() + " is chasing food");
 
         if (getFoodLevel() < 70) {
             Coord preyPos = WorldSearch.nearestPrey(world, getPosition(), speed, this);
@@ -162,7 +162,7 @@ public class Orca extends Carnivorous {
         boolean isYoung = getAge() < AGE_OLD;
         imageView.setImage(isYoung ? BabyOrca : AdultOrca);
 
-        double scale = isYoung ? 0.7 : 1.0; //baby orka jeszcze mniejsza hahah
+        double scale = isYoung ? 0.7 : 1.0;
         imageView.setFitWidth(Main.getTileSize() * scale);
         imageView.setFitHeight(Main.getTileSize() * scale);
     }

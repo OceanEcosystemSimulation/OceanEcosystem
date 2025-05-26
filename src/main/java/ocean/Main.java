@@ -200,6 +200,7 @@ public class Main extends Application {
                 case allAnimals.Dolphin dolphin -> dolphin.getImageView();
                 case allAnimals.Seal seal -> seal.getImageView();
                 case allAnimals.InkCloud ink -> ink.getImageView();
+                case allAnimals.Turtle turtle -> turtle.getImageView();
                 default -> null;
             };
 
