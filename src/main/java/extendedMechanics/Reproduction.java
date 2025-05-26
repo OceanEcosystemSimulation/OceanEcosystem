@@ -1,9 +1,6 @@
 package extendedMechanics;
 
-import body.Animal;
-import body.Carnivorous;
-import body.Gender;
-import body.Genes;
+import body.*;
 import map.Coord;
 import ocean.World;
 import allAnimals.Egg;
@@ -56,7 +53,7 @@ public final class Reproduction {
 
     /* -------------------------------MECHANICS------------------------------- */
 
-    public static void ReproductionProcess(Animal animal1, Animal animal2) {
+    public static void ReproductionProcess(World world, Animal animal1, Animal animal2, Genes genes) {
         // PŁEĆ I GATUNEK
         if (animal2 == null) {return;} // brak partnera/partnerki
         if (!animal1.getClass().equals(animal2.getClass())) {return;} // ten sam gatunek
@@ -77,10 +74,13 @@ public final class Reproduction {
             male = animal1;
         }
 
-        // BEZPIECZNY DYSTANS
+        // DYSTANS - odległość dwóch organizmów
         if(!isDistanceOne(animal1, animal2)) {return;}
 
-        // CZY SPEŁNIAJĄ WARUNKI
+        // Bezpieczna strefa
+        if (!isAreaSafe(world, animal1, genes) || !isAreaSafe(world, animal2, genes)) {return;}
+
+        //CZY SPEŁNIAJĄ WARUNKI
         if (!IsReady(female) || !IsReady(male)) {return;} //odpowiedni wiek, poziom energii, status życia i status ciąży (TAK LUB NIE)
 
         // SPADEK ENERGII W ZWIĄZKU Z ZAPŁODNIENIEM
@@ -124,18 +124,19 @@ public final class Reproduction {
     }
 
     /* -------------------------------SAFE SPACE------------------------------- */
-    public static boolean IsAreaSafe(World world, Animal animal, Genes genes) {
+    public static boolean isAreaSafe(World world, Animal animal, Genes genes) {
         int safetyRadius = genes.getSpeed(); // ile widzi organizm
 
         Coord position = animal.getPosition();
 
         List<Animal> nearby = world.getNearbyAnimals(position, safetyRadius);
         for (Animal other : nearby) {
-            if (other instanceof Carnivorous && other.isAlive() && other.getId() != animal.getId()) {
-                return false; // w poblizu jest drapieznik
+            if (other instanceof Carnivorous || other instanceof Omnivorous && other.isAlive() && other.getId() != animal.getId()) {
+                if (!other.getName().equals(animal.getName())) {
+                    return false; // w poblizu jest drapieznik
+                }
             }
         }
-
         return true; // mogą się rozmnażać - brak drapieżników
     }
 

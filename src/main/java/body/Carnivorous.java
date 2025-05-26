@@ -87,11 +87,11 @@ public abstract class Carnivorous extends Animal implements IFight, IMove, IMate
         Animal mate = WorldSearch.nearestMate(world, this.getPosition(), range, this);
         if (mate != null) {
             if (Reproduction.isDistanceOne(this, mate)) { //jeżeli są w kratkach obok
-                Reproduction.ReproductionProcess(this, mate); //mechanika reprodukcji
+                Reproduction.ReproductionProcess(world,this, mate, getGenes()); //mechanika reprodukcji
             } else {
                 boolean move = Reproduction.moveToMate(this, mate, world);
                 if (move && Reproduction.isDistanceOne(this, mate)) { //czy się przesunął i na wszelki czy mate jest obok
-                    Reproduction.ReproductionProcess(this, mate); //mechanika reprodukcji
+                    Reproduction.ReproductionProcess(world,this, mate, getGenes()); //mechanika reprodukcji
                 }
             }
         }
