@@ -147,6 +147,7 @@ public class Turtle extends Omnivorous {
         } else {
             scale = 1.0;
         }
+
         imageView.setFitWidth(Main.getTileSize() * scale);
         imageView.setFitHeight(Main.getTileSize() * scale);
     }
