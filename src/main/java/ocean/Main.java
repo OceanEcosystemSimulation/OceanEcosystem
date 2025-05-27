@@ -204,6 +204,7 @@ public class Main extends Application {
                 case allAnimals.Turtle turtle -> turtle.getImageView();
                 case allAnimals.Crab crab -> crab.getImageView();
                 case allAnimals.Shrimp shrimp -> shrimp.getImageView();
+                case allAnimals.Star star -> star.getImageView();
                 default -> null;
             };
 

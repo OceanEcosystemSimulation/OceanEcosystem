@@ -13,9 +13,9 @@ public class DrawningAnimalsByTheirRarity implements IAnimalDrawer {
 
     static {
         rarityDrawning.put(Rarity.LEGENDARY, new ArrayList<>());
-        rarityDrawning.put(Rarity.MYTHIC, List.of("Starfish", "Turtle", "Crab")); //dla testu usuwam Orca i Whale z MYTHIC i daje do SUPER_RARE
+        rarityDrawning.put(Rarity.MYTHIC, List.of("Turtle", "Crab", "Shrimp", "Star")); //dla testu usuwam Orca i Whale z MYTHIC i daje do SUPER_RARE
         rarityDrawning.put(Rarity.SUPER_RARE, List.of("Shark", "OceanicPuffer","Orca", "Seal"));
-        rarityDrawning.put(Rarity.RARE, List.of("Octopus","Nemo", "Dolphin", "Whale", "Shrimp"));
+        rarityDrawning.put(Rarity.RARE, List.of("Octopus","Nemo", "Dolphin", "Whale"));
     }
 
     public static void addTralalero() {

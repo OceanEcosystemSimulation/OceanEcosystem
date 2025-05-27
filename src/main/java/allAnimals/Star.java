@@ -16,17 +16,17 @@ import java.util.Objects;
 
 
 
-public class Shrimp extends Herbivorous {
-    public Shrimp(Coord position) {
+public class Star extends Herbivorous {
+    public Star(Coord position) {
         super(position, generateGenes());
-        setName("Shrimp");
+        setName("Star");
         settings();
     }
 
     //konstruktor dziecka
-    public Shrimp(Coord position, Animal parent1, Animal parent2) {
+    public Star(Coord position, Animal parent1, Animal parent2) {
         super(position, parent1, parent2);
-        setName("Shrimp");
+        setName("Star");
         settings();
     }
 
@@ -63,7 +63,7 @@ public class Shrimp extends Herbivorous {
 
     @Override
     public Animal giveBirth(Coord position, Animal parent1, Animal parent2) {
-        return new Shrimp(position, parent1, parent2);
+        return new Star(position, parent1, parent2);
     }
 
 
@@ -88,8 +88,8 @@ public class Shrimp extends Herbivorous {
 
     /* -------------------------------GRAPHICS------------------------------- */
 
-    private static Image babyShrimp;
-    private static Image adultShrimp;
+    private static Image babyStar;
+    private static Image adultStar;
     private static final int AGE_OLD = 18; // one turn = one month
 
 
@@ -100,10 +100,10 @@ public class Shrimp extends Herbivorous {
     /* -------------------------------GUI------------------------------- */
 
     private static void loadImagesIfNeeded() {
-        if (babyShrimp == null || adultShrimp == null) {
+        if (babyStar == null || adultStar == null) {
             if (!GraphicsEnvironment.isHeadless()) { //sprawdza czy jest srodowisko graficzne (testy go nie mają)
-                babyShrimp = new Image(Objects.requireNonNull(Nemo.class.getResource("/images/babyShrimp.png")).toExternalForm());
-                adultShrimp = new Image(Objects.requireNonNull(Nemo.class.getResource("/images/adultShrimp.png")).toExternalForm());
+                babyStar = new Image(Objects.requireNonNull(Nemo.class.getResource("/images/babyStar.png")).toExternalForm());
+                adultStar = new Image(Objects.requireNonNull(Nemo.class.getResource("/images/adultStar.png")).toExternalForm());
             }
         }
     }
@@ -117,9 +117,9 @@ public class Shrimp extends Herbivorous {
         loadImagesIfNeeded();
 
         boolean isYoung = getAge() < AGE_OLD;
-        imageView.setImage(isYoung ? babyShrimp : adultShrimp);
+        imageView.setImage(isYoung ? babyStar : adultStar);
 
-        double scale = isYoung ? 0.6 : 0.8;
+        double scale = isYoung ? 0.9 : 1.0;
         imageView.setFitWidth(Main.getTileSize() * scale);
         imageView.setFitHeight(Main.getTileSize() * scale);
     }
