@@ -83,7 +83,7 @@ public class OceanicPuffer extends Omnivorous {
 
             //zatruwa przeciwnika
             target.setPoisonTicks(4); //zatruwa na 4 rundy
-            System.out.println(target.getName() + " id: " + target.getId() + " got poisoned by dying Puffer!");
+            System.out.println(target.getName() + " id: " + target.getId() + " got poisoned by " + getName() + " id: " + getId());
 
             return false;
         }
