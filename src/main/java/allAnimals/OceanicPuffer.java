@@ -44,6 +44,7 @@ public class OceanicPuffer extends Omnivorous {
 
     @Override
     public void update(World world) {
+        processPoison();
         processLifeCycle(world);
         updateGraphics();
         if (!isAlive()) return;
@@ -60,10 +61,33 @@ public class OceanicPuffer extends Omnivorous {
     private static final List<String> preyList = List.of("Crab");
 
 
+
     //walka
     @Override
     public boolean canAttack(Animal other) {
         return other != null && other.getName() != null && preyList.contains(other.getName());
+    }
+
+    @Override
+    public boolean attack(Animal target, World world) {
+        double attackerPower = this.getGenes().getStrength() * (this.getEnergy() / 100.0);
+        double targetPower = target.getGenes().getStrength() * (target.getEnergy() / 100.0);
+
+        if (attackerPower > targetPower) {
+            //wygrywa pufferfish
+            target.die();
+            System.out.println(getName() + " id: " + getId() + " killed " + target.getName() + " id: " + target.getId());
+            return true;
+        } else {
+            this.die(); //Pufferfish ginie
+            System.out.println(target.getName() + " id: " + target.getId() + " killed " + getName() + " id: " + getId());
+
+            //zatruwa przeciwnika
+            target.setPoisonTicks(4); //zatruwa na 4 rundy
+            System.out.println(target.getName() + " id: " + target.getId() + " got poisoned by " + getName() + " id: " + getId());
+
+            return false;
+        }
     }
 
 
