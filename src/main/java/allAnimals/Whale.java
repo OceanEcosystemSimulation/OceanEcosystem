@@ -36,10 +36,10 @@ public class Whale extends Herbivorous {
     //nie może potrzebować objektu by dzialac bo to ma tworzyć konstruktor (objekt) a nie byc uzywanym przez niego wiec static
     private static Genes generateGenes() {
         Genes genes = new Genes();
-        genes.setStrength(5);
+        genes.setStrength(Genes.mutate(50));
         genes.setSpeed(2);
-        genes.setMaxAge(100 + World.random.nextInt(50));
-        genes.setMaxLoneliness(40 + World.random.nextInt(20));
+        genes.setMaxAge(Genes.mutate(80));
+        genes.setMaxLoneliness(Genes.mutate(70));
         genes.setMaxEnergy(80);
         return genes;
     }

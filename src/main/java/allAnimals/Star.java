@@ -37,10 +37,10 @@ public class Star extends Herbivorous {
     //nie może potrzebować objektu by dzialac bo to ma tworzyć konstruktor (objekt) a nie byc uzywanym przez niego wiec static
     private static Genes generateGenes() {
         Genes genes = new Genes();
-        genes.setStrength(5);
-        genes.setSpeed(2);
-        genes.setMaxAge(100 + World.random.nextInt(50));
-        genes.setMaxLoneliness(40 + World.random.nextInt(20));
+        genes.setStrength(Genes.mutate(5));
+        genes.setSpeed(1);
+        genes.setMaxAge(Genes.mutate(99));
+        genes.setMaxLoneliness(Genes.mutate(90));
         genes.setMaxEnergy(80);
         return genes;
     }

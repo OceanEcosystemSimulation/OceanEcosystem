@@ -30,10 +30,10 @@ public class Seal extends Carnivorous {
 
     private static Genes generateGenes() {
         Genes g = new Genes();
-        g.setStrength(40);
-        g.setSpeed(70);
-        g.setMaxAge(30);
-        g.setMaxLoneliness(45);
+        g.setStrength(Genes.mutate(40));
+        g.setSpeed(3);
+        g.setMaxAge(Genes.mutate(55));
+        g.setMaxLoneliness(Genes.mutate(45));
         g.setMaxEnergy(100);
         return g;
     }
