@@ -2,6 +2,8 @@ package extendedMechanics;
 
 import body.*;
 import map.Coord;
+import map.MapType;
+import map.Tile;
 import ocean.World;
 import allAnimals.Egg;
 
@@ -131,6 +133,12 @@ public final class Reproduction {
     public static boolean isAreaSafe(World world, Animal animal, Genes genes) {
         // funkcja sprawdza, czy "na wysokości wzorku ryby", ogólniej mówiąc w zadanym promieniu znajduje się drapieżnik
         // jeśli się znajduje, rozmnażanie jest niemożliwe
+
+        Tile tile = world.getTile(animal.getPosition());
+        if (tile!=null && tile.getMapType() == MapType.CORAL) {
+            return true;
+        }
+
         int safetyRadius = genes.getSpeed(); // ile widzi organizm
 
         Coord position = animal.getPosition();
