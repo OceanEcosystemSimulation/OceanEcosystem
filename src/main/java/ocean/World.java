@@ -15,6 +15,7 @@ public class World {
     private final List<Animal> animals = new ArrayList<>(); //lista zwierząt na świecie
     private final List<WorldObject> objects = new ArrayList<>(); //lista objektów na świecie aka wszystko co jest
     private final List<Coord> coralReefCenter = new ArrayList<>(); // przechowuje współrzędne środka rafy koralowej
+    public static int minMapSize;
 
     private int eatenFoodCounter = 0; //do liczenia ile jedzenia zostało zjedzone od ostatnego uzupełnienia
     public int totalEatenFood = 0;
@@ -32,6 +33,7 @@ public class World {
         initTiles(this, noCoral); //określa jakie jest dane pole mapy
         spawnAnimals(this, noAnimals); //spawn zwierząt randomowych według rarity
         spawnFood(this, noFood); //spawn jedzenie randomowo
+        minMapSize = Math.min(width, height);
     }
 
 

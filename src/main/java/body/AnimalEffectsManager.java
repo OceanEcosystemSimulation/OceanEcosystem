@@ -24,11 +24,4 @@ public class AnimalEffectsManager {
             self.setSlowCounter(self.getSlowCounter() - 1);
         }
     }
-
-    //wczesniej w releaseInk() w Octopus
-    public static void slowTarget(Animal self, Animal target, int duration) {
-        target.setSlowCounter(duration);
-        System.out.println("Octopus id: " + self.getId() + " released ink cloud to Dolphin id:" + target.getId());
-    }
-
 }

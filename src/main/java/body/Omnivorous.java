@@ -51,7 +51,7 @@ public abstract class Omnivorous extends Animal implements IEat, IFight, IMate {
         randomMove(world, this);
     }
 
-
+    //TODO: check czy nie trzeba tego zmienić bo jest wele razy nadpisywane wszedzie, albo zmienic tutaj albo usunąć tamte
     //atak
     @Override
     public boolean attack(Animal prey, World world) {

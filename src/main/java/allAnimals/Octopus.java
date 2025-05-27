@@ -56,10 +56,8 @@ public class Octopus extends Carnivorous {
 
     @Override
     public void update(World world) {
-
         processLifeCycle(world); //duperele o życiu
         updateOctopusGraphics();
-
         if (!isAlive()) return;
 
         Reproduction.pregnancyTick(world, this);
@@ -68,7 +66,6 @@ public class Octopus extends Carnivorous {
         move(world); //wywołanie mechaniki ruchu
         tryToAttack(world, this); //wywołanie mechaniki ataku
         releaseInk(world);
-
     }
 
 

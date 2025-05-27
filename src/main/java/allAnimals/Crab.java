@@ -31,7 +31,7 @@ public class Crab extends Omnivorous {
         genes.setStrength(20 + World.random.nextInt(11));
         genes.setSpeed(30 + World.random.nextInt(11));
         genes.setMaxAge(40);
-        genes.setMaxLoneliness(40 + + World.random.nextInt(21));
+        genes.setMaxLoneliness(40 + World.random.nextInt(21));
         genes.setMaxEnergy(100);
         return genes;
     }
@@ -79,6 +79,8 @@ public class Crab extends Omnivorous {
             tile.clearFood(world);
         }
     }
+
+    //TODO: check czy nie trzeba tego przeniesc bo wszedzie takie samo
 
     @Override
     public boolean canAttack(Animal other) {

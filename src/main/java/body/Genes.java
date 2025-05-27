@@ -24,9 +24,17 @@ public class Genes {
         return genes;
     }
 
+    public void setSpeed(int baseSpeed) {
+        if (World.minMapSize < 2) {
+            this.speed = mutate(Math.max(1, (int)(baseSpeed * (double) World.minMapSize / 20)));
+        } else {
+            this.speed = baseSpeed;
+        }
+    }
+
     //losowa mutacja do genów
-    private static int mutate(int value) {
-        if (World.random.nextDouble() < 0.3) { //nie zawsze (losowo) zachodzi - 30%
+    public static int mutate(int value) {
+        if (World.random.nextDouble() < 0.2) { //nie zawsze (losowo) zachodzi - 30%
             return value + World.random.nextInt(5) - 2; //mutuje w zakresie +-2
         }
         return value;
@@ -44,7 +52,7 @@ public class Genes {
     /* -------------------------------SETTERY------------------------------- */
 
     public void setStrength(int strength) {this.strength = strength;}
-    public void setSpeed(int speed) {this.speed = speed;}
+    //public void setSpeed(int speed) {this.speed = speed;}
     public void setMaxAge(int maxAge) {this.maxAge = maxAge;}
     public void setMaxLoneliness(int maxLoneliness) {this.maxLoneliness = maxLoneliness;}
     public void setMaxEnergy(int maxEnergy) {this.maxEnergy = maxEnergy;}

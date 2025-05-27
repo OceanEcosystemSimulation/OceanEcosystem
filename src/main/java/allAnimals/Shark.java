@@ -34,11 +34,11 @@ public class Shark extends Carnivorous {
     //do tworzenia genów w nowych
     private static Genes generateGenes() {
         Genes genes = new Genes();
-        genes.setStrength(40);
+        genes.setStrength(Genes.mutate(40));
         genes.setSpeed(5);
-        genes.setMaxAge(100 + World.random.nextInt(50));
-        genes.setMaxLoneliness(40 + World.random.nextInt(20));
-        genes.setMaxEnergy(80);
+        genes.setMaxAge(Genes.mutate(89));
+        genes.setMaxLoneliness(Genes.mutate(40));
+        genes.setMaxEnergy(Genes.mutate(80));
         return genes;
     }
 
