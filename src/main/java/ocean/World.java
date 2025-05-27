@@ -40,7 +40,7 @@ public class World {
     //główna symulacja świata - w każdym cyklu aktualizuje zwierzęta - dead alive
     public void runSimulation(int tick) {
         List<WorldObject> currentObjects = new ArrayList<>(objects); //tworzenie kopii by nie aktualizować m.in. dopiero co urodzonych
-
+        
         if (tick % 5 == 0 ) {  //co X tą turę dodaje brakujące jedzenie
             WorldSetup.spawnFood(this, eatenFoodCounter); //dodawanie jedzenia na mapę
             eatenFoodCounter = 0; //zerowanie licznika

@@ -44,9 +44,8 @@ public class Coord {
             newCoord = new Coord(newX, newY);
 
             attempts++;
-            System.out.println(attempts);
-            if (attempts >= 500) { //kiedy przy X próbach nie będzie miejsca
-                return null;
+            if (attempts >= 10000) { //kiedy przy X próbach nie będzie miejsca
+                    return null;
             }
         } while (world.isOccupied(newCoord));
         return newCoord;

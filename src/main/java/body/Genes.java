@@ -24,12 +24,8 @@ public class Genes {
         return genes;
     }
 
-    public void setSpeed(int baseSpeed) {
-        if (World.minMapSize < 2) {
-            this.speed = mutate(Math.max(1, (int)(baseSpeed * (double) World.minMapSize / 20)));
-        } else {
-            this.speed = baseSpeed;
-        }
+    public void setSpeed(int speed) {
+        this.speed = speed;
     }
 
     //losowa mutacja do genów

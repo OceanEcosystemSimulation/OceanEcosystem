@@ -36,7 +36,7 @@ public class Shark extends Carnivorous {
         Genes genes = new Genes();
         genes.setStrength(Genes.mutate(40));
         genes.setSpeed(5);
-        genes.setMaxAge(Genes.mutate(89));
+        genes.setMaxAge(89);
         genes.setMaxLoneliness(Genes.mutate(40));
         genes.setMaxEnergy(Genes.mutate(80));
         return genes;
