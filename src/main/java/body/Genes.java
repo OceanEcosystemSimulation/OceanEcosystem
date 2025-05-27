@@ -35,7 +35,7 @@ public class Genes {
     //losowa mutacja do genów
     public static int mutate(int value) {
         if (World.random.nextDouble() < 0.1) { //nie zawsze (losowo) zachodzi - X%
-            return value + World.random.nextInt(5) - 2; //mutuje w zakresie +-2
+            return Math.max(1, value + World.random.nextInt(5) - 2); //mutuje w zakresie +-2
         }
         return Math.max(1, value);
     }
