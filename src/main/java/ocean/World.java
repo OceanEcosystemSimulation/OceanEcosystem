@@ -2,6 +2,8 @@ package ocean;
 
 import allAnimals.Egg;
 import body.*;
+import extendedMechanics.DrawningAnimalsByTheirRarity;
+import extendedMechanics.Rarity;
 import map.Coord;
 import map.Tile;
 
@@ -36,9 +38,31 @@ public class World {
         minMapSize = Math.min(width, height);
     }
 
+    private boolean tralaleroSpawned = false;
+
+    private void addTralaleroTralala() {
+        if (!tralaleroSpawned && random.nextInt(100) == 0) { // 1% szans
+            DrawningAnimalsByTheirRarity.addTralalero();
+            tralaleroSpawned = true;
+            System.out.println("Final bosss spawned, end is comming...");
+
+            Coord coord; // dodaje do swiata jesli moze
+            do {
+                coord = WorldSetup.randomCoord(this);
+            } while (isOccupied(coord));
+
+                Animal tralaleroTralala = WorldSetup.createAnimalFromName("TralaleroTralala", coord);
+            if (tralaleroTralala != null) {
+                addObject(tralaleroTralala);
+            }
+        }
+    }
+
 
     //główna symulacja świata - w każdym cyklu aktualizuje zwierzęta - dead alive
     public void runSimulation(int tick) {
+
+        addTralaleroTralala(); // próbuje dodac tralalero ale rarity to 1%, więc co tick
         List<WorldObject> currentObjects = new ArrayList<>(objects); //tworzenie kopii by nie aktualizować m.in. dopiero co urodzonych
         Coord.allAtempts = 0;
 

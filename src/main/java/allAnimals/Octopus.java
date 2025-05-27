@@ -43,8 +43,10 @@ public class Octopus extends Carnivorous {
 
     //ink
     private void releaseInk(World world) {
+        //sprwdza zwierzeta w promieniu dwoch kratek
         for (Animal a : world.getNearbyAnimals(getPosition(), 2)) {
-            if (a.isAlive() && !a.equals(this) && "Dolphin".equals(a.getName())) {
+            //sprawdza czy tam jest delfin i sprawdza czy to jest klasa delfina a nie np. jajka z delfinem
+            if (a.isAlive() && !a.equals(this) && a.getClass() == Dolphin.class) {
                 world.addObject(new InkCloud(a.getPosition(), a));
                 break;
             }

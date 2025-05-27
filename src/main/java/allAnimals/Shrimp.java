@@ -1,6 +1,5 @@
 package allAnimals;
 
-import javafx.application.Platform;
 import extendedMechanics.Reproduction;
 import map.Coord;
 import map.Tile;
@@ -13,27 +12,26 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 
-public class Whale extends Herbivorous {
-    public Whale(Coord position) {
+
+public class Shrimp extends Herbivorous {
+    public Shrimp(Coord position) {
         super(position, generateGenes());
-        setName("Whale");
+        setName("Shrimp");
         settings();
     }
 
     //konstruktor dziecka
-    public Whale(Coord position, Animal parent1, Animal parent2) {
+    public Shrimp(Coord position, Animal parent1, Animal parent2) {
         super(position, parent1, parent2);
-        setName("Whale");
+        setName("Nemo");
         settings();
     }
 
 
-    /* -------------------------------GENY------------------------------- */
+    /* -------------------------------GENES------------------------------- */
 
     //do tworzenia genów w nowych - zakresy w losowych wartościah do zmiany
     //nie może potrzebować objektu by dzialac bo to ma tworzyć konstruktor (objekt) a nie byc uzywanym przez niego wiec static
@@ -52,7 +50,7 @@ public class Whale extends Herbivorous {
 
     public void update(World world) {
         processLifeCycle(world); //duperele o życiu
-        updateWhaleGraphics();
+        updateNemoGraphics();
         if (!isAlive()) return;
 
         Reproduction.pregnancyTick(world, this);
@@ -62,13 +60,14 @@ public class Whale extends Herbivorous {
         move(world); //wywołanie mechaniki ruchu
     }
 
+
     @Override
     public Animal giveBirth(Coord position, Animal parent1, Animal parent2) {
-        return new Whale(position, parent1, parent2);
+        return new Nemo(position, parent1, parent2);
     }
 
 
-    /* -------------------------------MECHANIKA JEDZENIA------------------------------- */
+    /* -------------------------------EATING------------------------------- */
 
     //zjada o ile nie byłoby ponad 100 napchane
     @Override
@@ -85,41 +84,43 @@ public class Whale extends Herbivorous {
         }
     }
 
-    /* -------------------------------GRAFIKI------------------------------- */
 
-    private static Image youngWhale;
-    private static Image oldWhale;
+
+    /* -------------------------------GRAPHICS------------------------------- */
+
+    private static Image babyShrimp;
+    private static Image adultShrimp;
     private static final int AGE_OLD = 18; // one turn = one month
+
 
     private final ImageView imageView = new ImageView();
     public ImageView getImageView() { return imageView; } // getter
 
+
     /* -------------------------------GUI------------------------------- */
 
-
     private static void loadImagesIfNeeded() {
-        if (youngWhale == null || oldWhale == null) {
+        if (babyShrimp == null || adultShrimp == null) {
             if (!GraphicsEnvironment.isHeadless()) { //sprawdza czy jest srodowisko graficzne (testy go nie mają)
-                youngWhale = new Image(Objects.requireNonNull(Whale.class.getResource("/images/barrierBabyWhale.png")).toExternalForm());
-                oldWhale = new Image(Objects.requireNonNull(Whale.class.getResource("/images/barrierWhale.png")).toExternalForm());
+                babyShrimp = new Image(Objects.requireNonNull(Nemo.class.getResource("/images/babyShrimp.png")).toExternalForm());
+                adultShrimp = new Image(Objects.requireNonNull(Nemo.class.getResource("/images/adultShrimp.png")).toExternalForm());
             }
         }
     }
 
     private void settings() {
         imageView.setPreserveRatio(true);
-        updateWhaleGraphics();
+        updateNemoGraphics();
     }
 
-    private void updateWhaleGraphics() {
+    private void updateNemoGraphics() {
         loadImagesIfNeeded();
 
         boolean isYoung = getAge() < AGE_OLD;
-        imageView.setImage(isYoung ? youngWhale : oldWhale);
+        imageView.setImage(isYoung ? babyShrimp : adultShrimp);
 
-        //double scale = isYoung ? 0.7 : 1.0;
-        imageView.setFitWidth(Main.getTileSize() * 3);
-        imageView.setFitHeight(Main.getTileSize() * 3);
-
+        double scale = isYoung ? 0.6 : 0.8;
+        imageView.setFitWidth(Main.getTileSize() * scale);
+        imageView.setFitHeight(Main.getTileSize() * scale);
     }
 }
