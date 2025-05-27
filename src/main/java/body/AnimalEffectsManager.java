@@ -15,7 +15,7 @@ public class AnimalEffectsManager {
     //wczesniej w attack() w puffer
     public static void poisonTarget(Animal target) {
         target.setPoisonTicks(4); //ustawia na ile jest poisoned
-        SimulationStatsManager.writeToFile(target.getName() + " id: " + target.getId() + " got poisoned by dying Puffer!");
+        SimulationStatsManager.writeToFile(target.getName() + " id: " + target.getId() + " is poisoned");
     }
 
 
