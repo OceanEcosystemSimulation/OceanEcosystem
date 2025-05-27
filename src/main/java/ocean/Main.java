@@ -203,6 +203,7 @@ public class Main extends Application {
                 case allAnimals.InkCloud ink -> ink.getImageView();
                 case allAnimals.Turtle turtle -> turtle.getImageView();
                 case allAnimals.Crab crab -> crab.getImageView();
+                case allAnimals.Shrimp shrimp -> shrimp.getImageView();
                 default -> null;
             };
 

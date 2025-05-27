@@ -124,6 +124,7 @@ public class WorldSetup {
             case "Seal" -> new Seal(position);
             case "Turtle" -> new Turtle(position);
             case "Crab" -> new Crab(position);
+            case "Shrimp" -> new Shrimp(position);
             default -> null;  //na wypadek błędu
         };
     }
