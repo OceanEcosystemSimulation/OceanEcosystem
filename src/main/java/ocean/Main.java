@@ -81,7 +81,6 @@ public class Main extends Application {
         SimulationDisplayManager displayManager = new SimulationDisplayManager(width, height, tileSize, barierSettings);
 
         displayManager.setupGrid();
-        displayManager.setupBarrierLayer();
 
         this.tilesTab = displayManager.getTilesTab();
         this.grid = displayManager.getGrid();
@@ -209,12 +208,28 @@ public class Main extends Application {
 
             if (image != null) {
                 image.setPreserveRatio(true);
+                // sprawdzenie, czy object nalezy do klasy lub podklasy whale
+                // jeęsli tak, dodaje wieloryba
+                if (object instanceof allAnimals.Whale) { //zwiększenie rozmiarów wieloryba
+                    int x = object.getPosition().getX();
+                    int y = object.getPosition().getY();
 
-                GridPane.setColumnIndex(image, object.getPosition().getX());
-                GridPane.setRowIndex(image, object.getPosition().getY());
+                    // Obliczamy górny-lewy róg 3x3
+                    int gridX = Math.max(0, x - 1);
+                    int gridY = Math.max(0, y - 1);
 
-                GridPane.setHalignment(image, javafx.geometry.HPos.CENTER); //centering by nie były w lewym górnym
-                GridPane.setValignment(image, javafx.geometry.VPos.CENTER);
+
+                    GridPane.setColumnIndex(image, gridX);
+                    GridPane.setRowIndex(image, gridY);
+                } else {
+                    // standardowe pozycjonowanie wszystkich innych zwierzat
+                    GridPane.setColumnIndex(image, object.getPosition().getX());
+                    GridPane.setRowIndex(image, object.getPosition().getY());
+
+                    //sordkowanie obrazka
+                    GridPane.setHalignment(image, javafx.geometry.HPos.CENTER); //centering by nie były w lewym górnym
+                    GridPane.setValignment(image, javafx.geometry.VPos.CENTER);
+                }
 
                 grid.getChildren().add(image);
             } else {  // jeśli nie ma grafiki, pojawi się czerwony kafelek

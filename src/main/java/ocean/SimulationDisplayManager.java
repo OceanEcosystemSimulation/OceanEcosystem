@@ -31,15 +31,33 @@ public class SimulationDisplayManager {
         grid = new GridPane(); //tworzenie układu siatki na której będą wyświetlane kafelki
         tilesTab = new Rectangle[width][height]; //tablica kafelków update wielkości
 
+        //stala wysokosc kolumny
+        for (int x = 0; x < width; x++) {
+            ColumnConstraints col = new ColumnConstraints(); //do obliczenia szerokosci i ukladu
+            col.setMinWidth(tileSize);
+            col.setPrefWidth(tileSize);
+            col.setMaxWidth(tileSize); //blokuje rozciaganie przez wieloryba
+            grid.getColumnConstraints().add(col); // dodaje kolumne
+        }
+        // stala wysokosc wierszy
+        for (int y = 0; y < height; y++) {
+            RowConstraints row = new RowConstraints();
+            row.setMinHeight(tileSize);
+            row.setPrefHeight(tileSize);
+            row.setMaxHeight(tileSize); //blokowanie rozciagania
+            grid.getRowConstraints().add(row);
+        }
+
         //tworzenie kafelków i dodawanie do GridPane
-        for (int x = 0; x < width; x++) { //przechodzi po kolei width x height
+        for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
                 Rectangle rectangle = new Rectangle(tileSize, tileSize); //tworzy kafelek (rectancle)
-                rectangle.setStroke(Color.GRAY); //robi go szarym na obwodzie (na razie) //TRANSPARENT - jak któraś chce bez gridu
+                rectangle.setStroke(Color.GRAY); //robi go szarym na obwodzie
                 tilesTab[x][y] = rectangle; //dodaje do tablicy by móc później nim zarzadzac
                 grid.add(rectangle, x, y); //dodaje obiekt rectangle do siatki na współrzędne xy
             }
         }
+
 
         grid.setId("pane"); //ustawia id dla grid - używane w css lub odwołania
     }
@@ -76,15 +94,6 @@ public class SimulationDisplayManager {
     }
 
 
-    //ustawienia bariery
-    void setupBarrierLayer() {
-        barierSettings = new StackPane();
-        barierSettings.setPrefSize(width * tileSize, height * tileSize);
-        barierSettings.setClip(new Rectangle(width * tileSize, height * tileSize));
-        barierSettings.setMouseTransparent(true);
-    }
-
-
     //ustawienia tła
     private void applyBackgroundStyles(Scene scene) {
         URL cssUrl = getClass().getResource("/style.css");
@@ -101,7 +110,7 @@ public class SimulationDisplayManager {
         VBox statsPanel = setupStatsPanel();
         Slider speedSlider = setupSpeedSlider();
 
-        StackPane layouts = new StackPane(grid, barierSettings); // stos, układa elementy warstwami 0 - warstwa na dole - grid, 1 warstwa wyżej - bariera
+        StackPane layouts = new StackPane(grid); // stos, układa elementy warstwami 0 - warstwa na dole - grid, 1 warstwa wyżej - bariera
 
         Label sliderLabel = new Label("Sleep time: ");
         sliderLabel.setTranslateY(5);
@@ -112,7 +121,7 @@ public class SimulationDisplayManager {
         bottomSection.setSpacing(20);
         bottomSection.getChildren().addAll(sliderLabel, speedSlider);
 
-        HBox topSection = new HBox(layouts, statsPanel);
+        HBox topSection = new HBox(layouts, statsPanel); //idk chyba tu cos do zmiany, ale cos sie psuje
         VBox root = new VBox();
         root.getChildren().addAll(topSection, bottomSection); //dodaje elementy siatka i panel do głównego jakby kontenera z elementami?? idk jak to się określa
 

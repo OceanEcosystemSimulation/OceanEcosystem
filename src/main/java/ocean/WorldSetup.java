@@ -87,7 +87,7 @@ public class WorldSetup {
     //dodaje okreslona liczbe dowolnych (rarity) zwierząt do listy w losowych pozycjach
     static void spawnAnimals(World world, int count) {
         int added = 0; //ile zwierzat dodano pomyślnie
-        int maxCount = Math.min(count, world.getHeight()*world.getWidth()); //jeśli count jest wiecej niz pól dodaje ile może
+        int maxCount = Math.min(count, world.getHeight() * world.getWidth()); //jeśli count jest wiecej niz pól dodaje ile może
         RangeOfRarity rarityRange = new RangeOfRarity();
         DrawningAnimalsByTheirRarity animalDrawer = new DrawningAnimalsByTheirRarity();
 
@@ -96,8 +96,10 @@ public class WorldSetup {
             String animalType = animalDrawer.drawnAnimalByRarity(rarity); //losuje typ zwierzęcia z tej klasy rarity
 
             Coord coord;
-            do {coord = randomCoord(world);}  //losuje pozycje
-            while (world.isOccupied(coord)); //losuje dopóki wylosowane bedzie wolne
+                    do {
+                        coord = randomCoord(world);
+                    }  //losuje pozycje
+                    while (world.isOccupied(coord)); //losuje dopóki wylosowane bedzie wolne
 
             Animal animal = createAnimalFromName(animalType, coord); //tworzy zwierzę
             if (animal != null) {
