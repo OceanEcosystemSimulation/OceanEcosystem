@@ -15,13 +15,13 @@ public class InkCloud extends WorldObject {
     private static Image inkImage;
     private final ImageView imageView = new ImageView();
     private int remainingTime = 2; //znika po 2 turach
-    private Animal target;
+    private final Animal target;
 
     public InkCloud(Coord position, Animal target) {
         super(position);
         this.target = target;
         //jesli nie jest aktualnie zatrzymany inny delfin
-        if (target != null && target.getName().equals("Dolphin")) {
+        if (target != null && target.getClass() == Dolphin.class) {
             ((Dolphin) target).setStunned(true);
         }
 

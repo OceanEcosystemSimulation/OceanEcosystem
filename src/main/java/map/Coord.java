@@ -8,6 +8,7 @@ import java.util.*;
 // reprezentacja współrzędnych
 public class Coord {
     public int x, y;
+    public static int allAtempts = 0;
 
     //inicjalizacja współrzędnych
     public Coord(int x, int y) {
@@ -44,8 +45,13 @@ public class Coord {
             newCoord = new Coord(newX, newY);
 
             attempts++;
-            if (attempts >= 10000) { //kiedy przy X próbach nie będzie miejsca
+            if (attempts >= 1000) { //kiedy przy X próbach nie będzie miejsca
+                allAtempts++;
+                if (allAtempts > world.getAnimals().size()/2) {
                     return null;
+                } else {
+                    return new Coord(x, y);
+                }
             }
         } while (world.isOccupied(newCoord));
         return newCoord;

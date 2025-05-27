@@ -24,13 +24,17 @@ public class Genes {
         return genes;
     }
 
-    public void setSpeed(int speed) {
-        this.speed = speed;
+    public void setSpeed(int baseSpeed) {
+        if (World.minMapSize < 2) {
+            this.speed = Math.max(1, mutate((int)(baseSpeed * (double) World.minMapSize / 20)));
+        } else {
+            this.speed = baseSpeed;
+        }
     }
 
     //losowa mutacja do genów
     public static int mutate(int value) {
-        if (World.random.nextDouble() < 0.2) { //nie zawsze (losowo) zachodzi - 30%
+        if (World.random.nextDouble() < 0.1) { //nie zawsze (losowo) zachodzi - X%
             return value + World.random.nextInt(5) - 2; //mutuje w zakresie +-2
         }
         return value;
