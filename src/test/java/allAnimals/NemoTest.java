@@ -6,12 +6,20 @@ import map.FoodType;
 import map.MapType;
 import map.Tile;
 import ocean.World;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.util.Random;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 
 
 public class NemoTest {
+    @BeforeEach
+    void setup() {
+        World.random = new Random();
+    }
 
     @Test
     void testNemoIsCreatedCorrectly() { //czy został poprawnie utworzony i czy wartości są poprawne
@@ -46,7 +54,7 @@ public class NemoTest {
         int initialFood = nemo.getFoodLevel(); //pobieranie poziomu jedzenia przed zjedzeniem
         nemo.eat(tile, new World(10, 10, 0, 0, 1)); //nemo je
 
-        assertEquals(initialFood, nemo.getFoodLevel()); //porównanie czy dobrze się zwiększyło
+        assertEquals(initialFood, nemo.getFoodLevel()); //porównanie czy dobrze się zwiększyło (jest najedzony wiec powinno nic)
     }
 
 
