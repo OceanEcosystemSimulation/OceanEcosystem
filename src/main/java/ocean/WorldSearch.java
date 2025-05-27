@@ -6,6 +6,8 @@ import map.MapType;
 import map.Tile;
 import movement.IFight;
 
+import java.util.List;
+
 //wszystkie przeszukiwania mapy
 public class WorldSearch {
 
@@ -41,7 +43,7 @@ public class WorldSearch {
 
         for (Animal animal : world.getNearbyAnimals(position, radius)) { //iteracja po liście zwierząt w promieniu
             Tile preyTile = world.getTile(animal.getPosition()); //pole na którym jest ofiara
-            if (preyTile!=null && preyTile.getMapType()!= MapType.CORAL && predator.canAttack(animal)) { //sprawdzenie czy może zaatakować i czy to nie rafa
+            if (preyTile!=null && preyTile.getMapType()!= MapType.CORAL && predator.canAttack(animal) && !isWhaleNearby(world, animal)) { //sprawdzenie czy może zaatakować i czy to nie rafa
                 int dist = position.distance(animal.getPosition()); //odległość od prey
                 if (dist < minDist) { //jeśli bliżej to bierze
                     minDist = dist;
@@ -92,5 +94,20 @@ public class WorldSearch {
             }
         }
         return nearestCoral; //zwaca najbliższe pole z coral
+    }
+    
+    
+    public static boolean isWhaleNearby(World world, Animal animal) {
+        for (Coord neighbor : Coord.getAdjacentCoords(animal.getPosition())) { //przeszukuje najblizsze pola zwierzaka
+            if (world.inBounds(neighbor.x, neighbor.y)) {
+                List<Animal> nearbyAnimals = world.getNearbyAnimals(neighbor, 0);
+                for (Animal nearbyAnimal : nearbyAnimals) {
+                    if (nearbyAnimal.getName() != null && nearbyAnimal.getName().equals("Whale")) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
     }
 }
