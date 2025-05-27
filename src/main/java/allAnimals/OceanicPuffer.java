@@ -91,7 +91,6 @@ public class OceanicPuffer extends Omnivorous {
     }
 
 
-
     @Override
     public int calculateGain(Animal animal) {
         return switch (animal.getName()) {
