@@ -6,6 +6,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import map.*;
 import ocean.Main;
+import ocean.SimulationStatsManager;
 import ocean.World;
 
 import java.awt.*;
@@ -78,7 +79,7 @@ public class Seal extends Carnivorous {
                                 animal.getPosition().y == y &&
                                 animal.getName().equals("Shark")) {
 
-                            System.out.println("Seal id: " + getId() + " scared away Shark id: " + animal.getId());
+                            SimulationStatsManager.writeToFile("Seal id: " + getId() + " scared away Shark id: " + animal.getId());
 
                             //przesuwa rekina na wylosowana kratke o wspolrzednych  rx i ry
                             int rx = (int)(Math.random() * world.getWidth());

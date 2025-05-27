@@ -6,6 +6,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import map.*;
 import ocean.Main;
+import ocean.SimulationStatsManager;
 import ocean.World;
 
 import java.awt.*;
@@ -117,7 +118,7 @@ public class OceanicPuffer extends Omnivorous {
 
         if (getFoodLevel() + gain <= 100) {
             setFoodLevel(getFoodLevel() + gain);
-            System.out.println(this.getName() + " id: " + this.getId() + " eats " + tile.getFoodType());
+            SimulationStatsManager.writeToFile(this.getName() + " id: " + this.getId() + " eats " + tile.getFoodType());
             tile.clearFood(world);
         }
     }

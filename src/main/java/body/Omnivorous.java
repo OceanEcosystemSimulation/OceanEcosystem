@@ -3,6 +3,7 @@ package body;
 import extendedMechanics.Reproduction;
 import map.*;
 import movement.*;
+import ocean.SimulationStatsManager;
 import ocean.World;
 import ocean.WorldSearch;
 
@@ -67,7 +68,7 @@ public abstract class Omnivorous extends Animal implements IEat, IFight, IMate {
 
         if (attackerSpeed < preySpeed) {
             AnimalCombatUtils.escape(world, prey);
-            System.out.println(prey.getName() + " id: " + prey.getId() + " escaped from " + this.getName() + " id: " + this.getId());
+            SimulationStatsManager.writeToFile(prey.getName() + " id: " + prey.getId() + " escaped from " + this.getName() + " id: " + this.getId());
             return false;
         }
 
@@ -78,23 +79,23 @@ public abstract class Omnivorous extends Animal implements IEat, IFight, IMate {
         for (int i = 0; i < rounds; i++) {
             AnimalCombatUtils.takeDamage(world, prey, attackerPower);
             if (!prey.isAlive()) {
-                System.out.println(this.getName() + " id: " + this.getId() + " killed " + prey.getName() + " id: " + prey.getId());
+                SimulationStatsManager.writeToFile(this.getName() + " id: " + this.getId() + " killed " + prey.getName() + " id: " + prey.getId());
                 return true;
             }
 
             AnimalCombatUtils.takeDamage(world,this, preyPower);
             if (!this.isAlive()) {
-                System.out.println(prey.getName() + " id: " + prey.getId() + " killed " + this.getName() + " id: " + this.getId());
+                SimulationStatsManager.writeToFile(prey.getName() + " id: " + prey.getId() + " killed " + this.getName() + " id: " + this.getId());
                 return false;
             }
         }
 
         if (attackerPower > preyPower) {
             AnimalCombatUtils.escape(world, prey);
-            System.out.println(prey.getName() + " id: " + prey.getId() + " escaped from " + this.getName() + " id: " + this.getId());
+            SimulationStatsManager.writeToFile(prey.getName() + " id: " + prey.getId() + " escaped from " + this.getName() + " id: " + this.getId());
         } else {
             AnimalCombatUtils.escape(world, this);
-            System.out.println(this.getName() + " id: " + this.getId() + " escaped from " + prey.getName() + " id: " + prey.getId());
+            SimulationStatsManager.writeToFile(this.getName() + " id: " + this.getId() + " escaped from " + prey.getName() + " id: " + prey.getId());
         }
 
         return false;

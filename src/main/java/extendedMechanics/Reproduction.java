@@ -4,6 +4,7 @@ import body.*;
 import map.Coord;
 import map.MapType;
 import map.Tile;
+import ocean.SimulationStatsManager;
 import ocean.World;
 import allAnimals.Egg;
 
@@ -97,7 +98,7 @@ public final class Reproduction {
         female.setFatherDuringPregnancy(male);
         female.setPregnancyCounter(PREGNANCY_DURATION);
 
-        System.out.println(female.getName() + " id: " + female.getId() + "  get pregnant with  " + male.getName() + " id: " + male.getId());
+        SimulationStatsManager.writeToFile(female.getName() + " id: " + female.getId() + "  get pregnant with  " + male.getName() + " id: " + male.getId());
     }
 
     /* -------------------------------PREGNANCY------------------------------- */
@@ -126,7 +127,7 @@ public final class Reproduction {
         egg.setMother(mother);
         egg.setName(mother.getName());
         world.addEgg(egg);
-        System.out.println(egg.getName() + " id: " + egg.getId() + "  was born");
+        SimulationStatsManager.writeToFile(egg.getName() + " id: " + egg.getId() + "  was born");
     }
 
     /* -------------------------------SAFE SPACE------------------------------- */

@@ -58,8 +58,10 @@ public class SimulationDisplayManager {
             }
         }
 
-
         grid.setId("pane"); //ustawia id dla grid - używane w css lub odwołania
+
+        Rectangle clip = new Rectangle(tileSize * width, tileSize * height); //prostakat na całą mapę do ucinania tego co wystaje
+        grid.setClip(clip); //ustawienie obiektu clip który określa obszar widoczości dla danego elementu (tutaj grid) - elementy nie wyjda poza
     }
 
 

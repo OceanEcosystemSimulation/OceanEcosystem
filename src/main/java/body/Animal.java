@@ -1,6 +1,7 @@
 package body;
 
 import map.*;
+import ocean.SimulationStatsManager;
 import ocean.World;
 
 public abstract class Animal extends WorldObject {
@@ -103,7 +104,7 @@ public abstract class Animal extends WorldObject {
     @Override
     public void setPosition(Coord newPosition) {
         super.setPosition(newPosition);
-        System.out.println(this.getName() + " id: " + this.getId() + "  jumped to [" + this.getPosition().x + "," + this.getPosition().y + "]");
+        SimulationStatsManager.writeToFile(this.getName() + " id: " + this.getId() + "  jumped to [" + this.getPosition().x + "," + this.getPosition().y + "]");
     }
 
     public void setFoodLevel(int foodLevel) {this.foodLevel = foodLevel;}

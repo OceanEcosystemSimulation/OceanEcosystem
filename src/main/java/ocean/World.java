@@ -44,7 +44,7 @@ public class World {
         if (!tralaleroSpawned && random.nextInt(100) == 0) { // 1% szans
             DrawningAnimalsByTheirRarity.addTralalero();
             tralaleroSpawned = true;
-            System.out.println("Final bosss spawned, end is comming...");
+            SimulationStatsManager.writeToFile("Final bosss spawned, end is comming...");
 
             Coord coord; // dodaje do swiata jesli moze
             do {
@@ -75,7 +75,7 @@ public class World {
             object.update(this); // aktualizuje stan zwierzęcia
 
             if (object instanceof Animal animal && !animal.isAlive()) { //jeżeli to zwierze i nie żyje
-                System.out.println(animal.getName() + " id: " + animal.getId() + " is dead ");
+                SimulationStatsManager.writeToFile(animal.getName() + " id: " + animal.getId() + " is dead ");
                 deadAnimalCounter++;
                 removeObject(animal);
             }

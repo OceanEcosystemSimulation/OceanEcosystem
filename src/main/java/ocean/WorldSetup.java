@@ -32,8 +32,8 @@ public class WorldSetup {
         int coralGeneratingLimit = (int) (height * 0.35); // max wysokość, by nie tworzyły się na grafice wody // zakres
 
         if (noCoral > maxCountOfCorals) {
-            System.out.println("Zadany wymiar mapy jest zbyt mały, nie można umieścić tylu raf");
-            System.out.printf("Zmniejszam ilość raf, do największego możliwego... Ilość raf: %d\n", maxCountOfCorals);
+            SimulationStatsManager.writeToFile("Zadany wymiar mapy jest zbyt mały, nie można umieścić tylu raf");
+            SimulationStatsManager.writeToFile("Zmniejszam ilość raf, do największego możliwego... Ilość raf: " + maxCountOfCorals);
             noCoral = maxCountOfCorals;
         }
         int coralreef_counter = 0;
@@ -107,7 +107,7 @@ public class WorldSetup {
                 added++;
             }
         }
-        System.out.println("Successfully added " + added + " from " + count + " animals");
+        SimulationStatsManager.writeToFile("Successfully added " + added + " from " + count + " animals");
     }
 
 

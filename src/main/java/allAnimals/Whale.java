@@ -1,6 +1,5 @@
 package allAnimals;
 
-import javafx.application.Platform;
 import extendedMechanics.Reproduction;
 import map.Coord;
 import map.Tile;
@@ -13,8 +12,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 
@@ -80,7 +77,7 @@ public class Whale extends Herbivorous {
         };
         if (getFoodLevel()+gain <= 100){
             setFoodLevel(getFoodLevel() + gain); //je
-            System.out.println(this.getName() + " id: " + this.getId() + " eats " + tile.foodType);
+            SimulationStatsManager.writeToFile(this.getName() + " id: " + this.getId() + " eats " + tile.foodType);
             tile.clearFood(world);
         }
     }
@@ -117,9 +114,9 @@ public class Whale extends Herbivorous {
         boolean isYoung = getAge() < AGE_OLD;
         imageView.setImage(isYoung ? youngWhale : oldWhale);
 
-        //double scale = isYoung ? 0.7 : 1.0;
-        imageView.setFitWidth(Main.getTileSize() * 3);
-        imageView.setFitHeight(Main.getTileSize() * 3);
+        double scale = isYoung ? 0.9 : 1.0;
+        imageView.setFitWidth(Main.getTileSize() * 3 * scale);
+        imageView.setFitHeight(Main.getTileSize() * 3 * scale);
 
     }
 }

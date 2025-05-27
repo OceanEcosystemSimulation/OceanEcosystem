@@ -6,6 +6,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import map.*;
 import ocean.Main;
+import ocean.SimulationStatsManager;
 import ocean.World;
 
 import java.awt.*;
@@ -100,7 +101,7 @@ public class Dolphin extends Carnivorous {
     @Override
     public void move(World world) {
         if (isStunned()) {
-            System.out.println("Dolphin id: " + getId() + " is stunned and cannot move");
+            SimulationStatsManager.writeToFile("Dolphin id: " + getId() + " is stunned and cannot move");
             return;
         }
         //jak nie jest spowolniony to ruch bez zmian

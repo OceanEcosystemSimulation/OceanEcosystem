@@ -6,6 +6,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import map.Coord;
 import ocean.Main;
+import ocean.SimulationStatsManager;
 import ocean.World;
 
 import java.awt.*;
@@ -48,7 +49,7 @@ public class InkCloud extends WorldObject {
             // efekt znika – przywróć ruch
             if (target != null && target.getName().equals("Dolphin")) {
                 ((Dolphin) target).setStunned(false);
-                System.out.println("Ink effect ended for Dolphin id: " + target.getId());
+                SimulationStatsManager.writeToFile("Ink effect ended for Dolphin id: " + target.getId());
             }
             world.removeObject(this);
         }
