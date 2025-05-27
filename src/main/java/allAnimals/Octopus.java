@@ -42,27 +42,16 @@ public class Octopus extends Carnivorous implements IEat {
         return genes;
     }
 
-
     //ink
     private void releaseInk(World world) {
-        int radius = 2;
-        boolean released = false;
-
-        //wypuszcza atrament jesli poczuje sie zgrozona
-        for (Animal other : world.getNearbyAnimals(getPosition(), radius)) {
-            if (!other.isAlive() || other == this) {continue;}
-
-            if ("Dolphin".equals(other.getName())) {
-                AnimalEffectsManager.slowTarget(this, other, 3);
-                released = true;
+        for (Animal a : world.getNearbyAnimals(getPosition(), 2)) {
+            if (a.isAlive() && !a.equals(this) && "Dolphin".equals(a.getName())) {
+                world.addObject(new InkCloud(a.getPosition(), a));
+                break;
             }
         }
-
-        if (released) {
-            InkCloud cloud = new InkCloud(getPosition());
-            world.addObject(cloud);
-        }
     }
+
 
     /* -------------------------------LIFE------------------------------- */
 

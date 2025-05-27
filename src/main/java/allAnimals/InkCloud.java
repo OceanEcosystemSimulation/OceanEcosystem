@@ -1,5 +1,6 @@
 package allAnimals;
 
+import body.Animal;
 import body.WorldObject;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -13,12 +14,20 @@ import java.util.Objects;
 public class InkCloud extends WorldObject {
     private static Image inkImage;
     private final ImageView imageView = new ImageView();
-    private int remainingTime = 3; //znika po 3 turach
+    private int remainingTime = 2; //znika po 2 turach
+    private Animal target;
 
-    public InkCloud(Coord position) {
+    public InkCloud(Coord position, Animal target) {
         super(position);
+        this.target = target;
+        //jesli nie jest aktualnie zatrzymany inny delfin
+        if (target != null && target.getName().equals("Dolphin")) {
+            ((Dolphin) target).setStunned(true);
+        }
+
         setupGraphics();
     }
+
 
     private void setupGraphics() {
         if (inkImage == null && !GraphicsEnvironment.isHeadless()) {
@@ -26,16 +35,21 @@ public class InkCloud extends WorldObject {
         }
 
         imageView.setImage(inkImage);
-        imageView.setOpacity(0.6);
-        imageView.setFitWidth(Main.getTileSize());
+        imageView.setOpacity(0.6); //półprzeźroczystość
+        imageView.setFitWidth(Main.getTileSize());//dopasowanie do kratki
         imageView.setFitHeight(Main.getTileSize());
-        imageView.setPreserveRatio(true);
+        imageView.setPreserveRatio(true);//zachowanie proporcji
     }
 
     @Override
     public void update(World world) {
         remainingTime--;
         if (remainingTime <= 0) {
+            // efekt znika – przywróć ruch
+            if (target != null && target.getName().equals("Dolphin")) {
+                ((Dolphin) target).setStunned(false);
+                System.out.println("Ink effect ended for Dolphin id: " + target.getId());
+            }
             world.removeObject(this);
         }
     }
