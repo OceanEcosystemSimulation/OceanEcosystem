@@ -120,6 +120,8 @@ public class WorldSetup {
             case "Octopus" -> new Octopus(position);
             case "Dolphin" -> new Dolphin(position);
             case "Seal" -> new Seal(position);
+            case "Turtle" -> new Turtle(position);
+            case "Crab" -> new Crab(position);
             default -> null;  //na wypadek błędu
         };
     }

@@ -87,14 +87,22 @@ public class Dolphin extends Carnivorous {
     }
 
     /* -------------------------------MOVE------------------------------- */
+    private boolean stunned = false; //czy jest zatrzymany
+
+    public boolean isStunned() {
+        return stunned;
+    }
+
+    public void setStunned(boolean stunned) {
+        this.stunned = stunned;
+    }
 
     @Override
     public void move(World world) {
-        if (getSlowCounter() > 0) {
-            System.out.println("Dolphin id: " + getId() + " is slowed by ink");
+        if (isStunned()) {
+            System.out.println("Dolphin id: " + getId() + " is stunned and cannot move");
             return;
         }
-
         //jak nie jest spowolniony to ruch bez zmian
         super.move(world);
     }
