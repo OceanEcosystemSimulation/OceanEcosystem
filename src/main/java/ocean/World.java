@@ -3,7 +3,6 @@ package ocean;
 import allAnimals.Egg;
 import body.*;
 import extendedMechanics.DrawningAnimalsByTheirRarity;
-import extendedMechanics.Rarity;
 import map.Coord;
 import map.Tile;
 
@@ -117,10 +116,6 @@ public class World {
     //sprawdza czy dane pole jest w zasięgu mapy
     public boolean inBounds(int x, int y) {
         return x >= 0 && x < width && y >= 0 && y < height;
-    }
-
-    public boolean coordsInBounds(Coord coord) { // to samo co inBounds, po prostu zwraca oba pola
-        return inBounds(coord.getX(), coord.getY());
     }
 
     //sprawdza czy dane pole jest zajete, zwraca true jeśli not empty

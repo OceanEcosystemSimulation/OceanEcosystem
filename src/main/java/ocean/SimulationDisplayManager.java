@@ -15,13 +15,11 @@ public class SimulationDisplayManager {
     private Rectangle[][] tilesTab;
     private VBox statsPanel;
     private Slider speedSlider;
-    private StackPane barierSettings;
 
-    public SimulationDisplayManager(int width, int height, int tileSize, Pane barierSettings) {
+    public SimulationDisplayManager(int width, int height, int tileSize) {
         this.width = width;
         this.height = height;
         this.tileSize = tileSize;
-        this.barierSettings = new StackPane(barierSettings);
     }
 
 
@@ -112,8 +110,6 @@ public class SimulationDisplayManager {
         VBox statsPanel = setupStatsPanel();
         Slider speedSlider = setupSpeedSlider();
 
-        StackPane layouts = new StackPane(grid); // stos, układa elementy warstwami 0 - warstwa na dole - grid, 1 warstwa wyżej - bariera
-
         Label sliderLabel = new Label("Sleep time: ");
         sliderLabel.setTranslateY(5);
 
@@ -123,7 +119,7 @@ public class SimulationDisplayManager {
         bottomSection.setSpacing(20);
         bottomSection.getChildren().addAll(sliderLabel, speedSlider);
 
-        HBox topSection = new HBox(layouts, statsPanel); //idk chyba tu cos do zmiany, ale cos sie psuje
+        HBox topSection = new HBox(grid, statsPanel); //idk chyba tu cos do zmiany, ale cos sie psuje
         VBox root = new VBox();
         root.getChildren().addAll(topSection, bottomSection); //dodaje elementy siatka i panel do głównego jakby kontenera z elementami?? idk jak to się określa
 

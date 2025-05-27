@@ -78,7 +78,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) {
         world = new World(width, height, noFood, noCoral, noAnimals);
 
-        SimulationDisplayManager displayManager = new SimulationDisplayManager(width, height, tileSize, barierSettings);
+        SimulationDisplayManager displayManager = new SimulationDisplayManager(width, height, tileSize);
 
         displayManager.setupGrid();
 
@@ -98,14 +98,6 @@ public class Main extends Application {
 
         //uruchamianie osobnego wątku symulacji (w tle by działało gładko????) który co X ms wykonuje nowy cykl i odświeża interfejs
         new SimulationThread(this, displayManager.getStatsLabel(), displayManager.getSpeedSlider()).start();
-    }
-
-
-
-    private static final Pane barierSettings = new Pane(); // klasa odpowiedzialna za pozycjonowanie
-
-    public static Pane getOverlay() {
-        return barierSettings;
     }
 
 

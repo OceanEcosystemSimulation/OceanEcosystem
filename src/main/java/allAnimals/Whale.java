@@ -114,7 +114,7 @@ public class Whale extends Herbivorous {
         boolean isYoung = getAge() < AGE_OLD;
         imageView.setImage(isYoung ? youngWhale : oldWhale);
 
-        double scale = isYoung ? 0.9 : 1.0;
+        double scale = isYoung ? 0.8 : 1.0;
         imageView.setFitWidth(Main.getTileSize() * 3 * scale);
         imageView.setFitHeight(Main.getTileSize() * 3 * scale);
 
