@@ -155,7 +155,7 @@ public class WorldSetup {
     /* -------------------------------KOORDYNATY------------------------------- */
 
     //generuje losowe współrzedne Coord na swiecie - w granicach ofc bo random.nextInt(bound) zawsze zwraca liczbę w zakresie [0, bound)
-    private static Coord randomCoord(World world) {
+    static Coord randomCoord(World world) {
         return new Coord(World.random.nextInt(world.getWidth()), World.random.nextInt(world.getHeight()));
     }
 }
