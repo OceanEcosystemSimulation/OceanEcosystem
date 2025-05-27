@@ -1,11 +1,6 @@
 package extendedMechanics;
 
-import map.Coord;
-import ocean.WorldSetup;
-
 import java.util.*;
-
-import static ocean.World.random;
 
 // funkcja, która losuje zwierzęta, które należą do tej samej klasy rzadkości
 public class DrawningAnimalsByTheirRarity implements IAnimalDrawer {

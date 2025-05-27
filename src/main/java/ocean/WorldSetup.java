@@ -48,7 +48,7 @@ public class WorldSetup {
             int cy = coralGeneratingLimit + World.random.nextInt(height - coralGeneratingLimit); //losuje centralne pole y rafy //UPDATE: rafy mają
             // ograniczony zakres wysokości, przez co nie tworzą się na wodzie
             //sprawdza czy w zasięgu mapy
-            if (!world.inBounds(cx - 1, cy - 1) || !world.inBounds(cx + 1, cy + 1)) continue;
+            if (!world.inBounds(cx - 1, cy - 1) || !world.inBounds(cx + 1, cy + 1)) {continue;}
 
             // simple rozmieszczenie raf (otoczenie 3x3 na razie - jeśli dobrze ustawiłąm lol) //dobrze
             boolean IsEmpty = true; // sprawdza, czy jest wolna przestrzeń, na postawienie rafy

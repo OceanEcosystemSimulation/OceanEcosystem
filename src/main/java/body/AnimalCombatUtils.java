@@ -15,7 +15,7 @@ public class AnimalCombatUtils {
         return animal.getGenes().getSpeed() * (animal.getEnergy()/100.0);
     }
 
-    static double getCombatPower(Animal animal) {
+    public static double getCombatPower(Animal animal) {
         return getEffectiveStrength(animal) * 0.7 + getEffectiveSpeed(animal) * 0.3;
     }
 

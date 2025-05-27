@@ -55,20 +55,6 @@ public abstract class Animal extends WorldObject {
     public int getPoisonTicks() {return poisonTicks;}
     public void setPoisonTicks(int ticks) {this.poisonTicks = ticks;}
 
-    public void processPoison() {
-        if (poisonTicks > 0) {
-            this.health -= 5;
-            poisonTicks--;
-
-            System.out.println(getName() + " id: " + getId() + " is poisoned");
-
-            if (health <= 0) {
-                die();
-                System.out.println(getName() + " id: " + getId() + " died from poison.");
-            }
-        }
-    }
-
 
     /* -------------------------------INK------------------------------- */
 

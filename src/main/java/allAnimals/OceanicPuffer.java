@@ -28,8 +28,8 @@ public class OceanicPuffer extends Omnivorous {
 
     private static Genes generateGenes() {
         Genes genes = new Genes();
-        genes.setStrength(20);//mozna zmienic
-        genes.setSpeed(70);
+        genes.setStrength(20);
+        genes.setSpeed(2);
         genes.setMaxAge(30);
         genes.setMaxLoneliness(50);
         genes.setMaxEnergy(100);
@@ -44,7 +44,6 @@ public class OceanicPuffer extends Omnivorous {
 
     @Override
     public void update(World world) {
-        processPoison();
         processLifeCycle(world);
         updateGraphics();
         if (!isAlive()) return;
@@ -70,22 +69,20 @@ public class OceanicPuffer extends Omnivorous {
 
     @Override
     public boolean attack(Animal target, World world) {
-        double attackerPower = this.getGenes().getStrength() * (this.getEnergy() / 100.0);
-        double targetPower = target.getGenes().getStrength() * (target.getEnergy() / 100.0);
+        double attackerPower = AnimalCombatUtils.getCombatPower(this);
+        double targetPower = AnimalCombatUtils.getCombatPower(target);
 
         if (attackerPower > targetPower) {
             //wygrywa pufferfish
             target.die();
-            System.out.println(getName() + " id: " + getId() + " killed " + target.getName() + " id: " + target.getId());
+            SimulationStatsManager.writeToFile(getName() + " id: " + getId() + " killed " + target.getName() + " id: " + target.getId());
             return true;
         } else {
             this.die(); //Pufferfish ginie
-            System.out.println(target.getName() + " id: " + target.getId() + " killed " + getName() + " id: " + getId());
+            SimulationStatsManager.writeToFile(target.getName() + " id: " + target.getId() + " killed " + getName() + " id: " + getId());
 
             //zatruwa przeciwnika
-            target.setPoisonTicks(4); //zatruwa na 4 rundy
-            System.out.println(target.getName() + " id: " + target.getId() + " got poisoned by " + getName() + " id: " + getId());
-
+            AnimalEffectsManager.poisonTarget(target);
             return false;
         }
     }
