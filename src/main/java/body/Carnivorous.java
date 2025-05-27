@@ -3,6 +3,7 @@ package body;
 import extendedMechanics.Reproduction;
 import map.*;
 import movement.*;
+import ocean.SimulationStatsManager;
 import ocean.World;
 import ocean.WorldSearch;
 
@@ -47,7 +48,7 @@ public abstract class Carnivorous extends Animal implements IFight, IMove, IMate
         //próba ucieczki ofiary
         if (attackerSpeed < preySpeed) {
             AnimalCombatUtils.escape(world, prey);
-            System.out.println(prey.getName() + " id: " + prey.getId() + "  escape from  " + this.getName() + " id: " + this.getId());
+            SimulationStatsManager.writeToFile(prey.getName() + " id: " + prey.getId() + "  escape from  " + this.getName() + " id: " + this.getId());
             return false; //ucieczka udana - brak walki
         }
 
@@ -59,13 +60,13 @@ public abstract class Carnivorous extends Animal implements IFight, IMove, IMate
         for (int i = 0; i < rounds; i++) {
             AnimalCombatUtils.takeDamage(world, prey, attackerPower);
             if (!prey.isAlive()) {
-                System.out.println(this.getName() + " id: " + this.getId() + "  killed " + prey.getName() + " id: " + prey.getId());
+                SimulationStatsManager.writeToFile(this.getName() + " id: " + this.getId() + "  killed " + prey.getName() + " id: " + prey.getId());
                 return true; //prey padł
             }
 
             AnimalCombatUtils.takeDamage(world,this, preyPower);
             if (!this.isAlive()) {
-                System.out.println(prey.getName() + " id: " + prey.getId() + "  killed " + this.getName() + " id: " + this.getId());
+                SimulationStatsManager.writeToFile(prey.getName() + " id: " + prey.getId() + "  killed " + this.getName() + " id: " + this.getId());
                 return false; //predator padł
             }
         }
@@ -73,10 +74,10 @@ public abstract class Carnivorous extends Animal implements IFight, IMove, IMate
         //jeśli po 2 rundach nikt nie padł
         if (AnimalCombatUtils.getCombatPower(this) > AnimalCombatUtils.getCombatPower(prey)) { //kto ucieka (przegryw - słabszy)
             AnimalCombatUtils.escape(world, prey);
-            System.out.println(prey.getName() + " id: " + prey.getId() + "  escape from  " + this.getName() + " id: " + this.getId() + "  after " + rounds + " turns");
+            SimulationStatsManager.writeToFile(prey.getName() + " id: " + prey.getId() + "  escape from  " + this.getName() + " id: " + this.getId() + "  after " + rounds + " turns");
         } else {
             AnimalCombatUtils.escape(world, this);
-            System.out.println(this.getName() + " id: " + this.getId() + "  escape from  " + prey.getName() + " id: " + prey.getId() + "  after " + rounds + " turns");
+            SimulationStatsManager.writeToFile(this.getName() + " id: " + this.getId() + "  escape from  " + prey.getName() + " id: " + prey.getId() + "  after " + rounds + " turns");
         }
         return false; //nikt nie został zabity w walce
     }

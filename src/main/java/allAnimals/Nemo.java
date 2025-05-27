@@ -78,7 +78,7 @@ public class Nemo extends Herbivorous {
         };
         if (getFoodLevel()+gain <= 100){
             setFoodLevel(getFoodLevel() + gain); //je
-            System.out.println(this.getName() + " id: " + this.getId() + " eats " + tile.foodType);
+            SimulationStatsManager.writeToFile(this.getName() + " id: " + this.getId() + " eats " + tile.foodType);
             tile.clearFood(world);
         }
     }

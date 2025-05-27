@@ -1,5 +1,7 @@
 package body;
 
+import ocean.SimulationStatsManager;
+
 public class AnimalEffectsManager {
 
     //wczesniej poison() w Animal
@@ -13,7 +15,7 @@ public class AnimalEffectsManager {
     //wczesniej w attack() w puffer
     public static void poisonTarget(Animal target) {
         target.setPoisonTicks(4); //ustawia na ile jest poisoned
-        System.out.println(target.getName() + " id: " + target.getId() + " got poisoned by dying Puffer!");
+        SimulationStatsManager.writeToFile(target.getName() + " id: " + target.getId() + " got poisoned by dying Puffer!");
     }
 
 

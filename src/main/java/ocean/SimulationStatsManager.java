@@ -4,6 +4,8 @@ import body.Animal;
 
 import javafx.scene.control.Label;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -29,8 +31,9 @@ public class SimulationStatsManager {
         String statsText = "";
         for (Map.Entry<String, Integer> entry : speciesCount.entrySet()) {
             statsText += "\n" + entry.getKey() + ": " + entry.getValue() + "    ";
-            System.out.println(entry.getKey() + ": " + entry.getValue()); //na chwile - testy
+            SimulationStatsManager.writeToFile(entry.getKey() + ": " + entry.getValue()); //na chwile - testy
         }
+        SimulationStatsManager.writeToFile("\n");
         return statsText;
     }
 
@@ -39,9 +42,9 @@ public class SimulationStatsManager {
     public static void updateStats(World world, Label statsLabel) {
         updateSpeciesCount(world);
 
-        String statsText = "---> Stan na mapie: <---\n";
+        String statsText = "\n---> Stan na mapie: <---\n";
         statsText += "\nLiczba zjedzonego jedzenia: " + world.totalEatenFood + "\nIlosc zmarlych zwierzat: " + world.deadAnimalCounter + "\n";
-        System.out.println(statsText);
+        SimulationStatsManager.writeToFile(statsText);
         statsText += animalStatsText();
 
         statsLabel.setText(statsText);
@@ -52,10 +55,24 @@ public class SimulationStatsManager {
         String statsText = ">>> KONIEC SYMULACJI <<<" + (world.isSimulationEnded()?"\n           (brak miejsca)":"");
         statsText += "\n\nWykonane tury: " + finalTick + "/" + Main.noTicks + "\nLiczba zjedzonego jedzenia: " + world.totalEatenFood + "\nIlość zmarłych zwierząt: " + world.deadAnimalCounter + "\n";
         statsText += "\n---> Stan końcowy na mapie: <---";
-        System.out.println("\n" + statsText);
+        SimulationStatsManager.writeToFile("\n" + statsText);
         statsText += animalStatsText();
 
         statsLabel.setText(statsText);
     }
+
+
+    //zapis logów do pliku
+    public static void writeToFile(String line) {
+        try {
+            FileWriter writer = new FileWriter("logi.csv", true); //true dopisuje na końcu a nie początku
+            writer.write(line + "\n"); //każdą linijkę osobno
+            writer.close();
+        } catch (IOException e) {
+            System.out.println("write to file error!!");
+            e.printStackTrace();
+        }
+    }
+
 }
 
