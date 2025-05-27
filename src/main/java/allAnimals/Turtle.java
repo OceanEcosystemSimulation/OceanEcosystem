@@ -86,22 +86,6 @@ public class Turtle extends Omnivorous {
     }
 
     @Override
-    public boolean attack(Animal target, World world) {
-        double attackerPower = this.getGenes().getStrength() * (this.getEnergy() / 100.0);
-        double targetPower = target.getGenes().getStrength() * (target.getEnergy() / 100.0);
-
-        if (attackerPower > targetPower) {
-            target.die();
-            System.out.println(getName() + " id: " + getId() + " killed " + target.getName() + " id: " + target.getId());
-            return true;
-        } else {
-            this.die();
-            System.out.println(target.getName() + " id: " + target.getId() + " killed " + getName() + " id: " + getId());
-            return false;
-        }
-    }
-
-    @Override
     public int calculateGain(Animal animal) {
         return switch (animal.getName()) {
             case "Octopus" -> 30;

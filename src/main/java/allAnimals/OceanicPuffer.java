@@ -67,26 +67,6 @@ public class OceanicPuffer extends Omnivorous {
 
 
     @Override
-    public boolean attack(Animal target, World world) {
-        double attackerPower = this.getGenes().getStrength() * (this.getEnergy() / 100.0); //sila oceanicpuffer
-        double targetPower = target.getGenes().getStrength() * (target.getEnergy() / 100.0); //sila przeciwnika
-
-        if (attackerPower > targetPower) {
-            target.die();
-            System.out.println(getName() + " id: " + getId() + " killed " + target.getName() + " id: " + target.getId());
-            return true;
-        } else {
-            this.die();
-            System.out.println(target.getName() + " id: " + target.getId() + " killed " + getName() + " id: " + getId());
-
-            AnimalEffectsManager.poisonTarget(target); //jesli przegra to zatruwa przeciwnika
-
-            return false;
-        }
-    }
-
-
-    @Override
     public int calculateGain(Animal animal) {
         return switch (animal.getName()) {
             case "Crab" -> 25;
