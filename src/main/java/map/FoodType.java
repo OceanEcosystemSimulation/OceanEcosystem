@@ -7,7 +7,7 @@ import java.net.URL;
 
 public enum FoodType {
     NONE(null),
-    PLANKTON("/images/Plankton2.png"), // grafika planktonu, by mógł być wyświetlany w GUI
+    PLANKTON("/images/Plankton.png"), // grafika planktonu, by mógł być wyświetlany w GUI
     ALGAE("/images/Alga.png"); // grafika algi, by mogła być wyświetlana w GUI
 
     private final Image FoodImage; // grafika jedzenia - przechowywanie
