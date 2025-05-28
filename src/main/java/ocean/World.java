@@ -41,7 +41,7 @@ public class World {
 
     private void addTralaleroTralala(int tick) {
         //if (!tralaleroSpawned && random.nextInt(100) == 0) { // 1% szans
-        if (tick == 60) {
+        if (tick == 30) {
             DrawningAnimalsByTheirRarity.addTralalero();
             tralaleroSpawned = true;
             SimulationStatsManager.writeToFile("Final bosss spawned, end is comming...");
@@ -76,7 +76,6 @@ public class World {
 
             if (object instanceof Animal animal && !animal.isAlive()) { //jeżeli to zwierze i nie żyje
                 SimulationStatsManager.writeToFile(animal.getName() + " id: " + animal.getId() + " is dead ");
-                deadAnimalCounter++;
                 removeObject(animal);
             }
         }

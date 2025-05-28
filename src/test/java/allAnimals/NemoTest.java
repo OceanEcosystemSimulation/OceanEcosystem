@@ -118,7 +118,7 @@ public class NemoTest {
     @Test
     void testUpdateDoesNothingIfDead() { //czy dobrze się zachowuje jak umrze
         Nemo nemo = new Nemo(new Coord(0, 0)); //tworzenie nemo
-        nemo.die(); //nemo umiera
+        nemo.die(new World(0,0,0,0,1)); //nemo umiera
 
         assertFalse(nemo.isAlive()); //czy serio martwy
 

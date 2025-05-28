@@ -74,11 +74,11 @@ public class OceanicPuffer extends Omnivorous {
 
         if (attackerPower > targetPower) {
             //wygrywa pufferfish
-            target.die();
+            target.die(world);
             SimulationStatsManager.writeToFile(getName() + " id: " + getId() + " killed " + target.getName() + " id: " + target.getId());
             return true;
         } else {
-            this.die(); //Pufferfish ginie
+            this.die(world); //Pufferfish ginie
             SimulationStatsManager.writeToFile(target.getName() + " id: " + target.getId() + " killed " + getName() + " id: " + getId());
 
             //zatruwa przeciwnika

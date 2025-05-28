@@ -1,5 +1,6 @@
 package body;
 
+import allAnimals.Skeleton;
 import map.*;
 import ocean.SimulationStatsManager;
 import ocean.World;
@@ -39,8 +40,10 @@ public abstract class Animal extends WorldObject {
 
     public abstract Animal giveBirth(Coord pos, Animal parent1, Animal parent2);
 
-    public void die() {
+    public void die(World world) {
         alive = false;
+        world.deadAnimalCounter++;
+        world.addObject(new Skeleton(this.getPosition())); // dodajemy szkielet, dla konkretnego zwierzęcia, na konkretnej pozycji
     }
 
     //zostawiam to tutaj bo za wykładzie było że fajnie robić chyba takie pomiędzy a nie 1 do 1 połączenia

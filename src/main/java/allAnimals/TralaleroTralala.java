@@ -36,7 +36,7 @@ public class TralaleroTralala extends Animal {
         this.setAge(this.getAge() + 1);
 
         if (this.getAge() >= this.getGenes().getMaxAge()) {
-            world.removeObject(this);
+            this.die(world);
             SimulationStatsManager.writeToFile("TralaleroTralala disappeared!");
             return;
         }
@@ -53,7 +53,7 @@ public class TralaleroTralala extends Animal {
         List<Animal> nearby = world.getNearbyAnimals(newPos, this.getGenes().getSpeed());
         for (Animal animal : nearby) {
             if (animal != this && animal.isAlive()) {
-                animal.die();
+                animal.die(world);
                 SimulationStatsManager.writeToFile("TralaleroTralala eliminated " + animal.getName() + " id: " + animal.getId());
             }
         }

@@ -28,7 +28,7 @@ public class AnimalCombatUtils {
         animal.setHealth(Math.max(newHealth, 0));
 
         if (animal.getHealth() <= 0) {
-            AnimalLifeManager.SkeletonSettings(world, animal);
+            animal.die(world);
         }
     }
 
