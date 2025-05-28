@@ -24,7 +24,7 @@ public class TralaleroTralala extends Animal {
     private static Genes generateGenes() {
         Genes genes = new Genes();
         genes.setStrength(1000000);
-        genes.setSpeed(3);
+        genes.setSpeed(4);
         genes.setMaxAge(10);
         genes.setMaxLoneliness(1000000);
         genes.setMaxEnergy(1000000);
@@ -54,7 +54,7 @@ public class TralaleroTralala extends Animal {
         for (Animal animal : nearby) {
             if (animal != this && animal.isAlive()) {
                 animal.die();
-                SimulationStatsManager.writeToFile("TralaleroTralala eliminated " + animal.getName());
+                SimulationStatsManager.writeToFile("TralaleroTralala eliminated " + animal.getName() + " id: " + animal.getId());
             }
         }
     }

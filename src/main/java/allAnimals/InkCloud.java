@@ -45,7 +45,7 @@ public class InkCloud extends WorldObject {
     @Override
     public void update(World world) {
         remainingTime--;
-        if (remainingTime <= 0) {
+        if (remainingTime <= 0 || !target.isAlive()) {
             // efekt znika – przywróć ruch
             if (target != null && target.getName().equals("Dolphin")) {
                 ((Dolphin) target).setStunned(false);
