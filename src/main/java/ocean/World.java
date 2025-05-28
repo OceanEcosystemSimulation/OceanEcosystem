@@ -39,8 +39,9 @@ public class World {
 
     private boolean tralaleroSpawned = false;
 
-    private void addTralaleroTralala() {
-        if (!tralaleroSpawned && random.nextInt(100) == 0) { // 1% szans
+    private void addTralaleroTralala(int tick) {
+        //if (!tralaleroSpawned && random.nextInt(100) == 0) { // 1% szans
+        if (tick == 60) {
             DrawningAnimalsByTheirRarity.addTralalero();
             tralaleroSpawned = true;
             SimulationStatsManager.writeToFile("Final bosss spawned, end is comming...");
@@ -61,7 +62,7 @@ public class World {
     //główna symulacja świata - w każdym cyklu aktualizuje zwierzęta - dead alive
     public void runSimulation(int tick) {
 
-        addTralaleroTralala(); // próbuje dodac tralalero ale rarity to 1%, więc co tick
+        addTralaleroTralala(tick); // próbuje dodac tralalero ale rarity to 1%, więc co tick
         List<WorldObject> currentObjects = new ArrayList<>(objects); //tworzenie kopii by nie aktualizować m.in. dopiero co urodzonych
         Coord.allAtempts = 0;
 

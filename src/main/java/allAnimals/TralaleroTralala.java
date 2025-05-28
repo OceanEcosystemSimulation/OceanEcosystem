@@ -17,14 +17,14 @@ public class TralaleroTralala extends Animal {
 
     public TralaleroTralala(Coord position) {
         super(position, generateGenes());
-        setName("Star");
+        setName("TralaleroTralal");
         settings();
     }
 
     private static Genes generateGenes() {
         Genes genes = new Genes();
         genes.setStrength(1000000);
-        genes.setSpeed(5);
+        genes.setSpeed(3);
         genes.setMaxAge(10);
         genes.setMaxLoneliness(1000000);
         genes.setMaxEnergy(1000000);
@@ -54,7 +54,6 @@ public class TralaleroTralala extends Animal {
         for (Animal animal : nearby) {
             if (animal != this && animal.isAlive()) {
                 animal.die();
-                //world.removeObject(animal); //jesli chcemy by od razu usuwało a tak to usunie jak on zniknie
                 SimulationStatsManager.writeToFile("TralaleroTralala eliminated " + animal.getName());
             }
         }
@@ -90,8 +89,8 @@ public class TralaleroTralala extends Animal {
 
         imageView.setImage(boss);
 
-        imageView.setFitWidth(Main.getTileSize());
-        imageView.setFitHeight(Main.getTileSize());
+        imageView.setFitWidth(Main.getTileSize() * 3);
+        imageView.setFitHeight(Main.getTileSize() * 3);
     }
 
     @Override
