@@ -3,6 +3,7 @@ package ocean;
 import allAnimals.Egg;
 import body.*;
 import map.Coord;
+import map.MapType;
 import map.Tile;
 
 import java.util.*;
@@ -15,17 +16,17 @@ public class World {
     private final List<Animal> animals = new ArrayList<>(); //lista zwierząt na świecie
     private final List<WorldObject> objects = new ArrayList<>(); //lista objektów na świecie aka wszystko co jest
     private final List<Coord> coralReefCenter = new ArrayList<>(); // przechowuje współrzędne środka rafy koralowej
-    public static int minMapSize;
+    public static int minMapSize; //trzyma jaki jest najmniejszy wymiar mapy
 
     private int eatenFoodCounter = 0; //do liczenia ile jedzenia zostało zjedzone od ostatnego uzupełnienia
-    public int totalEatenFood = 0;
-    public int deadAnimalCounter = 0;
-    private boolean simulationEnded = false;
+    public int totalEatenFood = 0; //całe zjedzone jedzenie w od początku symulacji
+    public int deadAnimalCounter = 0; //ile zwierzat umarło od poczatku symulacji
+    private boolean simulationEnded = false; //czy symulacja zakończona (do wymuszenia końca)
 
     public static Random random;
 
 
-    //rozmieszczenie pól i zwierząt (na razie zawiera liczbę turn konkretną)
+    //konstruktor świata
     public World(int width, int height, int noFood, int noCoral, int noAnimals) {
         this.width = width;
         this.height = height;
@@ -33,33 +34,13 @@ public class World {
         initTiles(this, noCoral); //określa jakie jest dane pole mapy
         spawnAnimals(this, noAnimals); //spawn zwierząt randomowych według rarity
         spawnFood(this, noFood); //spawn jedzenie randomowo
-        minMapSize = Math.min(width, height);
+        minMapSize = Math.min(width, height); //jaki jest najmniejszy wymiar mapy
     }
 
-    private boolean tralaleroSpawned = false;
-
-    private void addTralaleroTralala(int tick) {
-        //if (!tralaleroSpawned && random.nextInt(100) == 0) { // 1% szans
-        if (tick == 30) {
-            tralaleroSpawned = true;
-
-            Coord coord; // dodaje do swiata jesli moze
-            do {
-                coord = WorldSetup.randomCoord(this);
-            } while (isOccupied(coord));
-
-            Animal tralaleroTralala = WorldSetup.createAnimalFromName("TralaleroTralala", coord);
-            if (tralaleroTralala != null) {
-                addObject(tralaleroTralala);
-                SimulationStatsManager.writeToFile("TralaleroTralala," + tralaleroTralala.getId() + ",appeared\n");
-            }
-        }
-    }
 
 
     //główna symulacja świata - w każdym cyklu aktualizuje zwierzęta - dead alive
     public void runSimulation(int tick) {
-
         addTralaleroTralala(tick); // próbuje dodac tralalero ale rarity to 1%, więc co tick
         List<WorldObject> currentObjects = new ArrayList<>(objects); //tworzenie kopii by nie aktualizować m.in. dopiero co urodzonych
         Coord.allAtempts = 0;
@@ -74,14 +55,55 @@ public class World {
 
             if (object instanceof Animal animal && !animal.isAlive()) { //jeżeli to zwierze i nie żyje
                 SimulationStatsManager.writeToFile(animal.getName() + "," + animal.getId() + ",is dead\n");
-                removeObject(animal);
+                removeObject(animal); //usuwa je
             }
         }
     }
 
+
+    //kończy symulacje
     public void endSimulation() {
         simulationEnded = true;
     }
+
+
+
+    private boolean tralaleroSpawned = false;
+
+    private void addTralaleroTralala(int tick) {
+        //if (!tralaleroSpawned && random.nextInt(100) == 0) { // 1% szans
+        if (tick == 30) {
+            tralaleroSpawned = true;
+
+            //tworzenie listy wolnych pól na mapie które nie są rafą
+            List<Coord> freeCoords = new ArrayList<>();
+            for (int x = 0; x < width; x++) {
+                for (int y = 0; y < height; y++) {
+                    Coord coord = new Coord(x, y);
+                    Tile tile = getTile(coord);
+                    if (tile != null && !isOccupied(coord) && tile.getMapType() != MapType.CORAL) {
+                        freeCoords.add(coord);
+                    }
+                }
+            }
+
+// TODO: test czy dobrze sprawdza warunki i się pojawia jeśli sie da taki zrobić
+
+            //dodawanie bossa jeśli jest miejsce
+            if (!freeCoords.isEmpty()) {
+                int randomId = World.random.nextInt(freeCoords.size()); //losuje którą pozycje wziac z dostepnych pól - int od 0 do size-1
+                Coord chosenCoord = freeCoords.get(randomId);
+                Animal tralaleroTralala = WorldSetup.createAnimalFromName("TralaleroTralala", chosenCoord); //tworzenie bossa
+                if (tralaleroTralala != null) { //jeśli się stworzył
+                    addObject(tralaleroTralala);
+                    SimulationStatsManager.writeToFile("TralaleroTralala," + tralaleroTralala.getId() + ",appeared\n");
+                }
+            } else {
+                SimulationStatsManager.writeToFile("\nnotification,Boss wanted to appear but no free space on the map for him\n");
+            }
+        }
+    }
+
 
 
     //zwraca listę zwierząt które znajdują się w pobliżu określonych współrzędnych Coord
@@ -140,6 +162,7 @@ public class World {
     }
 
 
+    //dodaje objekty Egg
     public void addEgg(Egg egg) {
         addObject(egg);
     }

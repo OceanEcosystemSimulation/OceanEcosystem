@@ -32,7 +32,7 @@ public class WorldSetup {
 
         if (noCoral > maxCountOfCorals) {
             System.out.println("The given map size is too small, it is not possible to place so many coral reefs.\n");
-            SimulationStatsManager.writeToFile("notification,Successfully added only" + maxCountOfCorals + " from " + noCoral + " coral reefs\n");
+            SimulationStatsManager.writeToFile("\nnotification,Successfully added only" + maxCountOfCorals + " from " + noCoral + " coral reefs\n");
             noCoral = maxCountOfCorals;
         }
         int coralreef_counter = 0;
@@ -107,7 +107,7 @@ public class WorldSetup {
             }
         }
         System.out.println("The given map size is too small, it is not possible to place so many animals.\n");
-        SimulationStatsManager.writeToFile("notification,Successfully added only" + added + " from " + count + " animals\n");
+        SimulationStatsManager.writeToFile("\nnotification,Successfully added only" + added + " from " + count + " animals\n");
     }
 
 
@@ -139,7 +139,7 @@ public class WorldSetup {
 
         if (maxNoFood < noFood) { //info
             System.out.println("The given map size is too small, it is not possible to place so many food.\n");
-            SimulationStatsManager.writeToFile("notification,Successfully added only" + maxNoFood + " from " + noFood + " food\n");
+            SimulationStatsManager.writeToFile("\nnotification,Successfully added only" + maxNoFood + " from " + noFood + " food\n");
         }
 
         for (int i = 0; i < maxNoFood; i++) {

@@ -5,6 +5,8 @@ import body.Genes;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import map.Coord;
+import map.MapType;
+import map.Tile;
 import ocean.Main;
 import ocean.SimulationStatsManager;
 import ocean.World;
@@ -47,14 +49,17 @@ public class TralaleroTralala extends Animal {
         int newX = Math.min(Math.max(0, this.getPosition().x + dx), world.getWidth() - 1); //granice
         int newY = Math.min(Math.max(0, this.getPosition().y + dy), world.getHeight() - 1);
         Coord newPos = new Coord(newX, newY);
-        this.setPosition(newPos);
+        this.setPosition(newPos); //przesuwa się
 
         //usuwa zwierzeta
-        List<Animal> nearby = world.getNearbyAnimals(newPos, this.getGenes().getSpeed());
+        List<Animal> nearby = world.getNearbyAnimals(newPos, this.getGenes().getSpeed()); //pobiera listę zwierzat do okoła
         for (Animal animal : nearby) {
-            if (animal != this && animal.isAlive()) {
-                animal.die(world);
-                SimulationStatsManager.writeToFile("TralaleroTralala," + this.getId() + ",killed," + animal.getName() + "," + animal.getId() + "\n");
+            if (animal != this && animal.isAlive()) { //jeśli zwierze to nie on i żyje
+                Tile tile = world.getTile(animal.getPosition());
+                if (tile != null && tile.getMapType() != MapType.CORAL) { //jeżeli nie jest to CORAL
+                    animal.die(world); //zabija
+                    SimulationStatsManager.writeToFile("TralaleroTralala," + this.getId() + ",killed," + animal.getName() + "," + animal.getId() + "\n");
+                }
             }
         }
     }
