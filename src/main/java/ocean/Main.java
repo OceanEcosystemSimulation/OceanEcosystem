@@ -31,6 +31,8 @@ public class Main extends Application {
     private GridPane grid; //deklaracja grid
 
     public static void main(String[] args) {
+        SimulationStatsManager.writeToFile("\n\n>>> NEW SIMULATION BEGINS <<<\n\n"); //tak tylko by widzieć przy sprawdzaniu
+
         // parametry, zaciągane z pliku .csv
         Map<String, Integer> config = new HashMap<>(); //stwierdzilam ze hashmap bo tak to by musiały byc w konkretnej kolejności i wgl i jakby któregoś zabraklo to problem i wgl
 

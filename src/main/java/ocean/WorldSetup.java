@@ -32,7 +32,7 @@ public class WorldSetup {
 
         if (noCoral > maxCountOfCorals) {
             System.out.println("The given map size is too small, it is not possible to place so many coral reefs.\n");
-            SimulationStatsManager.writeToFile("\nnotification,Successfully added only" + maxCountOfCorals + " from " + noCoral + " coral reefs\n");
+            SimulationStatsManager.writeToFile("\nnotification,Successfully added only " + maxCountOfCorals + " from " + noCoral + " coral reefs\n");
             noCoral = maxCountOfCorals;
         }
         int coralreef_counter = 0;
@@ -95,9 +95,7 @@ public class WorldSetup {
             String animalType = animalDrawer.drawnAnimalByRarity(rarity); //losuje typ zwierzęcia z tej klasy rarity
 
             Coord coord;
-                    do {
-                        coord = randomCoord(world);
-                    }  //losuje pozycje
+                    do { coord = randomCoord(world); }  //losuje pozycje
                     while (world.isOccupied(coord)); //losuje dopóki wylosowane bedzie wolne
 
             Animal animal = createAnimalFromName(animalType, coord); //tworzy zwierzę
@@ -106,8 +104,11 @@ public class WorldSetup {
                 added++;
             }
         }
-        System.out.println("The given map size is too small, it is not possible to place so many animals.\n");
-        SimulationStatsManager.writeToFile("\nnotification,Successfully added only" + added + " from " + count + " animals\n");
+
+        if (maxCount < count) { //info
+            System.out.println("The given map size is too small, it is not possible to place so many animals.\n");
+            SimulationStatsManager.writeToFile("\nnotification,Successfully added only " + added + " from " + count + " animals\n");
+        }
     }
 
 
@@ -136,11 +137,7 @@ public class WorldSetup {
     //losowo rozmieszcza jedzenie
     static void spawnFood(World world, int noFood) {
         int maxNoFood = Math.min(noFood, world.getHeight()*world.getWidth()); //jeśli count jest wiecej niz pól dodaje ile może
-
-        if (maxNoFood < noFood) { //info
-            System.out.println("The given map size is too small, it is not possible to place so many food.\n");
-            SimulationStatsManager.writeToFile("\nnotification,Successfully added only" + maxNoFood + " from " + noFood + " food\n");
-        }
+        int added = 0; //ile pomyślnie dodano
 
         for (int i = 0; i < maxNoFood; i++) {
             Tile tile;
@@ -157,6 +154,12 @@ public class WorldSetup {
                 default -> FoodType.NONE;
             };
             tile.setFoodType(foodType);
+            added++;
+        }
+
+        if (maxNoFood < noFood) { //info
+            System.out.println("The given map size is too small, it is not possible to place so many food.\n");
+            SimulationStatsManager.writeToFile("\nnotification,Successfully added only " + added + " from " + noFood + " food\n");
         }
     }
 

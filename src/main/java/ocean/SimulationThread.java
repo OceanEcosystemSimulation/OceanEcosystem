@@ -21,6 +21,7 @@ class SimulationThread extends Thread {
     //odpowiada za przeprowadzenie symulacji
     @Override
     public void run() {  //run() odpala się zawsze chyba w wątku po wywołaniu start()
+        SimulationStatsManager.writeToFile("\na1_species,a1_id,action,a2_species,a2_id,addition\n"); //nagłówek do akcji w turze w logach
         while (actualTick < Main.noTicks && !mainInstance.world.isSimulationEnded()) { //wykonuje ticks (ile zadane) lub dopuki nie zakończy się symulacja
             try {
                 int speed = (int) speedSlider.getValue();

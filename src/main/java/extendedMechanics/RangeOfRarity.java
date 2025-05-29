@@ -7,9 +7,7 @@ public class RangeOfRarity {
         int min = 1;
         int range = max - min + 1; // od 1 do 100
         int randomNumber = (int) (Math.random() * range) + min;
-        if (randomNumber == 1) {
-            return Rarity.LEGENDARY;
-        } else if (randomNumber < 5) {
+        if (randomNumber < 5) {
             return Rarity.MYTHIC;
         } else if (randomNumber < 16) {
             return Rarity.SUPER_RARE;
