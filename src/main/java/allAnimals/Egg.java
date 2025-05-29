@@ -45,8 +45,8 @@ public class Egg extends Animal {
 
         imageView.setImage(EggImage);
         imageView.setPreserveRatio(true);
-        imageView.setFitWidth(Main.getTileSize() * 0.9);
-        imageView.setFitHeight(Main.getTileSize() * 0.9);
+        imageView.setFitWidth(Main.getTileSize() * 0.9); // zmniejszenie - szerokosc
+        imageView.setFitHeight(Main.getTileSize() * 0.9); // zmniejszenie - wysokosc
     }
 
     @Override

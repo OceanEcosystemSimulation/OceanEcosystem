@@ -83,6 +83,8 @@ public class SimulationStatsManager {
     /*   >> ŚCIĄGA DO PRINTÓW <<
     a1_species,a1_id,action,a2_species,a2_id,addition
 
+    przykłady:
+
     SimulationStatsManager.writeToFile(this.getName() + "," + this.getId() + ",eats,,," + tile.foodType + "\n");
     SimulationStatsManager.writeToFile(this.getName() + "," + this.getId() + ",jumped to,,,[" + this.getPosition().x + ";" + this.getPosition().y + "]\n");
     SimulationStatsManager.writeToFile(female.getName() + "," + female.getId() + ",get pregnant with," + male.getName() + "," + male.getId() + "\n");
