@@ -17,7 +17,7 @@ public class TralaleroTralala extends Animal {
 
     public TralaleroTralala(Coord position) {
         super(position, generateGenes());
-        setName("TralaleroTralal");
+        setName("TralaleroTralala");
         settings();
     }
 
@@ -37,7 +37,7 @@ public class TralaleroTralala extends Animal {
 
         if (this.getAge() >= this.getGenes().getMaxAge()) {
             this.die(world);
-            SimulationStatsManager.writeToFile("TralaleroTralala disappeared!");
+            SimulationStatsManager.writeToFile("TralaleroTralala," + this.getId() + ",disappeared\n");
             return;
         }
 
@@ -54,7 +54,7 @@ public class TralaleroTralala extends Animal {
         for (Animal animal : nearby) {
             if (animal != this && animal.isAlive()) {
                 animal.die(world);
-                SimulationStatsManager.writeToFile("TralaleroTralala eliminated " + animal.getName() + " id: " + animal.getId());
+                SimulationStatsManager.writeToFile("TralaleroTralala," + this.getId() + ",killed," + animal.getName() + "," + animal.getId() + "\n");
             }
         }
     }
@@ -95,10 +95,5 @@ public class TralaleroTralala extends Animal {
 
     @Override
     public Animal giveBirth(Coord pos, Animal parent1, Animal parent2) { return null; }
-
-
-
-
-
 }
 

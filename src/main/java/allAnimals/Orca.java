@@ -3,7 +3,6 @@ package allAnimals;
 import body.*;
 import map.*;
 import ocean.Main;
-import ocean.SimulationStatsManager;
 import ocean.World;
 import extendedMechanics.Reproduction;
 import javafx.scene.image.Image;
@@ -87,7 +86,6 @@ public class Orca extends Carnivorous {
     @Override
     public void move(World world) {
         int speed = isFoodNearby(world) ? getGenes().getSpeed() + 10 : getGenes().getSpeed();
-        SimulationStatsManager.writeToFile(getName() + " id : " + getId() + " is chasing food");
 
         if (getFoodLevel() < 70) {
             Coord preyPos = WorldSearch.nearestPrey(world, getPosition(), speed, this);

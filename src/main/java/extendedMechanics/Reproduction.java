@@ -98,7 +98,7 @@ public final class Reproduction {
         female.setFatherDuringPregnancy(male);
         female.setPregnancyCounter(PREGNANCY_DURATION);
 
-        SimulationStatsManager.writeToFile(female.getName() + " id: " + female.getId() + "  get pregnant with  " + male.getName() + " id: " + male.getId());
+        SimulationStatsManager.writeToFile(female.getName() + "," + female.getId() + ",get pregnant with," + male.getName() + "," + male.getId() + "\n");
     }
 
     /* -------------------------------PREGNANCY------------------------------- */
@@ -127,7 +127,7 @@ public final class Reproduction {
         egg.setMother(mother);
         egg.setName(mother.getName());
         world.addEgg(egg);
-        SimulationStatsManager.writeToFile(egg.getName() + " id: " + egg.getId() + "  was born");
+        SimulationStatsManager.writeToFile(egg.getName() + "," + egg.getId() + ",was born\n");
     }
 
     /* -------------------------------SAFE SPACE------------------------------- */

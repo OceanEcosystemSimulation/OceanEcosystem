@@ -8,6 +8,7 @@ class SimulationThread extends Thread {
     private final Main mainInstance; //instancja main <-> przechowuje referencje do main bo potrzeba jej parametrów
     private final Label statsLabel;
     private final Slider speedSlider;
+    private int actualTick = 0;
 
     // szczerze już nwm co robię, teoretycznie przekazuje referencję do obiektu main żeby wątek miał dostęp do metod i danych
     public SimulationThread(Main mainInstance, Label statsLabel, Slider speedSlider) {
@@ -20,8 +21,7 @@ class SimulationThread extends Thread {
     //odpowiada za przeprowadzenie symulacji
     @Override
     public void run() {  //run() odpala się zawsze chyba w wątku po wywołaniu start()
-        int tick = 0;
-        while (tick < Main.noTicks && !mainInstance.world.isSimulationEnded()) { //wykonuje ticks (ile zadane) lub dopuki nie zakończy się symulacja
+        while (actualTick < Main.noTicks && !mainInstance.world.isSimulationEnded()) { //wykonuje ticks (ile zadane) lub dopuki nie zakończy się symulacja
             try {
                 int speed = (int) speedSlider.getValue();
                 Thread.sleep(speed); //każdy tick trwa 500ms (do zmiany)
@@ -29,22 +29,20 @@ class SimulationThread extends Thread {
                 e.printStackTrace(); //obsługuje sytuację gdy wątek zostanie przerwany w trakcie
             }
 
-            mainInstance.world.runSimulation(tick); //uruchomienie symulacji jednego "kroku"
+            mainInstance.world.runSimulation(actualTick); //uruchomienie symulacji jednego "kroku"
 
             //update widoku
             Platform.runLater(() -> { //uruchomienie kodu na głównym wątku JavaFX
                 //normalnie przyjmuje Runnable które jest do definiowania kodu który ma byc wywołany w wątku i która ma metodę run()
                 mainInstance.updateGrid(); //wywołanie update
-                SimulationStatsManager.updateStats(mainInstance.world, statsLabel);  //wywołanie update statów liczby zwierzat
+                SimulationStatsManager.updateStats(mainInstance.world, statsLabel, actualTick);  //wywołanie update statów liczby zwierzat
             });
-            tick++;
+            actualTick++;
         }
-
-        int finalTick = tick;
 
         //wyświetlenie statystyk końcowych
         Platform.runLater(() -> {
-            SimulationStatsManager.showEndStats(mainInstance.world, statsLabel, finalTick);
+            SimulationStatsManager.showEndStats(mainInstance.world, statsLabel, actualTick-1);
         });
     }
 }

@@ -75,11 +75,11 @@ public class OceanicPuffer extends Omnivorous {
         if (attackerPower > targetPower) {
             //wygrywa pufferfish
             target.die(world);
-            SimulationStatsManager.writeToFile(getName() + " id: " + getId() + " killed " + target.getName() + " id: " + target.getId());
+            SimulationStatsManager.writeToFile(getName() + "," + getId() + ",killed," + target.getName() + "," + target.getId() + "\n");
             return true;
         } else {
             this.die(world); //Pufferfish ginie
-            SimulationStatsManager.writeToFile(target.getName() + " id: " + target.getId() + " killed " + getName() + " id: " + getId());
+            SimulationStatsManager.writeToFile(target.getName() + "," + target.getId() + ",killed," + getName() + "," + getId() + "\n");
 
             //zatruwa przeciwnika
             AnimalEffectsManager.poisonTarget(target);
@@ -114,7 +114,7 @@ public class OceanicPuffer extends Omnivorous {
 
         if (getFoodLevel() + gain <= 100) {
             setFoodLevel(getFoodLevel() + gain);
-            SimulationStatsManager.writeToFile(this.getName() + " id: " + this.getId() + " eats " + tile.getFoodType());
+            SimulationStatsManager.writeToFile(this.getName() + "," + this.getId() + ",eats,,," + tile.foodType + "\n");
             tile.clearFood(world);
         }
     }

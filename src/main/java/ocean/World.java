@@ -2,7 +2,6 @@ package ocean;
 
 import allAnimals.Egg;
 import body.*;
-import extendedMechanics.DrawningAnimalsByTheirRarity;
 import map.Coord;
 import map.Tile;
 
@@ -42,18 +41,17 @@ public class World {
     private void addTralaleroTralala(int tick) {
         //if (!tralaleroSpawned && random.nextInt(100) == 0) { // 1% szans
         if (tick == 30) {
-            DrawningAnimalsByTheirRarity.addTralalero();
             tralaleroSpawned = true;
-            SimulationStatsManager.writeToFile("Final bosss spawned, end is comming...");
 
             Coord coord; // dodaje do swiata jesli moze
             do {
                 coord = WorldSetup.randomCoord(this);
             } while (isOccupied(coord));
 
-                Animal tralaleroTralala = WorldSetup.createAnimalFromName("TralaleroTralala", coord);
+            Animal tralaleroTralala = WorldSetup.createAnimalFromName("TralaleroTralala", coord);
             if (tralaleroTralala != null) {
                 addObject(tralaleroTralala);
+                SimulationStatsManager.writeToFile("TralaleroTralala," + tralaleroTralala.getId() + ",appeared\n");
             }
         }
     }
@@ -75,7 +73,7 @@ public class World {
             object.update(this); // aktualizuje stan zwierzęcia
 
             if (object instanceof Animal animal && !animal.isAlive()) { //jeżeli to zwierze i nie żyje
-                SimulationStatsManager.writeToFile(animal.getName() + " id: " + animal.getId() + " is dead ");
+                SimulationStatsManager.writeToFile(animal.getName() + "," + animal.getId() + ",is dead\n");
                 removeObject(animal);
             }
         }

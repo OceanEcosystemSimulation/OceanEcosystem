@@ -101,7 +101,7 @@ public class Dolphin extends Carnivorous {
     @Override
     public void move(World world) {
         if (isStunned()) {
-            SimulationStatsManager.writeToFile("Dolphin id: " + getId() + " is stunned and cannot move");
+            SimulationStatsManager.writeToFile("Dolphin," + getId() + ",is stunned and cannot move\n");
             return;
         }
         //jak nie jest spowolniony to ruch bez zmian

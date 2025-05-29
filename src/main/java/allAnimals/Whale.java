@@ -77,7 +77,7 @@ public class Whale extends Herbivorous {
         };
         if (getFoodLevel()+gain <= 100){
             setFoodLevel(getFoodLevel() + gain); //je
-            SimulationStatsManager.writeToFile(this.getName() + " id: " + this.getId() + " eats " + tile.foodType);
+            SimulationStatsManager.writeToFile(this.getName() + "," + this.getId() + ",eats,,," + tile.foodType + "\n");
             tile.clearFood(world);
         }
     }

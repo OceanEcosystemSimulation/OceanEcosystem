@@ -61,7 +61,7 @@ public abstract class Omnivorous extends Animal implements IEat, IFight, IMate {
 
         if (attackerSpeed < preySpeed) {
             AnimalCombatUtils.escape(world, prey);
-            SimulationStatsManager.writeToFile(prey.getName() + " id: " + prey.getId() + " escaped from " + this.getName() + " id: " + this.getId());
+            SimulationStatsManager.writeToFile(prey.getName() + "," + prey.getId() + ",escaped from," + this.getName() + "," + this.getId() + "\n");
             return false;
         }
 
@@ -72,23 +72,23 @@ public abstract class Omnivorous extends Animal implements IEat, IFight, IMate {
         for (int i = 0; i < rounds; i++) {
             AnimalCombatUtils.takeDamage(world, prey, attackerPower);
             if (!prey.isAlive()) {
-                SimulationStatsManager.writeToFile(this.getName() + " id: " + this.getId() + " killed " + prey.getName() + " id: " + prey.getId());
+                SimulationStatsManager.writeToFile(this.getName() + "," + this.getId() + ",killed," + prey.getName() + "," + prey.getId() + "\n");
                 return true;
             }
 
             AnimalCombatUtils.takeDamage(world,this, preyPower);
             if (!this.isAlive()) {
-                SimulationStatsManager.writeToFile(prey.getName() + " id: " + prey.getId() + " killed " + this.getName() + " id: " + this.getId());
+                SimulationStatsManager.writeToFile(prey.getName() + "," + prey.getId() + ",killed," + this.getName() + "," + this.getId() + "\n");
                 return false;
             }
         }
 
         if (attackerPower > preyPower) {
             AnimalCombatUtils.escape(world, prey);
-            SimulationStatsManager.writeToFile(prey.getName() + " id: " + prey.getId() + " escaped from " + this.getName() + " id: " + this.getId());
+            SimulationStatsManager.writeToFile(prey.getName() + "," + prey.getId() + ",escaped from," + this.getName() + "," + this.getId() + "\n");
         } else {
             AnimalCombatUtils.escape(world, this);
-            SimulationStatsManager.writeToFile(this.getName() + " id: " + this.getId() + " escaped from " + prey.getName() + " id: " + prey.getId());
+            SimulationStatsManager.writeToFile(this.getName() + "," + this.getId() + ",escaped from," + prey.getName() + "," + prey.getId() + "\n");
         }
 
         return false;

@@ -7,14 +7,10 @@ public class DrawningAnimalsByTheirRarity implements IAnimalDrawer {
     private static final Map<Rarity, List<String>> rarityDrawning = new HashMap<>(); //przechowywanie przypisanie rarity do danych zwierząt
 
     static {
-        rarityDrawning.put(Rarity.LEGENDARY, new ArrayList<>());
+        //rarityDrawning.put(Rarity.LEGENDARY, new ArrayList<>());
         rarityDrawning.put(Rarity.MYTHIC, List.of("Whale","Turtle", "Crab", "Shrimp")); //dla testu usuwam Orca i Whale z MYTHIC i daje do SUPER_RARE
         rarityDrawning.put(Rarity.SUPER_RARE, List.of("Shark", "OceanicPuffer","Orca", "Seal"));
         rarityDrawning.put(Rarity.RARE, List.of("Octopus","Nemo", "Dolphin",  "Star"));
-    }
-
-    public static void addTralalero() {
-        rarityDrawning.get(Rarity.LEGENDARY).add("TralaleroTralala");
     }
 
     @Override

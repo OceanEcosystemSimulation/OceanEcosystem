@@ -49,7 +49,7 @@ public class InkCloud extends WorldObject {
             // efekt znika – przywróć ruch
             if (target != null && target.getName().equals("Dolphin")) {
                 ((Dolphin) target).setStunned(false);
-                SimulationStatsManager.writeToFile("Ink effect ended for Dolphin id: " + target.getId());
+                SimulationStatsManager.writeToFile("Ink,,effect ended for,Dolphin," + target.getId() + "\n");
             }
             world.removeObject(this);
         }

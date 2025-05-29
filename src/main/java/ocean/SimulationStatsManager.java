@@ -29,35 +29,39 @@ public class SimulationStatsManager {
     //tekst do statystyk
     private static String animalStatsText() {
         String statsText = "";
+        String speciesNames = "\n";
+        String noAnimals = "";
         for (Map.Entry<String, Integer> entry : speciesCount.entrySet()) {
             statsText += "\n" + entry.getKey() + ": " + entry.getValue() + "    ";
-            SimulationStatsManager.writeToFile(entry.getKey() + ": " + entry.getValue()); //na chwile - testy
+            speciesNames += entry.getKey() + ", ";
+            noAnimals += entry.getValue() + ", ";
         }
-        SimulationStatsManager.writeToFile("\n");
+        writeToFile(speciesNames + "\n" + noAnimals + "\n");
         return statsText;
     }
 
 
     //statystyki w kazdej turze
-    public static void updateStats(World world, Label statsLabel) {
+    public static void updateStats(World world, Label statsLabel, int actualTick) {
         updateSpeciesCount(world);
 
         String statsText = "\n---> Stan na mapie: <---\n";
         statsText += "\nLiczba zjedzonego jedzenia: " + world.totalEatenFood + "\nIlosc zmarlych zwierzat: " + world.deadAnimalCounter + "\n";
-        SimulationStatsManager.writeToFile(statsText);
         statsText += animalStatsText();
-
         statsLabel.setText(statsText);
+
+        writeToFile("\nround,max_no_rounds,eaten_food,no_dead\n" + actualTick + "," + Main.noTicks + "," + world.totalEatenFood + "," + world.deadAnimalCounter + "\n"); //logi z stanu na mapie
+        writeToFile("\na1_species,a1_id,action,a2_species,a2_id,addition\n"); //nagłówek do akcji w turze w logach
     }
 
     //statystyki końcowe
     public static void showEndStats(World world, Label statsLabel, int finalTick) {
         String statsText = ">>> KONIEC SYMULACJI <<<" + (world.isSimulationEnded()?"\n           (brak miejsca)":"");
         statsText += "\n\nWykonane tury: " + finalTick + "/" + Main.noTicks + "\nLiczba zjedzonego jedzenia: " + world.totalEatenFood + "\nIlość zmarłych zwierząt: " + world.deadAnimalCounter + "\n";
-        statsText += "\n---> Stan końcowy na mapie: <---";
-        SimulationStatsManager.writeToFile("\n" + statsText);
-        statsText += animalStatsText();
+        writeToFile("\nno_rounds,max_no_rounds,eaten_food,no_dead\n" + finalTick + "," + Main.noTicks + "," + world.totalEatenFood + "," + world.deadAnimalCounter + "\n");
 
+        statsText += "\n---> Stan końcowy na mapie: <---";
+        statsText += animalStatsText();
         statsLabel.setText(statsText);
     }
 
@@ -66,7 +70,7 @@ public class SimulationStatsManager {
     public static void writeToFile(String line) {
         try {
             FileWriter writer = new FileWriter("logi.csv", true); //true dopisuje na końcu a nie początku
-            writer.write(line + "\n"); //każdą linijkę osobno
+            writer.write(line);
             writer.close();
         } catch (IOException e) {
             System.out.println("write to file error!!");
@@ -74,5 +78,18 @@ public class SimulationStatsManager {
         }
     }
 
+
+
+    /*   >> ŚCIĄGA DO PRINTÓW <<
+    a1_species,a1_id,action,a2_species,a2_id,addition
+
+    SimulationStatsManager.writeToFile(this.getName() + "," + this.getId() + ",eats,,," + tile.foodType + "\n");
+    SimulationStatsManager.writeToFile(this.getName() + "," + this.getId() + ",jumped to,,,[" + this.getPosition().x + ";" + this.getPosition().y + "]\n");
+    SimulationStatsManager.writeToFile(female.getName() + "," + female.getId() + ",get pregnant with," + male.getName() + "," + male.getId() + "\n");
+    SimulationStatsManager.writeToFile(prey.getName() + "," + prey.getId() + ",escape from," + this.getName() + "," + this.getId() + "\n");
+    SimulationStatsManager.writeToFile("notification,Successfully added only" + maxNoFood + " from " + noFood + " food\n");
+    SimulationStatsManager.writeToFile(this.getName() + "," + this.getId() + ",killed," + prey.getName() + "," + prey.getId() + "\n");
+
+     */
 }
 

@@ -24,16 +24,15 @@ public class WorldSetup {
             }
         }
 
-        //zastanawiam się, czy powinien być warunek sprawdzający, czy mapa nie jest mniejsza niż wymiary rafy
-
+        //TODO: przydało by się - do dodania --> zastanawiam się, czy powinien być warunek sprawdzający, czy mapa nie jest mniejsza niż wymiary rafy
 
         int maxCountOfCorals = maxCountOnMap(width, height);
 
         int coralGeneratingLimit = (int) (height * 0.35); // max wysokość, by nie tworzyły się na grafice wody // zakres
 
         if (noCoral > maxCountOfCorals) {
-            SimulationStatsManager.writeToFile("Zadany wymiar mapy jest zbyt mały, nie można umieścić tylu raf");
-            SimulationStatsManager.writeToFile("Zmniejszam ilość raf, do największego możliwego... Ilość raf: " + maxCountOfCorals);
+            System.out.println("The given map size is too small, it is not possible to place so many coral reefs.\n");
+            SimulationStatsManager.writeToFile("notification,Successfully added only" + maxCountOfCorals + " from " + noCoral + " coral reefs\n");
             noCoral = maxCountOfCorals;
         }
         int coralreef_counter = 0;
@@ -107,7 +106,8 @@ public class WorldSetup {
                 added++;
             }
         }
-        SimulationStatsManager.writeToFile("Successfully added " + added + " from " + count + " animals");
+        System.out.println("The given map size is too small, it is not possible to place so many animals.\n");
+        SimulationStatsManager.writeToFile("notification,Successfully added only" + added + " from " + count + " animals\n");
     }
 
 
@@ -136,6 +136,11 @@ public class WorldSetup {
     //losowo rozmieszcza jedzenie
     static void spawnFood(World world, int noFood) {
         int maxNoFood = Math.min(noFood, world.getHeight()*world.getWidth()); //jeśli count jest wiecej niz pól dodaje ile może
+
+        if (maxNoFood < noFood) { //info
+            System.out.println("The given map size is too small, it is not possible to place so many food.\n");
+            SimulationStatsManager.writeToFile("notification,Successfully added only" + maxNoFood + " from " + noFood + " food\n");
+        }
 
         for (int i = 0; i < maxNoFood; i++) {
             Tile tile;

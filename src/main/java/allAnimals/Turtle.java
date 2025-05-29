@@ -76,7 +76,7 @@ public class Turtle extends Omnivorous {
 
         if (getFoodLevel() + gain <= 100) {
             setFoodLevel(getFoodLevel() + gain);
-            SimulationStatsManager.writeToFile(this.getName() + " id: " + this.getId() + " eats " + tile.getFoodType());
+            SimulationStatsManager.writeToFile(this.getName() + "," + this.getId() + ",eats,,," + tile.foodType + "\n");
             tile.clearFood(world);
         }
     }
