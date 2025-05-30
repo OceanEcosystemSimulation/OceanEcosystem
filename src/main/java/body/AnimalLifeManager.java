@@ -1,7 +1,7 @@
 package body;
 
 import ocean.World;
-
+import soundEffects.SoundPlayer;
 import java.util.List;
 
 //obsługuje staty i cykl
@@ -14,6 +14,7 @@ public class AnimalLifeManager {
         updateEnergy(animal);
 
         if (animal.getFoodLevel() <= 0 || animal.getEnergy() <= 0 || animal.getAge() > animal.getGenes().getMaxAge()) {
+            SoundPlayer.playSound("sounds/oof.wav");
             animal.die(world);
             return; //koniec
         }
@@ -27,6 +28,7 @@ public class AnimalLifeManager {
         updateHealth(animal);
 
         if (animal.getHealth() <= 0){
+            SoundPlayer.playSound("sounds/oof.wav");
             animal.die(world);
         }
     }
