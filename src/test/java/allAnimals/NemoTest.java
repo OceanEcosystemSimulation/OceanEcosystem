@@ -16,9 +16,12 @@ import static org.junit.jupiter.api.Assertions.*;
 
 
 public class NemoTest {
+    private World world;
+
     @BeforeEach
     void setup() {
         World.random = new Random();
+        world = new World(10, 10, 0, 0, 0);
     }
 
     @Test
@@ -52,17 +55,23 @@ public class NemoTest {
         Tile tile = new Tile(0, 0, MapType.NORMAL); //tworzenie tile
         tile.setFoodType(FoodType.PLANKTON); //ustawienie pola na jedzenie
         int initialFood = nemo.getFoodLevel(); //pobieranie poziomu jedzenia przed zjedzeniem
-        nemo.eat(tile, new World(10, 10, 0, 0, 1)); //nemo je
+        nemo.eat(tile, world); //nemo je
 
         assertEquals(initialFood, nemo.getFoodLevel()); //porównanie czy dobrze się zwiększyło (jest najedzony wiec powinno nic)
     }
+
+
+
+
+    //te niżej są powtórką trochę po AnimalLifeManagerTest ale to głównie sprawdzenie czy update się dobrze łączył z lifeCycle i innymi
+
 
 
     @Test
     void testNemoDiesFromStarvation() {
         Nemo nemo = new Nemo(new Coord(1, 1));
         nemo.setFoodLevel(0); //obnizenie poziomu jedzenia do 0
-        nemo.update(new World(10, 10, 0, 0, 0)); //wywołanie update
+        nemo.update(world); //wywołanie update
 
         assertFalse(nemo.isAlive()); //nie może żyć
     }
@@ -72,18 +81,6 @@ public class NemoTest {
     void testNemoDiesFromOldAge() {
         Nemo nemo = new Nemo(new Coord(2, 2));
         nemo.setAge(nemo.getGenes().getMaxAge() + 1); //wiek przekracza limit
-        nemo.update(new World(10, 10, 0, 0, 0));
-
-        assertFalse(nemo.isAlive());
-    }
-
-
-    @Test
-    void testNemoDiesFromLoneliness() {
-        Nemo nemo = new Nemo(new Coord(3, 3));
-        nemo.setLoneliness(nemo.getGenes().getMaxLoneliness() + 1);
-        nemo.setHealth(1); //tylko 1 hp - zginie przy pierwszej utracie
-        World world = new World(10, 10, 0, 0, 0);
         nemo.update(world);
 
         assertFalse(nemo.isAlive());
@@ -91,13 +88,12 @@ public class NemoTest {
 
 
     @Test
-    void testLonelinessResetsWithSameSpeciesNearby() {
+    void testLonelinessResetsWithSameSpeciesNearby() {  //czy resetuje loneliness u obu nemo które się spotkają
         Nemo nemo1 = new Nemo(new Coord(1, 1));
         nemo1.setLoneliness(10);
         Nemo nemo2 = new Nemo(new Coord(1, 2));
         nemo2.setLoneliness(10);
 
-        World world = new World(10, 10, 0, 0, 0);
         world.addObject(nemo1);
         world.addObject(nemo2);
         nemo1.update(world);
@@ -112,7 +108,7 @@ public class NemoTest {
     void testNemoDiesFromHealthProblem() {
         Nemo nemo = new Nemo(new Coord(4, 4));
         nemo.setHealth(0);
-        nemo.update(new World(10, 10, 0, 0, 0));
+        nemo.update(world);
 
         assertFalse(nemo.isAlive());
     }
@@ -121,19 +117,15 @@ public class NemoTest {
     @Test
     void testUpdateDoesNothingIfDead() { //czy dobrze się zachowuje jak umrze
         Nemo nemo = new Nemo(new Coord(0, 0)); //tworzenie nemo
-        nemo.die(new World(0,0,0,0,1)); //nemo umiera
+        nemo.die(world); //nemo umiera
 
         assertFalse(nemo.isAlive()); //czy serio martwy
 
-        nemo.update(new World(10, 10, 0, 0, 0)); //update w nemo
+        nemo.update(world); //update w nemo
 
         //czy się nie przesuwa jak nie zyje ?? szczerze nie wiedziałam jakie testy dać
         assertEquals(0, nemo.getPosition().getX()); //porównuje x do 0
         assertEquals(0, nemo.getPosition().getY()); //porównuje y do 0
     }
-
-
-
-
 }
 

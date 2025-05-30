@@ -61,10 +61,10 @@ public class AnimalLifeManager {
 
     //aktualizacja zdrowia - zależna od jedzenia i samotności
     private static void updateHealth(Animal animal) {
-        if (animal.getFoodLevel() < 40 || animal.getLoneliness() >= animal.getGenes().getMaxLoneliness()){ //jeśli samotność osiągnęła max traci zdrowie co turę
-            animal.setHealth(Math.max(animal.getHealth()-1, 0)); //zdrowie podupada (-1) z każdą turą
+        if (animal.getFoodLevel() < 40 || animal.getLoneliness() >= animal.getGenes().getMaxLoneliness()){ //jeśli samotność osiągnęła max lub foodLevel super niski traci zdrowie co turę
+            animal.setHealth(Math.max(animal.getHealth()-5, 0)); //zdrowie podupada (-1) z każdą turą
         } else if (animal.getLoneliness()>0 && animal.getLoneliness()%3==0){ //normalnie jest co 3 tury - do zmiany chyba bo idk czy matematycznie działa
-            animal.setHealth(Math.max(animal.getHealth()-1, 0));
+            animal.setHealth(Math.max(animal.getHealth()-2, 0));
         }
 
         if (animal.getFoodLevel()>70 && animal.getEnergy()>20) { //zdrowie się odnawia (tak jakies 120% ale do zmiany)
