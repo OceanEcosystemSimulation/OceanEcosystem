@@ -110,21 +110,22 @@ public class Orca extends Carnivorous {
     private boolean isFoodNearby(World world) {
         int x = getPosition().x;
         int y = getPosition().y;
-        int range = 3;
+        int range = 3; //szuka ofiary w promieniu 3 kratek
 
         for (int dx = -range; dx <= range; dx++) {
             for (int dy = -range; dy <= range; dy++) {
                 int newX = x + dx;
                 int newY = y + dy;
 
+                //sprawdza czy nie wychodzi poza granice mapy
                 if (newX >= 0 && newX < world.getWidth() && newY >= 0 && newY < world.getHeight()) {
-                    Coord candidate = new Coord(newX, newY);
-                    Tile tile = world.getTile(candidate);
-                    if (tile != null && tile.hasFood()) return true;
+                    Coord candidate = new Coord(newX, newY); //aby moc sprwdzic dane to trzeba okreslic konkretna kratke
+                    Tile tile = world.getTile(candidate); //pobiera dane z tej kratki
+                    if (tile != null && tile.hasFood()) return true; //jak jest jedzenie tam to zwraca true i orka dostaje boost
                 }
             }
         }
-        return false;
+        return false; //brak boosta
     }
 
     //grafika

@@ -35,7 +35,7 @@ public abstract class Omnivorous extends Animal implements IEat, IFight, IMate {
                 return;
             }
 
-            //jak nie ma w poblizu ofiary to szuka roslinek
+            //jak nie ma w poblizu ofiary to szuka roslinek i poziom jedzenia jest nizszy niz 30
             if (getFoodLevel() < 30) {
                 Tile foodTile = WorldSearch.nearestFood(world, getPosition(), getGenes().getSpeed());
                 if (foodTile != null) {
@@ -52,7 +52,6 @@ public abstract class Omnivorous extends Animal implements IEat, IFight, IMate {
         randomMove(world, this);
     }
 
-    //TODO: check czy nie trzeba tego zmienić bo jest wele razy nadpisywane wszedzie, albo zmienic tutaj albo usunąć tamte
     //atak
     @Override
     public boolean attack(Animal prey, World world) {
@@ -63,27 +62,28 @@ public abstract class Omnivorous extends Animal implements IEat, IFight, IMate {
             AnimalCombatUtils.escape(world, prey);
             SimulationStatsManager.writeToFile(prey.getName() + "," + prey.getId() + ",escaped from," + this.getName() + "," + this.getId() + "\n");
             return false;
-        }
+        }//ofiara jest szybsza - ucieka drapieznikowi
+
 
         double attackerPower = AnimalCombatUtils.getCombatPower(this);
         double preyPower = AnimalCombatUtils.getCombatPower(prey);
 
         int rounds = 5;
-        for (int i = 0; i < rounds; i++) {
+        for (int i = 0; i < rounds; i++) { //walka
             AnimalCombatUtils.takeDamage(world, prey, attackerPower);
-            if (!prey.isAlive()) {
+            if (!prey.isAlive()) { //ofiara zginela
                 SimulationStatsManager.writeToFile(this.getName() + "," + this.getId() + ",killed," + prey.getName() + "," + prey.getId() + "\n");
                 return true;
             }
 
             AnimalCombatUtils.takeDamage(world,this, preyPower);
-            if (!this.isAlive()) {
+            if (!this.isAlive()) { //drapieznik zginal
                 SimulationStatsManager.writeToFile(prey.getName() + "," + prey.getId() + ",killed," + this.getName() + "," + this.getId() + "\n");
                 return false;
             }
         }
 
-        if (attackerPower > preyPower) {
+        if (attackerPower > preyPower) { //ucieczka
             AnimalCombatUtils.escape(world, prey);
             SimulationStatsManager.writeToFile(prey.getName() + "," + prey.getId() + ",escaped from," + this.getName() + "," + this.getId() + "\n");
         } else {

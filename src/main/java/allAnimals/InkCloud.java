@@ -31,6 +31,7 @@ public class InkCloud extends WorldObject {
 
 
     private void setupGraphics() {
+        //sprawdza czy jest srodowisko graficzne
         if (inkImage == null && !GraphicsEnvironment.isHeadless()) {
             inkImage = new Image(Objects.requireNonNull(InkCloud.class.getResource("/images/Ink.png")).toExternalForm());
         }
@@ -49,9 +50,9 @@ public class InkCloud extends WorldObject {
             // efekt znika – przywróć ruch
             if (target != null && target.getName().equals("Dolphin")) {
                 ((Dolphin) target).setStunned(false);
-                SimulationStatsManager.writeToFile("Ink,,effect ended for,Dolphin," + target.getId() + "\n");
+                SimulationStatsManager.writeToFile("Ink effect ended for Dolphin id: " + target.getId() + "\n");
             }
-            world.removeObject(this);
+            world.removeObject(this); //usuwa chmurke po okreslonym czasie
         }
     }
 

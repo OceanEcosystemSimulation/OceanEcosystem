@@ -21,6 +21,7 @@ public class Crab extends Omnivorous {
         settings();
     }
 
+    //konstruktor dziecka
     public Crab(Coord position, Animal parent1, Animal parent2) {
         super(position, parent1, parent2);
         setName("Crab");
@@ -66,6 +67,7 @@ public class Crab extends Omnivorous {
                 (tile.getFoodType() == FoodType.ALGAE || tile.getFoodType() == FoodType.PLANKTON);
     }
 
+    //gain ile dostaje za okreslone roslinki
     @Override
     public void eat(Tile tile, World world) {
         int gain = switch (tile.getFoodType()) {
@@ -83,6 +85,7 @@ public class Crab extends Omnivorous {
 
     //TODO: check czy nie trzeba tego przeniesc bo wszedzie takie samo
 
+    //atakuje jak nie jest to zweirze tego samego gatunku i jest to zwierze ktora jest "ofiara" tego gatunku
     @Override
     public boolean canAttack(Animal other) {
         return other != null && animalPrey.contains(other.getName());

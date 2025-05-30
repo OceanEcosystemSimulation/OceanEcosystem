@@ -22,6 +22,7 @@ public class Seal extends Carnivorous {
         settings();
     }
 
+    //konstruktor dziecka
     public Seal(Coord position, Animal parent1, Animal parent2) {
         super(position, parent1, parent2);
         setName("Seal");
@@ -43,8 +44,10 @@ public class Seal extends Carnivorous {
         return new Seal(position, parent1, parent2);
     }
 
+    //lista ofiar
     private static final List<String> preyList = List.of("Nemo", "Crab");
 
+    //atakuje jak nie jest to zweirze tego samego gatunku i jest to zwierze ktora jest "ofiara" tego gatunku
     @Override
     public boolean canAttack(Animal other) {
         return other != null && preyList.contains(other.getName());
@@ -59,12 +62,13 @@ public class Seal extends Carnivorous {
         };
     }
 
-
+    //private dlatego ze jest to okreslone tylko dla klasy foczki
     private void scareNearbySharks(World world) {
         int radius = 3;
         int sealX = getPosition().x;
         int sealY = getPosition().y;
 
+        //przeszukuje kratki w promieniu 3 kratek
         for (int dx = -radius; dx <= radius; dx++) {
             for (int dy = -radius; dy <= radius; dy++) {
                 int x = sealX + dx;
