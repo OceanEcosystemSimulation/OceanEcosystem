@@ -21,6 +21,7 @@ public class Turtle extends Omnivorous {
         settings();
     }
 
+    //kontruktor dziecka
     public Turtle(Coord position, Animal parent1, Animal parent2) {
         super(position, parent1, parent2);
         setName("Turtle");
@@ -57,9 +58,10 @@ public class Turtle extends Omnivorous {
     }
 
     //jedzenie
-
+    //lista ofiar
     private static final List<String> animalPrey = List.of("Octopus", "Crab");
 
+    //jak jedzenie jest <= 70 to moze jest roslinki jesli są
     @Override
     public boolean canEat(Tile tile) {
         return getFoodLevel() <= 70 &&

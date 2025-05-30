@@ -20,11 +20,13 @@ public class OceanicPuffer extends Omnivorous {
         settings();
     }
 
+    //konstruktor dziecka
     public OceanicPuffer(Coord position, Animal parent1, Animal parent2) {
         super(position, parent1, parent2);
         setName("OceanicPuffer");
         settings();
     }
+
 
     private static Genes generateGenes() {
         Genes genes = new Genes();
@@ -62,6 +64,7 @@ public class OceanicPuffer extends Omnivorous {
 
 
     //walka
+    //atakuje jak nie jest to zweirze tego samego gatunku i jest to zwierze ktora jest "ofiara" tego gatunku
     @Override
     public boolean canAttack(Animal other) {
         return other != null && other.getName() != null && preyList.contains(other.getName());
@@ -87,12 +90,12 @@ public class OceanicPuffer extends Omnivorous {
         }
     }
 
-
+    //okreslenie ile punktow jedzenia dostanie za zjedzenie przeciwnika
     @Override
     public int calculateGain(Animal animal) {
         return switch (animal.getName()) {
             case "Crab" -> 25;
-            default -> 5;
+            default -> 0;
         };
     }
 

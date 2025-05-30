@@ -41,7 +41,7 @@ public class Octopus extends Carnivorous {
         return genes;
     }
 
-    //ink
+    /* -------------------------------INK------------------------------- */
     private void releaseInk(World world) {
         //sprwdza zwierzeta w promieniu dwoch kratek
         for (Animal a : world.getNearbyAnimals(getPosition(), 2)) {
