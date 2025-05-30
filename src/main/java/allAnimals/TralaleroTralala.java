@@ -10,6 +10,7 @@ import map.Tile;
 import ocean.Main;
 import ocean.SimulationStatsManager;
 import ocean.World;
+import soundEffects.SoundPlayer;
 
 import java.awt.*;
 import java.util.List;
@@ -38,6 +39,7 @@ public class TralaleroTralala extends Animal {
         this.setAge(this.getAge() + 1);
 
         if (this.getAge() >= this.getGenes().getMaxAge()) {
+            SoundPlayer.playSound("sounds/oof.wav");
             this.die(world);
             SimulationStatsManager.writeToFile("TralaleroTralala," + this.getId() + ",disappeared\n");
             return;
@@ -57,6 +59,7 @@ public class TralaleroTralala extends Animal {
             if (animal != this && animal.isAlive()) { //jeśli zwierze to nie on i żyje
                 Tile tile = world.getTile(animal.getPosition());
                 if (tile != null && tile.getMapType() != MapType.CORAL) { //jeżeli nie jest to CORAL
+                    SoundPlayer.playSound("sounds/oof.wav");
                     animal.die(world); //zabija
                     SimulationStatsManager.writeToFile("TralaleroTralala," + this.getId() + ",killed," + animal.getName() + "," + animal.getId() + "\n");
                 }

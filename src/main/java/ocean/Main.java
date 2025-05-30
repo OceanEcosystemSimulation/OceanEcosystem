@@ -20,6 +20,7 @@ import java.io.File;
 import java.net.URL;
 import java.util.*;
 import java.util.List;
+import soundEffects.SoundPlayerLoop;
 
 
 public class Main extends Application {
@@ -70,7 +71,7 @@ public class Main extends Application {
 
         tileSize = (int) Math.ceil(Math.min( ((windowWidth-350)/width), ((windowHeight-100)/height))); //-100pkt około na label itp
 
-
+        SoundPlayerLoop.playSound("sounds/ocean2.wav");
         launch(args); //uruchamia JavaFX ???
     }
 
