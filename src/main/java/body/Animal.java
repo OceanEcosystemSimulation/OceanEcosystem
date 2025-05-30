@@ -17,6 +17,7 @@ public abstract class Animal extends WorldObject {
     private boolean pregnant = false;
     private int pregnancyCounter = 0;
     private Animal fatherDuringPregnancy = null;
+    private boolean lonelinessReseted = false; //do sprawdzania czy w danej turze wyzerowano loneliness poprzez inne zwierze
 
     /* -------------------------------KONSTRUKTORY------------------------------- */
 
@@ -83,6 +84,7 @@ public abstract class Animal extends WorldObject {
     public boolean isPregnant() {return pregnant;}
     public int getPregnancyCounter() {return pregnancyCounter;}
     public Animal getFatherDuringPregnancy() {return fatherDuringPregnancy;}
+    public boolean getLonelinessReseted() {return lonelinessReseted;}
 
     /* -------------------------------SETTERY------------------------------- */
 
@@ -101,5 +103,6 @@ public abstract class Animal extends WorldObject {
     public void setPregnant(boolean pregnant) {this.pregnant = pregnant;}
     public void setPregnancyCounter(int counter) {this.pregnancyCounter = counter;}
     public void setFatherDuringPregnancy(Animal father) {fatherDuringPregnancy = father;}
+    public void setLonelinessReseted(boolean status) {this.lonelinessReseted = status;}
 }
 

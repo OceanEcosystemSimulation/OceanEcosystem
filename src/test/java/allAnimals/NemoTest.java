@@ -39,10 +39,10 @@ public class NemoTest {
         Genes genes = nemo.getGenes(); //pobiera geny
 
         assertNotNull(genes); //sprawdza czy geny nie null
-        assertEquals(5, genes.getStrength());
-        assertEquals(2, genes.getSpeed()); //wartości do zmiany wszystkie jak się ustawi na koniec konkretnie
-        assertTrue(genes.getMaxAge() > 0);
-        assertEquals(80, genes.getMaxEnergy());
+        assertTrue(genes.getStrength() >= 8 && genes.getStrength() <= 12); //10 +-2 z możliwej mutacji
+        assertTrue(genes.getSpeed() == 1 || genes.getSpeed() == 2);
+        assertTrue(genes.getMaxAge() >= 73 && genes.getMaxAge() <= 77); //75 +-2 z możliwej mutacji
+        assertTrue(genes.getMaxEnergy() >= 78 && genes.getMaxEnergy() <= 82); //80 +-2 z możliwej mutacji
     }
 
 
@@ -94,13 +94,16 @@ public class NemoTest {
     void testLonelinessResetsWithSameSpeciesNearby() {
         Nemo nemo1 = new Nemo(new Coord(1, 1));
         nemo1.setLoneliness(10);
+        Nemo nemo2 = new Nemo(new Coord(1, 2));
+        nemo2.setLoneliness(10);
 
-        Nemo nemo2 = new Nemo(new Coord(1, 2)); //w zasiegu
         World world = new World(10, 10, 0, 0, 0);
-        world.addObject(nemo1); //przeszukuje liste okolicznych wiec juz trzeba dodać na world je
+        world.addObject(nemo1);
         world.addObject(nemo2);
         nemo1.update(world);
+        nemo2.update(world);
 
+        assertEquals(0, nemo1.getLoneliness());
         assertEquals(0, nemo1.getLoneliness());
     }
 

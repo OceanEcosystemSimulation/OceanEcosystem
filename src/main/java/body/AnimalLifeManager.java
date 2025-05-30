@@ -18,7 +18,12 @@ public class AnimalLifeManager {
             return; //koniec
         }
 
-        updateLoneliness(world, animal);
+        if (animal.getLonelinessReseted()) {  //jeśli zostało zresetowane wczesnsiej przez kogoś innego
+            animal.setLonelinessReseted(false); //zmienia status na kolejne tury
+        } else {
+            updateLoneliness(world, animal); //jeśli nie zostało to robi update
+        }
+
         updateHealth(animal);
 
         if (animal.getHealth() <= 0){
@@ -39,16 +44,18 @@ public class AnimalLifeManager {
 
     //sprawdzanie samotności - czy wokół są zwierzęta tego samego gatunku
     private static void updateLoneliness(World world, Animal animal) {
-        List<Animal> nearby = world.getNearbyAnimals(animal.getPosition(), (int)(animal.getGenes().getSpeed() * 0.5)); //wartość przeszukiwania do zmiany
+        List<Animal> nearby = world.getNearbyAnimals(animal.getPosition(), (int) Math.ceil(animal.getGenes().getSpeed()*0.5)); //zaokrągla w górę do połowy speed
         boolean foundSameSpecies = false;
         for (Animal other : nearby) {
             if (other != animal && animal.getName().equals(other.getName())){
                 foundSameSpecies = true;
+                animal.setLoneliness(0); //reset samotności bo spotkał
+                other.setLoneliness(0); //reset też tego ziomka bo spotkał także
+                other.setLonelinessReseted(true); //ustawia że zresetowano przez inne zwierze
                 break;
             }
         }
         if (!foundSameSpecies) {animal.setLoneliness(animal.getLoneliness() + 5);} //nikogo nie ma :((
-        else {animal.setLoneliness(0);} //reset samotności jeśli ktoś jest
     }
 
 
