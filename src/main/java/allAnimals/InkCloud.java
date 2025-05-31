@@ -17,6 +17,10 @@ public class InkCloud extends WorldObject {
     private final ImageView imageView = new ImageView();
     private int remainingTime = 2; //znika po 2 turach
     private final Animal target;
+    public Animal getTarget() { //getter
+        return target;
+    }
+
 
     public InkCloud(Coord position, Animal target) {
         super(position);
@@ -45,7 +49,7 @@ public class InkCloud extends WorldObject {
     public void update(World world) {
         remainingTime--;
         if (remainingTime <= 0 || !target.isAlive()) {
-            // efekt znika – przywróć ruch
+            //efekt znika – przywraca ruch
             if (target != null && target.getName().equals("Dolphin")) {
                 ((Dolphin) target).setStunned(false);
                 SimulationStatsManager.writeToFile("Ink effect ended for Dolphin id: " + target.getId() + "\n");

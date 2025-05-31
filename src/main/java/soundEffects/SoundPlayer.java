@@ -28,7 +28,7 @@ public class SoundPlayer {
 
             //ustawianie głośności (-10 decybeli = ciszej)
             FloatControl volume = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-            volume.setValue(-20.0f); // od ~0.0 (normalnie) do ~-80.0 (cisza)
+            volume.setValue(-25.0f); // od ~0.0 (normalnie) do ~-80.0 (cisza)
 
             //granie dzwieku
             clip.start();

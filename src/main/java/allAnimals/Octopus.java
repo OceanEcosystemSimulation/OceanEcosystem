@@ -14,6 +14,8 @@ import java.util.Objects;
 
 
 public class Octopus extends Carnivorous {
+    private int inkCooldown = 0; //ile tur zostało do odnowienia chmurki
+
     public Octopus(Coord position) {
         super(position, generateGenes());
         setName("Octopus");
@@ -43,11 +45,28 @@ public class Octopus extends Carnivorous {
 
     /* -------------------------------INK------------------------------- */
     private void releaseInk(World world) {
+
+        if (inkCooldown > 0) return; //nie może jeszcze wypuscic chmurki
+
         //sprwdza zwierzeta w promieniu dwoch kratek
         for (Animal a : world.getNearbyAnimals(getPosition(), 2)) {
             //sprawdza czy tam jest delfin i sprawdza czy to jest klasa delfina a nie np. jajka z delfinem
             if (a.isAlive() && !a.equals(this) && a.getClass() == Dolphin.class) {
-                world.addObject(new InkCloud(a.getPosition(), a));
+                boolean alreadyInked = false; //zeby nie zatrzymywalo delfina jak juz jest zatrzymany
+                for (WorldObject object : world.getObjects()) { //przechodzi przez swiat
+                    if (object instanceof InkCloud) { //sprawdza czy dany obiekt ma chmurke
+                        InkCloud ink = (InkCloud) object;
+                        if (ink.getTarget() == a) {
+                            alreadyInked = true;
+                            break;
+                        }
+                    }
+                }//powinno zapobiegac tworzeniu sie chmurek na sobie
+
+                if (!alreadyInked) {
+                    world.addObject(new InkCloud(a.getPosition(), a));
+                    inkCooldown = 5; //musi odczekac 5 rund bo zostala wypuszczona chmurka
+                }
                 break;
             }
         }
@@ -58,6 +77,7 @@ public class Octopus extends Carnivorous {
 
     @Override
     public void update(World world) {
+        if(inkCooldown>0) inkCooldown--;
         processLifeCycle(world); //duperele o życiu
         updateOctopusGraphics();
         if (!isAlive()) return;
