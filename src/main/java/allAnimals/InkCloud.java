@@ -21,11 +21,9 @@ public class InkCloud extends WorldObject {
     public InkCloud(Coord position, Animal target) {
         super(position);
         this.target = target;
-        //jesli nie jest aktualnie zatrzymany inny delfin
-        if (target != null && target.getClass() == Dolphin.class) {
+        if (target != null && target.getClass() == Dolphin.class && !((Dolphin) target).isStunned()) { //jesli nie jest aktualnie zatrzymany inny delfin
             ((Dolphin) target).setStunned(true);
         }
-
         setupGraphics();
     }
 
