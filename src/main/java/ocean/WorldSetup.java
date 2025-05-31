@@ -24,11 +24,15 @@ public class WorldSetup {
             }
         }
 
-        //TODO: przydało by się - do dodania --> zastanawiam się, czy powinien być warunek sprawdzający, czy mapa nie jest mniejsza niż wymiary rafy
-
         int maxCountOfCorals = maxCountOnMap(width, height);
 
         int coralGeneratingLimit = (int) (height * 0.35); // max wysokość, by nie tworzyły się na grafice wody // zakres
+
+        // sprawdza, czy jest w stanie w ogóle wygenerować rafę
+        if (width < 3 || height < 3) {
+            System.out.println("The given map size is too small, it is not possible to place any coral reefs.\n");
+            return;
+        }
 
         if (noCoral > maxCountOfCorals) {
             System.out.println("The given map size is too small, it is not possible to place so many coral reefs.\n");
@@ -38,7 +42,6 @@ public class WorldSetup {
         int coralreef_counter = 0;
         int countOfAttempts = 0;
         int MaxCountOfAttempts = 1000;
-
 
         while (coralreef_counter < noCoral && countOfAttempts < MaxCountOfAttempts) {
             countOfAttempts++;
