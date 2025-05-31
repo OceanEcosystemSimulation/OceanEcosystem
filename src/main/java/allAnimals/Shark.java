@@ -87,9 +87,6 @@ public class Shark extends Carnivorous {
     }
 
 
-
-
-
     /* -------------------------------GRAPHICS------------------------------- */
 
     private static Image YoungShark;

@@ -116,10 +116,9 @@ public class Main extends Application {
         }
 
         // czyści wszystkie stare obrazki, czyli te ktore zostaną po poprzedniej turze - zeby sie nie nakladaly na stare
-        //
         List<Node> toRemove = new ArrayList<>();
         for (Node imageToClear : grid.getChildren()) {
-            if (imageToClear instanceof ImageView) {
+            if (imageToClear instanceof ImageView) { // sprawdza, czy należy do obrazków
                 toRemove.add(imageToClear);
             }
         }

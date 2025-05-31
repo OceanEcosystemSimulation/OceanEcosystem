@@ -4,12 +4,13 @@ import body.Animal;
 import ocean.World;
 
 import java.util.List;
-
+// fight - interface
 public interface IFight {
     boolean canAttack(Animal other);
     boolean attack(Animal target, World world);
     int calculateGain(Animal animal);
 
+    //metoda domyślna
     default void tryToAttack(World world, Animal self) {
         List<Animal> nearbyAnimals = world.getNearbyAnimals(self.getPosition(), 0); //pobiera zwierzęta na aktualnym polu
         for (Animal animal : nearbyAnimals) {
