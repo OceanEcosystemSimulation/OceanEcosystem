@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public final class Reproduction {
+public class Reproduction {
 
     /* -------------------------------CONSTANTS------------------------------- */
 
@@ -167,8 +167,7 @@ public final class Reproduction {
             }
         }
 
-        if (possibleTiles.isEmpty()) {return null;} //jeśli nie ma wolnego miejsca w liście
-        // zwraca null, bo nie ma gdzie postawić
+        if (possibleTiles.isEmpty()) {return null;} //jeśli nie ma wolnego miejsca w liście - zwraca null, bo nie ma gdzie postawić
 
         return possibleTiles.get(World.random.nextInt(possibleTiles.size())); //wybiera losowe pole z tych, znajdujących się w liście
     }

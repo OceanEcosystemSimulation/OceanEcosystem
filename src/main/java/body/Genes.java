@@ -52,7 +52,6 @@ public class Genes {
     /* -------------------------------SETTERY------------------------------- */
 
     public void setStrength(int strength) {this.strength = strength;}
-    //public void setSpeed(int speed) {this.speed = speed;}
     public void setMaxAge(int maxAge) {this.maxAge = maxAge;}
     public void setMaxLoneliness(int maxLoneliness) {this.maxLoneliness = maxLoneliness;}
     public void setMaxEnergy(int maxEnergy) {this.maxEnergy = maxEnergy;}
