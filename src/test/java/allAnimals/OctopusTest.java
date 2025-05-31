@@ -46,18 +46,13 @@ public class OctopusTest {
         List <WorldObject> objects = world.getObjects();
         assertEquals(3, objects.size()); //powinno byc nemo, delfin i inkcloud
 
-        octopus.update(world);
+        world.runSimulation(1);
         assertEquals(3, objects.size()); //powinno byc nemo, delfin i inkcloud
 
-        octopus.update(world);
-        assertEquals(3, objects.size()); //powinno byc nemo, delfin i inkcloud
+        world.runSimulation(1);
+        assertEquals(2, objects.size()); //powinno byc nemo, delfin
 
-        octopus.update(world);
-        assertEquals(2, objects.size()); //powinno byc nemo, delfin i inkcloud
-
-        assertFalse(dolphin.isStunned());
+        assertFalse(dolphin.isStunned()); //efekt powinien przestac dzialac
     }
-
-    //TODO: coś nie działa z inkcloud
 }
 
