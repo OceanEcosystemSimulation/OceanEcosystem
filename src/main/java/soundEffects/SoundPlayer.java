@@ -1,7 +1,6 @@
 package soundEffects;
 
 import javax.sound.sampled.*;
-import java.io.File;
 import java.net.URL;
 
 public class SoundPlayer {
@@ -26,6 +25,10 @@ public class SoundPlayer {
 
             //laduje dane z pliku do obiektu clip
             clip.open(audio);
+
+            //ustawianie głośności (-10 decybeli = ciszej)
+            FloatControl volume = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+            volume.setValue(-20.0f); // od ~0.0 (normalnie) do ~-80.0 (cisza)
 
             //granie dzwieku
             clip.start();
