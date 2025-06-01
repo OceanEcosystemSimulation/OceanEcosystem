@@ -30,13 +30,13 @@ public class Seal extends Carnivorous {
     }
 
     private static Genes generateGenes() {
-        Genes g = new Genes();
-        g.setStrength(Genes.mutate(40));
-        g.setSpeed(3);
-        g.setMaxAge(Genes.mutate(55));
-        g.setMaxLoneliness(Genes.mutate(45));
-        g.setMaxEnergy(100);
-        return g;
+        Genes genes = new Genes();
+        genes.setStrength(Genes.mutate(40));
+        genes.setSpeed(3);
+        genes.setMaxAge(Genes.mutate(55));
+        genes.setMaxLoneliness(Genes.mutate(45));
+        genes.setMaxEnergy(100);
+        return genes;
     }
 
     @Override
@@ -62,38 +62,14 @@ public class Seal extends Carnivorous {
         };
     }
 
-    //private dlatego ze jest to okreslone tylko dla klasy foczki
+    //straszy rekiny w zasięgu 3 kratek
     private void scareNearbySharks(World world) {
-        int radius = 3;
-        int sealX = getPosition().x;
-        int sealY = getPosition().y;
+        List<Animal> nearbyAnimals = world.getNearbyAnimals(getPosition(), 3); //bierze zwierzeta w zasiegu 3
 
-        //przeszukuje kratki w promieniu 3 kratek
-        for (int dx = -radius; dx <= radius; dx++) {
-            for (int dy = -radius; dy <= radius; dy++) {
-                int x = sealX + dx;
-                int y = sealY + dy;
-
-                //sprawdza czy kratka nie wychodzi poza mape
-                if (x >= 0 && x < world.getWidth() && y >= 0 && y < world.getHeight()) {
-                    //szuka czy jest rekin na tej pozycji
-                    for (Animal animal : world.getAnimals()) {
-                        if (animal.isAlive() &&
-                                animal.getPosition().x == x &&
-                                animal.getPosition().y == y &&
-                                animal.getName().equals("Shark")) {
-
-                            SimulationStatsManager.writeToFile("Seal id: " + getId() + " scared away Shark id: " + animal.getId());
-
-                            //przesuwa rekina na wylosowana kratke o wspolrzednych  rx i ry
-                            int rx = (int)(Math.random() * world.getWidth());
-                            int ry = (int)(Math.random() * world.getHeight());
-                            animal.setPosition(new Coord(rx, ry));
-
-                            break; //jak znajdzie rekina to konczy
-                        }
-                    }
-                }
+        for (Animal animal : nearbyAnimals) { //iteruje po znalezionych
+            if (animal.getName() != null && animal.getName().equals("Shark")) {
+                SimulationStatsManager.writeToFile("Seal," + getId() + ",scared away,Shark," + animal.getId() + "\n");
+                AnimalCombatUtils.escape(world, animal); //rekin ucieka
             }
         }
     }

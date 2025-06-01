@@ -34,7 +34,7 @@ public class AnimalCombatUtils {
 
 
     //ucieczka z walki
-    static void escape(World world, Animal animal) {
+    public static void escape(World world, Animal animal) {
         Coord pos = animal.getPosition();
         int distance = animal.getGenes().getSpeed();
 
