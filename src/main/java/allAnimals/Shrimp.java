@@ -50,7 +50,7 @@ public class Shrimp extends Herbivorous {
 
     public void update(World world) {
         processLifeCycle(world); //duperele o życiu
-        updateNemoGraphics();
+        updateShrimpGraphics();
         if (!isAlive()) return;
 
         Reproduction.pregnancyTick(world, this);
@@ -110,10 +110,10 @@ public class Shrimp extends Herbivorous {
 
     private void settings() {
         imageView.setPreserveRatio(true);
-        updateNemoGraphics();
+        updateShrimpGraphics();
     }
 
-    private void updateNemoGraphics() {
+    private void updateShrimpGraphics() {
         loadImagesIfNeeded();
 
         boolean isYoung = getAge() < AGE_OLD;

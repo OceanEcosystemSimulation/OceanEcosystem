@@ -46,7 +46,7 @@ public class Turtle extends Omnivorous {
     @Override
     public void update(World world) {
         processLifeCycle(world);
-        updateGraphics();
+        updateTurtleGraphics();
         if (!isAlive()) return;
 
         Reproduction.pregnancyTick(world, this);
@@ -61,12 +61,6 @@ public class Turtle extends Omnivorous {
     //lista ofiar
     private static final List<String> animalPrey = List.of("Octopus", "Crab");
 
-    //jak jedzenie jest <= 70 to moze jest roslinki jesli są
-    @Override
-    public boolean canEat(Tile tile) {
-        return getFoodLevel() <= 70 &&
-                (tile.getFoodType() == FoodType.ALGAE || tile.getFoodType() == FoodType.PLANKTON);
-    }
 
     @Override
     public void eat(Tile tile, World world) {
@@ -117,10 +111,10 @@ public class Turtle extends Omnivorous {
 
     private void settings() {
         imageView.setPreserveRatio(true);
-        updateGraphics();
+        updateTurtleGraphics();
     }
 
-    private void updateGraphics() {
+    private void updateTurtleGraphics() {
         loadImagesIfNeeded();
         boolean isYoung = getAge() < AGE_OLD;
         if (isYoung) {

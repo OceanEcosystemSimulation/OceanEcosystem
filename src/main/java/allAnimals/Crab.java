@@ -46,7 +46,7 @@ public class Crab extends Omnivorous {
     @Override
     public void update(World world) {
         processLifeCycle(world);
-        updateGraphics();
+        updateCrabGraphics();
         if (!isAlive()) return;
 
         Reproduction.pregnancyTick(world, this);
@@ -60,12 +60,6 @@ public class Crab extends Omnivorous {
     //jedzenie
 
     private static final List<String> animalPrey = List.of("Nemo");
-
-    @Override
-    public boolean canEat(Tile tile) {
-        return getFoodLevel() <= 70 &&
-                (tile.getFoodType() == FoodType.ALGAE || tile.getFoodType() == FoodType.PLANKTON);
-    }
 
     //gain ile dostaje za okreslone roslinki
     @Override
@@ -119,10 +113,10 @@ public class Crab extends Omnivorous {
 
     private void settings() {
         imageView.setPreserveRatio(true);
-        updateGraphics();
+        updateCrabGraphics();
     }
 
-    private void updateGraphics() {
+    private void updateCrabGraphics() {
         loadImagesIfNeeded();
         boolean isYoung = getAge() < AGE_OLD;
         imageView.setImage(isYoung ? babyImage : adultImage);

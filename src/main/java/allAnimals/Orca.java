@@ -31,13 +31,13 @@ public class Orca extends Carnivorous {
     }
 
     private static Genes generateGenes() {
-        Genes g = new Genes();
-        g.setStrength(Genes.mutate(70));
-        g.setSpeed(5);
-        g.setMaxAge(Genes.mutate(90));
-        g.setMaxLoneliness(Genes.mutate(50));
-        g.setMaxEnergy(100);
-        return g;
+        Genes genes = new Genes();
+        genes.setStrength(Genes.mutate(70));
+        genes.setSpeed(5);
+        genes.setMaxAge(Genes.mutate(90));
+        genes.setMaxLoneliness(Genes.mutate(50));
+        genes.setMaxEnergy(100);
+        return genes;
     }
 
 

@@ -21,8 +21,8 @@ public abstract class Omnivorous extends Animal implements IEat, IFight, IMate {
 
     @Override
     public boolean canEat(Tile tile) {
-        //moze jesc algi i plankton
-        return tile.getFoodType() == FoodType.PLANKTON || tile.getFoodType() == FoodType.ALGAE;
+        return getFoodLevel() <= 70 &&
+                (tile.getFoodType() == FoodType.ALGAE || tile.getFoodType() == FoodType.PLANKTON);
     }
 
 

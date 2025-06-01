@@ -47,7 +47,7 @@ public class OceanicPuffer extends Omnivorous {
     @Override
     public void update(World world) {
         processLifeCycle(world);
-        updateGraphics();
+        updatePufferGraphics();
         if (!isAlive()) return;
 
         Reproduction.pregnancyTick(world, this);
@@ -100,13 +100,6 @@ public class OceanicPuffer extends Omnivorous {
     }
 
 
-    //jedzenie
-    @Override
-    public boolean canEat(Tile tile) {
-        return getFoodLevel() <= 70 && ( tile.getFoodType() == FoodType.PLANKTON || tile.getFoodType() == FoodType.ALGAE);
-    }
-
-
     @Override
     public void eat(Tile tile, World world) {
         int gain = switch (tile.getFoodType()) {
@@ -143,10 +136,10 @@ public class OceanicPuffer extends Omnivorous {
 
     private void settings() {
         imageView.setPreserveRatio(true);
-        updateGraphics();
+        updatePufferGraphics();
     }
 
-    private void updateGraphics() {
+    private void updatePufferGraphics() {
         loadImagesIfNeeded();
         boolean isYoung = getAge() < AGE_OLD;
         if (isYoung) {

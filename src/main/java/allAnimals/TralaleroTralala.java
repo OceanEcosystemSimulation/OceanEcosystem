@@ -89,10 +89,10 @@ public class TralaleroTralala extends Animal {
 
     private void settings() {
         imageView.setPreserveRatio(true);
-        updateNemoGraphics();
+        updateBossGraphics();
     }
 
-    private void updateNemoGraphics() {
+    private void updateBossGraphics() {
         loadImagesIfNeeded();
 
         imageView.setImage(boss);

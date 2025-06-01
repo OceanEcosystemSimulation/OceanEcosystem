@@ -50,7 +50,7 @@ public class Star extends Herbivorous {
 
     public void update(World world) {
         processLifeCycle(world); //duperele o życiu
-        updateNemoGraphics();
+        updateStarGraphics();
         if (!isAlive()) return;
 
         Reproduction.pregnancyTick(world, this);
@@ -110,10 +110,10 @@ public class Star extends Herbivorous {
 
     private void settings() {
         imageView.setPreserveRatio(true);
-        updateNemoGraphics();
+        updateStarGraphics();
     }
 
-    private void updateNemoGraphics() {
+    private void updateStarGraphics() {
         loadImagesIfNeeded();
 
         boolean isYoung = getAge() < AGE_OLD;

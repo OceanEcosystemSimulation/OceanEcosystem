@@ -41,7 +41,7 @@ public class World {
 
     //główna symulacja świata - w każdym cyklu aktualizuje zwierzęta - dead alive
     public void runSimulation(int tick) {
-        addTralaleroTralala(tick); // próbuje dodac tralalero ale rarity to 1%, więc co tick
+        addTralaleroTralala(); // próbuje dodac tralalero ale rarity to 1%, więc co tick
         List<WorldObject> currentObjects = new ArrayList<>(objects); //tworzenie kopii by nie aktualizować m.in. dopiero co urodzonych
         Coord.allAtempts = 0;
 
@@ -70,9 +70,9 @@ public class World {
 
     private boolean tralaleroSpawned = false;
 
-    private void addTralaleroTralala(int tick) {
-        //if (!tralaleroSpawned && random.nextInt(100) == 0) { // 1% szans
-        if (tick == 30) {
+    private void addTralaleroTralala() {
+        if (!tralaleroSpawned && random.nextInt(100) == 0) { // 1% szans
+        //if (tick == 30) { // <- do zobaczenia bossa bo tak to mała szansa że się trafi
             tralaleroSpawned = true;
 
             //tworzenie listy wolnych pól na mapie które nie są rafą
