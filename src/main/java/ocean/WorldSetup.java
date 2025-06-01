@@ -74,7 +74,7 @@ public class WorldSetup {
         }
     }
 
-    public static int maxCountOnMap(int width, int height) {
+    static int maxCountOnMap(int width, int height) {
         int maxHeight = (int) (height * 0.35);
         int spawningAreaHeight = height - maxHeight;
 

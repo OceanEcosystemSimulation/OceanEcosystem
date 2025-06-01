@@ -4,6 +4,7 @@ import allAnimals.Skeleton;
 import map.*;
 import ocean.SimulationStatsManager;
 import ocean.World;
+import soundEffects.SoundPlayer;
 
 public abstract class Animal extends WorldObject {
     private int foodLevel, age, loneliness;
@@ -45,6 +46,7 @@ public abstract class Animal extends WorldObject {
         alive = false;
         world.deadAnimalCounter++;
         world.addObject(new Skeleton(this.getPosition())); // dodajemy szkielet, dla konkretnego zwierzęcia, na konkretnej pozycji
+        SoundPlayer.playSound("sounds/oof.wav");
     }
 
     //zostawiam to tutaj bo za wykładzie było że fajnie robić chyba takie pomiędzy a nie 1 do 1 połączenia
@@ -102,7 +104,7 @@ public abstract class Animal extends WorldObject {
     public void setHealth(int health) {this.health = health;}
     public void setPregnant(boolean pregnant) {this.pregnant = pregnant;}
     public void setPregnancyCounter(int counter) {this.pregnancyCounter = counter;}
-    public void setFatherDuringPregnancy(Animal father) {fatherDuringPregnancy = father;}
+    public void setFatherDuringPregnancy(Animal father) {this.fatherDuringPregnancy = father;}
     public void setLonelinessReseted(boolean status) {this.lonelinessReseted = status;}
 }
 
