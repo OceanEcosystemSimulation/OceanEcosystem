@@ -19,7 +19,7 @@ import static body.AnimalCombatUtils.randomMove;
 public class Orca extends Carnivorous {
 
     private int boostTurns = 0;//przyspieszenie ile zostalo
-    private int boostWaiting = 0;
+    private int boostWaiting = 0; //odpoczynek po booscie
 
 
     public Orca(Coord position) {
