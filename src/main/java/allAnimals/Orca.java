@@ -18,6 +18,10 @@ import static body.AnimalCombatUtils.randomMove;
 
 public class Orca extends Carnivorous {
 
+    private int boostTurns = 0;//przyspieszenie ile zostalo
+    private int boostWaiting = 0;
+
+
     public Orca(Coord position) {
         super(position, generateGenes());
         setName("Orca");
@@ -85,47 +89,37 @@ public class Orca extends Carnivorous {
 
     @Override
     public void move(World world) {
-        int speed = isFoodNearby(world) ? getGenes().getSpeed() + 10 : getGenes().getSpeed();
+        int speed = getGenes().getSpeed();
+
+        boolean preyNearby = false;
+        //jak odpoczela i nie ma przyspieszenia to szuka nowej ofiary
+        if (boostTurns == 0 && boostWaiting == 0) {
+            preyNearby = WorldSearch.nearestPrey(world, getPosition(), 3, this) != null;
+        }
+
+        //boost i odpoczynek
+        if (boostTurns > 0) {
+            boostTurns--;
+            speed += 3;
+            if (boostTurns == 0) {
+                boostWaiting = 5;
+            }
+        } else if (boostWaiting > 0) {
+            boostWaiting--;
+        } else if (preyNearby) {
+            boostTurns = 2;
+            speed += 3;
+        }
 
         if (getFoodLevel() < 70) {
             Coord preyPos = WorldSearch.nearestPrey(world, getPosition(), speed, this);
             if (preyPos != null) {
                 setPosition(preyPos);
                 return;
-            } else if (getFoodLevel() < 30) {
-                Tile foodTile = WorldSearch.nearestFood(world, getPosition(), speed);
-                if (foodTile != null) {
-                    Coord foodPos = new Coord(foodTile.getX(), foodTile.getY());
-                    setPosition(foodPos);
-                    return;
-                }
             }
         }
 
         randomMove(world, this);
-    }
-
-
-    //przyspieszenie gdy znajdzie jedzenie w odleglosci do 3 kratek
-    private boolean isFoodNearby(World world) {
-        int x = getPosition().x;
-        int y = getPosition().y;
-        int range = 3; //szuka ofiary w promieniu 3 kratek
-
-        for (int dx = -range; dx <= range; dx++) {
-            for (int dy = -range; dy <= range; dy++) {
-                int newX = x + dx;
-                int newY = y + dy;
-
-                //sprawdza czy nie wychodzi poza granice mapy
-                if (newX >= 0 && newX < world.getWidth() && newY >= 0 && newY < world.getHeight()) {
-                    Coord candidate = new Coord(newX, newY); //aby moc sprwdzic dane to trzeba okreslic konkretna kratke
-                    Tile tile = world.getTile(candidate); //pobiera dane z tej kratki
-                    if (tile != null && tile.hasFood()) return true; //jak jest jedzenie tam to zwraca true i orka dostaje boost
-                }
-            }
-        }
-        return false; //brak boosta
     }
 
     //grafika
