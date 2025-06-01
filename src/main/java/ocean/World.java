@@ -53,10 +53,25 @@ public class World {
         for (WorldObject object : currentObjects) {  //iteracja po kopii animals - żeby nie było problemów później bo niektóre rzeczy usuwamy itp to sie rozwali inaczej
             object.update(this); // aktualizuje stan zwierzęcia
 
+            if (simulationEnded) {return;} //koniec
+
             if (object instanceof Animal animal && !animal.isAlive()) { //jeżeli to zwierze i nie żyje
                 SimulationStatsManager.writeToFile(animal.getName() + "," + animal.getId() + ",is dead\n");
                 removeObject(animal); //usuwa je
             }
+        }
+
+        //sprawdzenie czy ktoś jeszzcze zyje
+        boolean anyoneAlive = false;
+        for (Animal animal : animals) {
+            if (animal.isAlive()) {
+                anyoneAlive = true; //jeśli chociaz 1 żyje do symulacja trwa
+                break;
+            }
+        }
+        if (!anyoneAlive) { //jeśli nie to się kończy
+            endSimulation();
+            SimulationStatsManager.writeToFile("notification,Simulation ended because all animals are dead\n");
         }
     }
 

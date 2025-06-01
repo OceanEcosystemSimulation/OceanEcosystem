@@ -56,7 +56,14 @@ public class SimulationStatsManager {
 
     //statystyki końcowe
     public static void showEndStats(World world, Label statsLabel, int finalTick) {
-        String statsText = ">>> KONIEC SYMULACJI <<<" + (world.isSimulationEnded()?"\n           (brak miejsca)":"");
+        String statsText = ">>> KONIEC SYMULACJI <<<";
+        if (world.isSimulationEnded()) { //kiedy wymuszono koniec symulacji
+            if (world.getAnimals().isEmpty()) { //jeśli nie ma zwierzat - takie słabe ale myśle że wystarczy dla tekstu
+                statsText += "\n           (brak zwierząt)";
+            } else { //tylko wymuszono ale zwierzeta są - brak miejsca
+                statsText += "\n           (brak miejsca)";
+            }
+        }
         statsText += "\n\nWykonane tury: " + finalTick + "/" + Main.noTicks + "\nLiczba zjedzonego jedzenia: " + world.totalEatenFood + "\nIlość zmarłych zwierząt: " + world.deadAnimalCounter + "\n";
         writeToFile("\nno_rounds,max_no_rounds,eaten_food,no_dead\n" + finalTick + "," + Main.noTicks + "," + world.totalEatenFood + "," + world.deadAnimalCounter + "\n");
 
