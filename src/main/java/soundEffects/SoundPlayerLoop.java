@@ -29,9 +29,9 @@ public class SoundPlayerLoop {
             //zapetla dzwiek
             clip.loop(Clip.LOOP_CONTINUOUSLY);
 
-            // ustawianie głośności (tu np. -10 decybeli = ciszej)
+            //ustawianie glosnosci
             FloatControl volume = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-            volume.setValue(50.0f); // od ~0.0 (normalnie) do ~-80.0 (cisza)
+            volume.setValue(0.0f); //zakres -80.0f do 0.0f
 
             //granie dzwieku
             clip.start();

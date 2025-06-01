@@ -26,9 +26,9 @@ public class SoundPlayer {
             //laduje dane z pliku do obiektu clip
             clip.open(audio);
 
-            //ustawianie głośności (-10 decybeli = ciszej)
+            //ustawianie glosnosci
             FloatControl volume = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-            volume.setValue(-25.0f); // od ~0.0 (normalnie) do ~-80.0 (cisza)
+            volume.setValue(-25.0f);//zakres -80.0f do 0.0f
 
             //granie dzwieku
             clip.start();
