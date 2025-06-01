@@ -55,13 +55,13 @@ public class Reproduction {
 
     /* -------------------------------MECHANICS------------------------------- */
 
-    public static boolean ReproductionProcess(World world, Animal animal1, Animal animal2, Genes genes) {
+    public static void ReproductionProcess(World world, Animal animal1, Animal animal2, Genes genes) {
         //funkcja sprawdza podstawowe warunki, by stwierdzić, czy może dojść do reprodukcji
         // PŁEĆ I GATUNEK
-        if (animal2 == null) {return false;} // brak partnera/partnerki
-        if (!animal1.getClass().equals(animal2.getClass())) {return false;} // ten sam gatunek
-        if (animal1.getGender() == animal2.getGender()) {return false;} // ta sama płeć
-        if (animal1.getId() == animal2.getId()) {return false;}
+        if (animal2 == null) {return;} // brak partnera/partnerki
+        if (!animal1.getClass().equals(animal2.getClass())) {return;} // ten sam gatunek
+        if (animal1.getGender() == animal2.getGender()) {return;} // ta sama płeć
+        if (animal1.getId() == animal2.getId()) {return;}
 
         Animal female; // kobietka
         if (animal1.getGender() == Gender.FEMALE) {
@@ -78,13 +78,13 @@ public class Reproduction {
         }
 
         // DYSTANS - odległość dwóch organizmów
-        if(!isDistanceOne(animal1, animal2)) {return false;}
+        if(!isDistanceOne(animal1, animal2)) {return;}
 
         // Bezpieczna strefa
-        if (!isAreaSafe(world, animal1, genes) || !isAreaSafe(world, animal2, genes)) {return false;}
+        if (!isAreaSafe(world, animal1, genes) || !isAreaSafe(world, animal2, genes)) {return;}
 
         //CZY SPEŁNIAJĄ WARUNKI
-        if (!IsReady(female) || !IsReady(male)) {return false;} //odpowiedni wiek, poziom energii, status życia i status ciąży (TAK LUB NIE)
+        if (!IsReady(female) || !IsReady(male)) {return;} //odpowiedni wiek, poziom energii, status życia i status ciąży (TAK LUB NIE)
 
         // SPADEK ENERGII W ZWIĄZKU Z ZAPŁODNIENIEM
         int energy_loss_male = 5;
@@ -99,7 +99,6 @@ public class Reproduction {
         female.setPregnancyCounter(PREGNANCY_DURATION);
 
         SimulationStatsManager.writeToFile(female.getName() + "," + female.getId() + ",get pregnant with," + male.getName() + "," + male.getId() + "\n");
-        return true;
     }
 
     /* -------------------------------PREGNANCY------------------------------- */
@@ -118,11 +117,11 @@ public class Reproduction {
 
     /* -------------------------------BIRTH------------------------------- */
 
-    public static boolean spawnBaby(World world, Animal mother, Animal father) {
+    public static void spawnBaby(World world, Animal mother, Animal father) {
         // funkcja dodaje jajko, z którego przy zadanym czasie (u nas po 5 turach) wykluje się z niego młody organizm
         // logika niezbyt spójna z faktami, ale dla wizualizacji przyjęłyśmy, że tak jest
         Coord spawn = findFreeTile(world, mother.getPosition());
-        if (spawn == null) {return false;} // idk, nie zrespi się
+        if (spawn == null) {return;} // idk, nie zrespi się
 
         Genes genes = Genes.inherit(mother.getGenes(), father.getGenes());
         Egg egg = new Egg(spawn, genes, 5); // 5 tur
@@ -130,7 +129,6 @@ public class Reproduction {
         egg.setName(mother.getName());
         world.addEgg(egg);
         SimulationStatsManager.writeToFile(egg.getName() + "," + egg.getId() + ",was born\n");
-        return true;
     }
 
     /* -------------------------------SAFE SPACE------------------------------- */
