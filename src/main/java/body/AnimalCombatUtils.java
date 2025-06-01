@@ -1,6 +1,7 @@
 package body;
 
 import map.*;
+import ocean.SimulationStatsManager;
 import ocean.World;
 import ocean.WorldSearch;
 
@@ -50,12 +51,7 @@ public class AnimalCombatUtils {
             if (world.inBounds(escapePos.x, escapePos.y) && !world.isOccupied(escapePos)) {
                 animal.setPosition(escapePos);
             } else {
-                Coord randomEscapePos = pos.randomAdjacent(world.getWidth(), world.getHeight(), animal.getGenes().getSpeed(), world);
-                if (randomEscapePos == null) { //jeśli zwróciło null czyli nie ma już miejcsc
-                    world.endSimulation(); //kończy symulację
-                    return;
-                }
-                animal.setPosition(randomEscapePos);
+                randomMove(world, animal);
             }
         }
     }
@@ -65,6 +61,7 @@ public class AnimalCombatUtils {
         Coord newPos = animal.getPosition().randomAdjacent(world.getWidth(), world.getHeight(), animal.getGenes().getSpeed(), world); //generuje nową losową pozycję sąsiednią
         if (newPos == null) { //jeśli zwróciło null czyli nie ma już miejcsc
             world.endSimulation(); //kończy symulację
+            SimulationStatsManager.writeToFile("\nnotification,Simulation ended because map is full\n");
             return;
         }
         animal.setPosition(newPos); //ustawia pozycję
