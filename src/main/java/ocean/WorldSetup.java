@@ -145,7 +145,7 @@ public class WorldSetup {
 
     //losowo rozmieszcza jedzenie
     static void spawnFood(World world, int noFood) {
-        int maxNoFood = Math.min(noFood, world.getHeight()*world.getWidth()); //jeśli count jest wiecej niz pól dodaje ile może
+        int maxNoFood = Math.min(noFood, world.getHeight() * world.getWidth()); //jeśli count jest wiecej niz pól dodaje ile może
         int added = 0; //ile pomyślnie dodano
 
         for (int i = 0; i < maxNoFood; i++) {

@@ -63,10 +63,8 @@ public class World {
         }
 
         //sprawdzenie czy ktoś jeszzcze zyje
-        System.out.println("Animal count: " + animals.size());
         boolean anyoneAlive = false;
         for (Animal animal : animals) {
-            System.out.println(animal.getName() + animal.getId() + " alive? " + animal.isAlive());
             if (animal.isAlive()) {
                 anyoneAlive = true; //jeśli chociaz 1 żyje do symulacja trwa
                 break;
