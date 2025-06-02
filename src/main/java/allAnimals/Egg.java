@@ -33,7 +33,7 @@ public class Egg extends Animal {
         if (hatching == 0) {
             Animal baby = giveBirth(getPosition(), mother, mother.getFatherDuringPregnancy());
             world.addObject(baby);
-            world.removeObject(this);
+            this.die(world);
         }
     }
 

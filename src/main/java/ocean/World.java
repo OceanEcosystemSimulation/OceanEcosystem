@@ -41,21 +41,6 @@ public class World {
 
     //główna symulacja świata - w każdym cyklu aktualizuje zwierzęta - dead alive
     public void runSimulation(int tick) {
-        //sprawdzenie czy ktoś jeszzcze zyje
-        System.out.println("Animal count: " + animals.size());
-        boolean anyoneAlive = false;
-        for (Animal animal : animals) {
-            System.out.println(animal.getName() + animal.getId() + " alive? " + animal.isAlive());
-            if (animal.isAlive()) {
-                anyoneAlive = true; //jeśli chociaz 1 żyje do symulacja trwa
-                break;
-            }
-        }
-        if (!anyoneAlive) { //jeśli nie to się kończy
-            endSimulation();
-            SimulationStatsManager.writeToFile("notification,Simulation ended because all animals are dead\n");
-        }
-
         addTralaleroTralala(); // próbuje dodac tralalero ale rarity to 1%, więc co tick
         List<WorldObject> currentObjects = new ArrayList<>(objects); //tworzenie kopii by nie aktualizować m.in. dopiero co urodzonych
         Coord.allAtempts = 0;
@@ -74,6 +59,21 @@ public class World {
                 SimulationStatsManager.writeToFile(animal.getName() + "," + animal.getId() + ",is dead\n");
                 removeObject(animal); //usuwa je
             }
+        }
+
+        //sprawdzenie czy ktoś jeszzcze zyje
+        System.out.println("Animal count: " + animals.size());
+        boolean anyoneAlive = false;
+        for (Animal animal : animals) {
+            System.out.println(animal.getName() + animal.getId() + " alive? " + animal.isAlive());
+            if (animal.isAlive()) {
+                anyoneAlive = true; //jeśli chociaz 1 żyje do symulacja trwa
+                break;
+            }
+        }
+        if (!anyoneAlive) { //jeśli nie to się kończy
+            endSimulation();
+            SimulationStatsManager.writeToFile("notification,Simulation ended because all animals are dead\n");
         }
     }
 
