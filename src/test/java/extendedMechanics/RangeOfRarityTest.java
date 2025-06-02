@@ -1,16 +1,24 @@
 package extendedMechanics;
 
 import static org.junit.jupiter.api.Assertions.*;
+
+import ocean.World;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
-
-//TODO: zmienić wartości procentowe na końcu jak się ogarnie co i jak
 
 class RangeOfRarityTest {
+
+    @BeforeEach
+    void setup() {
+        World.random = new Random();
+    }
+
 
     @Test
     void testRandomRarityGeneration() { //czy zwraca dobre wartości
@@ -42,8 +50,8 @@ class RangeOfRarityTest {
 
         //porównywanie z oczekiwanymi wartościami (błąd +/- deviation)
         assertEquals(0.04, mythic, deviation);
-        assertEquals(0.15, superRare, deviation);
-        assertEquals(0.80, rare, deviation);
+        assertEquals(0.11, superRare, deviation);
+        assertEquals(0.84, rare, deviation);
     }
 }
 

@@ -1,11 +1,21 @@
 package extendedMechanics;
 
 import static org.junit.jupiter.api.Assertions.*;
+
+import ocean.World;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
+import java.util.Random;
 
 class DrawningAnimalsByTheirRarityTest {
+
+    @BeforeEach
+    void setup() {
+        World.random = new Random();
+    }
+
 
     @Test
     void testRareRarity() {
