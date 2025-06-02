@@ -43,7 +43,7 @@ class SimulationThread extends Thread {
 
         //wyświetlenie statystyk końcowych
         Platform.runLater(() -> {
-            SimulationStatsManager.showEndStats(mainInstance.world, statsLabel, actualTick-1);
+            SimulationStatsManager.showEndStats(mainInstance.world, statsLabel, actualTick);
         });
     }
 }
