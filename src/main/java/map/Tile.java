@@ -7,7 +7,7 @@ public class Tile {
     //encapsulation
     private final int x, y; //współrzędne
     private MapType mapType; //typ pola
-    private FoodType foodType = FoodType.NONE; //typ jedzenia, domyślnie brak jedzenia //composition
+    private FoodType foodType = FoodType.NONE; //typ jedzenia, domyślnie brak jedzenia  //composition
 
     public Tile(int x, int y, MapType mapType) {
         this.x = x;

@@ -13,10 +13,10 @@ import static ocean.WorldSetup.*;
 public class World {
     //encapsulation (poza map size)
     private final int width, height; //powirzchnia mapy
-    private Tile[][] grid; //siatka - różne typy mapy i objekty
+    private Tile[][] grid; //siatka - różne typy mapy i objekty   //composition
     private final List<Animal> animals = new ArrayList<>(); //lista zwierząt na świecie
-    private final List<WorldObject> objects = new ArrayList<>(); //lista objektów na świecie aka wszystko co jest
-    private final List<Coord> coralReefCenter = new ArrayList<>(); // przechowuje współrzędne środka rafy koralowej
+    private final List<WorldObject> objects = new ArrayList<>(); //lista objektów na świecie aka wszystko co jest   //aggregation
+    private final List<Coord> coralReefCenter = new ArrayList<>(); // przechowuje współrzędne środka rafy koralowej   //aggregation
     public static int minMapSize; //trzyma jaki jest najmniejszy wymiar mapy
 
     private int eatenFoodCounter = 0; //do liczenia ile jedzenia zostało zjedzone od ostatnego uzupełnienia   //encapsulation
