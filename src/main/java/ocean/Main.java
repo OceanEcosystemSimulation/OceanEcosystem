@@ -25,7 +25,8 @@ import soundEffects.SoundPlayerLoop;
 
 public class Main extends Application {
     private static int tileSize; //piksele
-    static int width, height, noFood, noCoral, noAnimals, noTicks, seed; //parametry wejsciowe
+    static int width, height, noFood, noCoral, noAnimals, noTicks; //parametry wejsciowe
+    static long seed;
 
     public World world; //deklaracja objektu world
     private Rectangle[][] tilesTab; //tablica kafelków
@@ -60,7 +61,12 @@ public class Main extends Application {
         noCoral = config.getOrDefault("noCoral", 0);
         noAnimals = config.getOrDefault("noAnimals", 0);
         noTicks = config.getOrDefault("ticks", 0);
-        seed = config.getOrDefault("seed", 0); //idk jak defaultowo się to bierze, co dać najlepiej - 0 będzie chyba zawsze taka sama
+
+        if (config.containsKey("seed")) {
+            seed = (long) config.get("seed");
+        } else {
+            seed = System.currentTimeMillis();
+        }
 
         World.random = new Random(seed);
 

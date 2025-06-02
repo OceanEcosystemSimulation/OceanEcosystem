@@ -1,5 +1,7 @@
 package extendedMechanics;
 
+import ocean.World;
+
 import java.util.*;
 
 // funkcja, która losuje zwierzęta, które należą do tej samej klasy rzadkości
@@ -16,7 +18,7 @@ public class DrawningAnimalsByTheirRarity implements IAnimalDrawer {
     @Override
     public String drawnAnimalByRarity(Rarity rarity) {
         List<String> animalsList = rarityDrawning.get(rarity);
-        int index = (int)(Math.random() * animalsList.size()); //losowanie indeksu    // - jest taki, że nie będzie można w przyszłości powtórzyć losowania,
+        int index = World.random.nextInt(animalsList.size()); //losowanie indeksu    // - jest taki, że nie będzie można w przyszłości powtórzyć losowania,
         return animalsList.get(index); //zwracanie zwierzęcia                        // bo za każdym razem powinno być coś innego (ew. do zmiany)
 
     }
