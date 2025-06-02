@@ -44,7 +44,7 @@ public abstract class Animal extends WorldObject {
     }
 
 
-    //polymorphism - this method is overridden in animals and its body is added specifically for each animal
+    //polymorphism (in animals) - this method is overridden in animals and its body is added specifically for each animal
     public abstract Animal giveBirth(Coord pos, Animal parent1, Animal parent2);
 
 
@@ -62,6 +62,7 @@ public abstract class Animal extends WorldObject {
 
     /* -------------------------------ZATRUCIE OD OCEANIC PUFFER------------------------------- */
 
+    //encapsulation
     private int poisonTicks = 0; // ile tur efekt zatrucia ma się utrzymywać na rybce
 
     public int getPoisonTicks() {return poisonTicks;}
@@ -70,6 +71,7 @@ public abstract class Animal extends WorldObject {
 
     /* -------------------------------INK------------------------------- */
 
+    //encapsulation
     private int slowCounter = 0;  //ile tur efekt spowolnienia ma się utrzymywać na rybce
 
     public int getSlowCounter() {return slowCounter;}

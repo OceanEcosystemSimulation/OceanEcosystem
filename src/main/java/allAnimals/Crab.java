@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Objects;
 
 
-//Crab - inherits (dziedziczy) from Omnivorous - omnivore
+//Crab - inherits (dziedziczy) from Omnivorous
 public class Crab extends Omnivorous {
     public Crab(Coord position) {
         super(position, generateGenes());
@@ -49,7 +49,7 @@ public class Crab extends Omnivorous {
 
 
     @Override
-    public void update(World world) {
+    public void update(World world) { //polymorphism
         processLifeCycle(world);
         updateCrabGraphics();
         if (!isAlive()) { return; }
@@ -67,7 +67,7 @@ public class Crab extends Omnivorous {
 
     //gain ile dostaje za okreslone roslinki
     @Override
-    public void eat(Tile tile, World world) {
+    public void eat(Tile tile, World world) {  //polymorphism
         int gain = switch (tile.getFoodType()) {
             case ALGAE -> 10;
             case PLANKTON -> 8;
@@ -89,7 +89,7 @@ public class Crab extends Omnivorous {
 
     //ile otrzyma za zjedzenie
     @Override
-    public int calculateGain(Animal animal) {
+    public int calculateGain(Animal animal) {  //polymorphism
         return switch (animal.getName()) {
             case "Nemo" -> 20;
             default -> 5;

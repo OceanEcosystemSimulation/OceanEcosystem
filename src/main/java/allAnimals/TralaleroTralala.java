@@ -16,6 +16,7 @@ import java.awt.*;
 import java.util.List;
 import java.util.Objects;
 
+//inheritance from Animal
 public class TralaleroTralala extends Animal {
     public TralaleroTralala(Coord position) {
         super(position, generateGenes());
@@ -34,7 +35,7 @@ public class TralaleroTralala extends Animal {
     }
 
 
-    public void update(World world) {
+    public void update(World world) {  //polymorphism
         this.setAge(this.getAge() + 1);
 
         if (this.getAge() >= this.getGenes().getMaxAge()) {
@@ -67,7 +68,7 @@ public class TralaleroTralala extends Animal {
     }
 
     @Override
-    public Animal giveBirth(Coord pos, Animal parent1, Animal parent2) { return null; }
+    public Animal giveBirth(Coord pos, Animal parent1, Animal parent2) { return null; }  //polymorphism
 
 
 

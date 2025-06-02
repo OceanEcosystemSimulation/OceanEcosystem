@@ -12,8 +12,9 @@ import java.awt.*;
 import java.util.List;
 import java.util.Objects;
 
-
+//inheritance from Carnivorous
 public class Octopus extends Carnivorous {
+    //encapsulation
     private int inkCooldown = 0; //ile tur zostało do odnowienia chmurki
 
     public Octopus(Coord position) {
@@ -77,7 +78,7 @@ public class Octopus extends Carnivorous {
     /* -------------------------------LIFE------------------------------- */
 
     @Override
-    public void update(World world) {
+    public void update(World world) {  //polymorphism
         if(inkCooldown>0) {
             inkCooldown--;
         }
@@ -95,7 +96,7 @@ public class Octopus extends Carnivorous {
 
 
     @Override
-    public Animal giveBirth(Coord position, Animal parent1, Animal parent2) {
+    public Animal giveBirth(Coord position, Animal parent1, Animal parent2) {  //polymorphism
         return new Octopus(position, parent1, parent2);
     }
 
@@ -112,7 +113,7 @@ public class Octopus extends Carnivorous {
 
 
     @Override
-    public int calculateGain(Animal animal) {
+    public int calculateGain(Animal animal) {  //polymorphism
         return switch (animal.getName()) {
             case "Nemo" -> 30;
             case "Shark" -> 60;

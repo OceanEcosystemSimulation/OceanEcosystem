@@ -9,7 +9,7 @@ import ocean.WorldSearch;
 
 import static body.AnimalCombatUtils.randomMove;
 
-
+//abstract class; inheritance from Animal and implements interfaces IFight, IMove, IMate
 public abstract class Carnivorous extends Animal implements IFight, IMove, IMate {
     public Carnivorous(Coord position, Genes genes) {
         super(position, genes);
@@ -22,7 +22,7 @@ public abstract class Carnivorous extends Animal implements IFight, IMove, IMate
 
     //mechanika ruchu
     @Override
-    public void move(World world) {
+    public void move(World world) {  //polymorphism
         if (getFoodLevel() < 70) {
             Coord preyPos = WorldSearch.nearestPrey(world, getPosition(), getGenes().getSpeed(), this); //szuka ofiary najblizszej
             if (preyPos != null) {
@@ -42,7 +42,7 @@ public abstract class Carnivorous extends Animal implements IFight, IMove, IMate
 
 
     //machanika ataku
-    public boolean attack(Animal prey, World world) {
+    public boolean attack(Animal prey, World world) {  //implementation
         double attackerSpeed = AnimalCombatUtils.getEffectiveSpeed(this); //predator speed
         double preySpeed = AnimalCombatUtils.getEffectiveSpeed(prey); //prey speed
 
@@ -85,7 +85,7 @@ public abstract class Carnivorous extends Animal implements IFight, IMove, IMate
 
 
     @Override
-    public void tryToMate(World world) {
+    public void tryToMate(World world) {  //implementation
         int range = this.getGenes().getSpeed();
         Animal mate = WorldSearch.nearestMate(world, this.getPosition(), range, this);
         if (mate != null) {

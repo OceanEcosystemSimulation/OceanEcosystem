@@ -14,7 +14,7 @@ import javafx.scene.image.ImageView;
 import java.awt.*;
 import java.util.Objects;
 
-
+//inheritance from Herbivorous
 public class Whale extends Herbivorous {
     public Whale(Coord position) {
         super(position, generateGenes());
@@ -41,10 +41,9 @@ public class Whale extends Herbivorous {
     }
 
 
-    /* -------------------------------LIFE------------------------------- */
-
-    public void update(World world) {
-        processLifeCycle(world); //duperele o życiu
+    @Override
+    public void update(World world) {  //polymorphism
+        processLifeCycle(world);
         updateWhaleGraphics();
         if (!isAlive()) { return; }
 
@@ -57,13 +56,13 @@ public class Whale extends Herbivorous {
 
 
     @Override
-    public Animal giveBirth(Coord position, Animal parent1, Animal parent2) {
+    public Animal giveBirth(Coord position, Animal parent1, Animal parent2) {  //polymorphism
         return new Whale(position, parent1, parent2);
     }
 
 
     @Override
-    public void eat(Tile tile, World world) {
+    public void eat(Tile tile, World world) {  //polymorphism
         int gain = switch (tile.getFoodType()) {
             case PLANKTON -> 10;
             case ALGAE -> 15;

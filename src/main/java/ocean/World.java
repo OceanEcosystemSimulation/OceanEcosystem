@@ -11,6 +11,7 @@ import java.util.*;
 import static ocean.WorldSetup.*;
 
 public class World {
+    //encapsulation (poza map size)
     private final int width, height; //powirzchnia mapy
     private Tile[][] grid; //siatka - różne typy mapy i objekty
     private final List<Animal> animals = new ArrayList<>(); //lista zwierząt na świecie
@@ -18,10 +19,10 @@ public class World {
     private final List<Coord> coralReefCenter = new ArrayList<>(); // przechowuje współrzędne środka rafy koralowej
     public static int minMapSize; //trzyma jaki jest najmniejszy wymiar mapy
 
-    private int eatenFoodCounter = 0; //do liczenia ile jedzenia zostało zjedzone od ostatnego uzupełnienia
+    private int eatenFoodCounter = 0; //do liczenia ile jedzenia zostało zjedzone od ostatnego uzupełnienia   //encapsulation
     public int totalEatenFood = 0; //całe zjedzone jedzenie w od początku symulacji
     public int deadAnimalCounter = 0; //ile zwierzat umarło od poczatku symulacji
-    private boolean simulationEnded = false; //czy symulacja zakończona (do wymuszenia końca)
+    private boolean simulationEnded = false; //czy symulacja zakończona (do wymuszenia końca)   //encapsulation
 
     public static Random random;
 
@@ -85,7 +86,7 @@ public class World {
 
 
 
-    private boolean tralaleroSpawned = false;
+    private boolean tralaleroSpawned = false;  //encapsulation
 
     private void addTralaleroTralala() {
         if (!tralaleroSpawned && random.nextInt(1000) == 0) { // 0.1% szans

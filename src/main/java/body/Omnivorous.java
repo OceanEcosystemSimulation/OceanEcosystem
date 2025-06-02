@@ -9,7 +9,7 @@ import ocean.WorldSearch;
 
 import static body.AnimalCombatUtils.randomMove;
 
-
+//abstract class; inheritance from Animal and implements interfaces IEat, IFight, IMove, IMate
 public abstract class Omnivorous extends Animal implements IEat, IFight, IMate, IMove {
     public Omnivorous(Coord position, Genes genes) {
         super(position, genes);
@@ -20,14 +20,14 @@ public abstract class Omnivorous extends Animal implements IEat, IFight, IMate, 
     }
 
     @Override
-    public boolean canEat(Tile tile) {
+    public boolean canEat(Tile tile) {  //polymorphism
         return getFoodLevel() <= 70 &&
                 (tile.getFoodType() == FoodType.ALGAE || tile.getFoodType() == FoodType.PLANKTON);
     }
 
     //mechanika ruchu
     @Override
-    public void move(World world) {
+    public void move(World world) {  //polymorphism
         if (getFoodLevel() < 70) {
             //szuka ofiary
             Coord preyPos = WorldSearch.nearestPrey(world, getPosition(), getGenes().getSpeed(), this);
@@ -55,7 +55,7 @@ public abstract class Omnivorous extends Animal implements IEat, IFight, IMate, 
 
     //mechanika ataku
     @Override
-    public boolean attack(Animal prey, World world) {
+    public boolean attack(Animal prey, World world) {  //implementation
         double attackerSpeed = AnimalCombatUtils.getEffectiveSpeed(this);
         double preySpeed = AnimalCombatUtils.getEffectiveSpeed(prey);
 
@@ -97,7 +97,7 @@ public abstract class Omnivorous extends Animal implements IEat, IFight, IMate, 
 
 
     @Override
-    public void tryToMate(World world) {
+    public void tryToMate(World world) {  //implementation
         int range = this.getGenes().getSpeed();
         Animal mate = WorldSearch.nearestMate(world, this.getPosition(), range, this);
         if (mate != null) {

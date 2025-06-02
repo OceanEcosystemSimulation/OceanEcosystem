@@ -14,7 +14,7 @@ import javafx.scene.image.ImageView;
 import java.awt.*;
 import java.util.Objects;
 
-
+//inheritance from Herbivorous
 public class Nemo extends Herbivorous {
     public Nemo(Coord position) {
         super(position, generateGenes());
@@ -30,10 +30,6 @@ public class Nemo extends Herbivorous {
     }
 
 
-    /* -------------------------------GENES------------------------------- */
-
-    //do tworzenia genów w nowych - zakresy w losowych wartościah do zmiany
-    //nie może potrzebować objektu by dzialac bo to ma tworzyć konstruktor (objekt) a nie byc uzywanym przez niego wiec static
     private static Genes generateGenes() {
         Genes genes = new Genes();
         genes.setStrength(Genes.mutate(10));
@@ -47,8 +43,8 @@ public class Nemo extends Herbivorous {
 
     /* -------------------------------LIFE------------------------------- */
 
-    public void update(World world) {
-        processLifeCycle(world); //duperele o życiu
+    public void update(World world) {  //polymorphism
+        processLifeCycle(world);
         updateNemoGraphics();
         if (!isAlive()) { return; }
 
@@ -61,22 +57,20 @@ public class Nemo extends Herbivorous {
 
 
     @Override
-    public Animal giveBirth(Coord position, Animal parent1, Animal parent2) {
+    public Animal giveBirth(Coord position, Animal parent1, Animal parent2) {  //polymorphism
         return new Nemo(position, parent1, parent2);
     }
 
 
-    /* -------------------------------EATING------------------------------- */
 
-    //zjada o ile nie byłoby ponad 100 napchane
     @Override
-    public void eat(Tile tile, World world) { //przykładowe jak pisać
+    public void eat(Tile tile, World world) {
         int gain = switch (tile.getFoodType()) {
             case PLANKTON -> 10;
             case ALGAE -> 15;
             default -> 0; //NONE
         };
-        if (getFoodLevel()+gain <= 100){
+        if (getFoodLevel()+gain <= 100){     //zjada o ile nie byłoby ponad 100 napchane
             setFoodLevel(getFoodLevel() + gain); //je
             SimulationStatsManager.writeToFile(this.getName() + "," + this.getId() + ",eats,,," + tile.getFoodType() + "\n");
             tile.clearFood(world);

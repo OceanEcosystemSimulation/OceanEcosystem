@@ -10,6 +10,7 @@ import javafx.scene.shape.Rectangle;
 import java.net.URL;
 
 public class SimulationDisplayManager {
+    //encapsulation
     private final int width, height, tileSize;
     private GridPane grid;
     private Rectangle[][] tilesTab;

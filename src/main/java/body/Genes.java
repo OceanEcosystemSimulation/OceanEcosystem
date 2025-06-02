@@ -4,6 +4,7 @@ import ocean.World;
 
 //geny i ich mechanika
 public class Genes {
+    //encapsulation
     private int strength;
     private int speed; //wartości X kratek - zależy od tego ile się przesuwa/widzi
     private int maxAge;

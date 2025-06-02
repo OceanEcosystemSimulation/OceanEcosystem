@@ -12,7 +12,7 @@ import java.awt.*;
 import java.util.List;
 import java.util.Objects;
 
-
+//inheritance from Carnivorous
 public class Shark extends Carnivorous {
     public Shark(Coord position) {
         super(position, generateGenes());
@@ -44,7 +44,7 @@ public class Shark extends Carnivorous {
     /* -------------------------------LIFE------------------------------- */
 
     @Override
-    public void update(World world) {
+    public void update(World world) {  //polymorphism
         processLifeCycle(world);
         updateSharkGraphics();
         if (!isAlive()) { return; }
@@ -58,7 +58,7 @@ public class Shark extends Carnivorous {
 
 
     @Override
-    public Animal giveBirth(Coord position, Animal parent1, Animal parent2) {
+    public Animal giveBirth(Coord position, Animal parent1, Animal parent2) {  //polymorphism
         return new Shark(position, parent1, parent2);
     }
 
@@ -73,7 +73,7 @@ public class Shark extends Carnivorous {
 
 
     @Override
-    public int calculateGain(Animal animal) {
+    public int calculateGain(Animal animal) {  //polymorphism
         return switch (animal.getName()) {
             case "Nemo" -> 30;
             default -> 0;

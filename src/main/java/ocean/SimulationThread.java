@@ -5,6 +5,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 
 class SimulationThread extends Thread {
+    //encapsulation
     private final Main mainInstance; //instancja main <-> przechowuje referencje do main bo potrzeba jej parametrów
     private final Label statsLabel;
     private final Slider speedSlider;

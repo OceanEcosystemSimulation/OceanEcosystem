@@ -13,6 +13,7 @@ import java.awt.*;
 import java.util.List;
 import java.util.Objects;
 
+//inheritance from Omnivorous
 public class Turtle extends Omnivorous {
     public Turtle(Coord position) {
         super(position, generateGenes());
@@ -40,13 +41,13 @@ public class Turtle extends Omnivorous {
 
 
     @Override
-    public Animal giveBirth(Coord position, Animal parent1, Animal parent2) {
+    public Animal giveBirth(Coord position, Animal parent1, Animal parent2) {  //polymorphism
         return new Turtle(position, parent1, parent2);
     }
 
 
     @Override
-    public void update(World world) {
+    public void update(World world) {  //polymorphism
         processLifeCycle(world);
         updateTurtleGraphics();
         if (!isAlive()) { return; }
@@ -65,7 +66,7 @@ public class Turtle extends Omnivorous {
 
 
     @Override
-    public void eat(Tile tile, World world) {
+    public void eat(Tile tile, World world) {  //polymorphism
         int gain = switch (tile.getFoodType()) {
             case ALGAE -> 15;
             case PLANKTON -> 10;
@@ -86,7 +87,7 @@ public class Turtle extends Omnivorous {
 
 
     @Override
-    public int calculateGain(Animal animal) {
+    public int calculateGain(Animal animal) {  //polymorphism
         return switch (animal.getName()) {
             case "Octopus" -> 30;
             case "Crab" -> 20;

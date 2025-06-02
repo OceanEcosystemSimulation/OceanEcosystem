@@ -4,6 +4,7 @@ import body.Animal;
 import ocean.World;
 
 import java.util.List;
+
 // fight - interface
 public interface IFight {
     boolean canAttack(Animal other);

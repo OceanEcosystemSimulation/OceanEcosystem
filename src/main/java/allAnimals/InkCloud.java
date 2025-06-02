@@ -12,7 +12,9 @@ import ocean.World;
 import java.awt.*;
 import java.util.Objects;
 
+//inheritance from WorldObject
 public class InkCloud extends WorldObject {
+    //encapsulation
     private int remainingTime = 2; //znika po 2 turach
     private final Animal target;
 
@@ -28,7 +30,7 @@ public class InkCloud extends WorldObject {
 
 
     @Override
-    public void update(World world) {
+    public void update(World world) {  //polymorphism
         remainingTime--;
         if (remainingTime <= 0 || !target.isAlive()) {
             //efekt znika – przywraca ruch

@@ -13,7 +13,7 @@ import java.awt.*;
 import java.util.List;
 import java.util.Objects;
 
-
+//inheritance from Carnivorous
 public class Seal extends Carnivorous {
     public Seal(Coord position) {
         super(position, generateGenes());
@@ -40,7 +40,7 @@ public class Seal extends Carnivorous {
 
 
     @Override
-    public void update(World world) {
+    public void update(World world) {  //polymorphism
         processLifeCycle(world);
         scareNearbySharks(world);
         updateSealGraphics();
@@ -55,7 +55,7 @@ public class Seal extends Carnivorous {
 
 
     @Override
-    public Animal giveBirth(Coord position, Animal parent1, Animal parent2) {
+    public Animal giveBirth(Coord position, Animal parent1, Animal parent2) {  //polymorphism
         return new Seal(position, parent1, parent2);
     }
 
@@ -71,7 +71,7 @@ public class Seal extends Carnivorous {
 
 
     @Override
-    public int calculateGain(Animal animal) {
+    public int calculateGain(Animal animal) {  //polymorphism
         return switch (animal.getName()) {
             case "Nemo" -> 15;
             case "Crab" -> 20;

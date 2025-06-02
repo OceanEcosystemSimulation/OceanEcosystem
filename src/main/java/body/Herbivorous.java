@@ -8,8 +8,7 @@ import ocean.WorldSearch;
 
 import static body.AnimalCombatUtils.randomMove;
 
-//abstract class inheriting from Animal, which is further inherited by specific animal species
-//interface implementation – enforces this class (or its descendants) to implement the methods contained in these interfaces
+//abstract class; inheritance from Animal and implements interfaces IEat, IMove, IMate
 public abstract class Herbivorous extends Animal implements IEat, IMove, IMate {
     public Herbivorous(Coord position, Genes genes) {
         super(position, genes);
@@ -21,14 +20,14 @@ public abstract class Herbivorous extends Animal implements IEat, IMove, IMate {
 
 
     @Override
-    public boolean canEat(Tile tile) { //co mogą jeść
-        return tile.getFoodType() == FoodType.PLANKTON || tile.getFoodType() == FoodType.ALGAE;
+    public boolean canEat(Tile tile) {  //polymorphism
+        return tile.getFoodType() == FoodType.PLANKTON || tile.getFoodType() == FoodType.ALGAE;  //co mogą jeść
     }
 
 
     //mechanika ruchu
     @Override
-    public void move(World world) {
+    public void move(World world) {  //polymorphism
         if (getFoodLevel() < 70) {
             Tile foodTile = WorldSearch.nearestFood(world, getPosition(), getGenes().getSpeed()); //szuka najbliższe jedzenie
             if (foodTile != null) {
@@ -44,7 +43,7 @@ public abstract class Herbivorous extends Animal implements IEat, IMove, IMate {
 
 
     @Override
-    public void tryToMate(World world) {
+    public void tryToMate(World world) { //implementation
         int range = this.getGenes().getSpeed();
         Animal mate = WorldSearch.nearestMate(world, this.getPosition(), range, this);
         if (mate != null) {

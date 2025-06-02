@@ -4,6 +4,7 @@ import ocean.World;
 
 //reprezentacja pól mapy
 public class Tile {
+    //encapsulation
     private final int x, y; //współrzędne
     private MapType mapType; //typ pola
     private FoodType foodType = FoodType.NONE; //typ jedzenia, domyślnie brak jedzenia //composition

@@ -13,6 +13,7 @@ import java.awt.*;
 import java.util.List;
 import java.util.Objects;
 
+//inheritance from Omnivorous
 public class OceanicPuffer extends Omnivorous {
     public OceanicPuffer(Coord position) {
         super(position, generateGenes());
@@ -40,12 +41,12 @@ public class OceanicPuffer extends Omnivorous {
 
 
     @Override
-    public Animal giveBirth(Coord position, Animal parent1, Animal parent2) {
+    public Animal giveBirth(Coord position, Animal parent1, Animal parent2) {  //polymorphism
         return new OceanicPuffer(position, parent1, parent2);
     }
 
     @Override
-    public void update(World world) {
+    public void update(World world) {  //polymorphism
         processLifeCycle(world);
         updatePufferGraphics();
         if (!isAlive()) { return; }
@@ -71,7 +72,7 @@ public class OceanicPuffer extends Omnivorous {
 
     //mechanika ataku
     @Override
-    public boolean attack(Animal target, World world) {
+    public boolean attack(Animal target, World world) {   //polymorphism
         double attackerPower = AnimalCombatUtils.getCombatPower(this);
         double targetPower = AnimalCombatUtils.getCombatPower(target);
 
@@ -89,7 +90,7 @@ public class OceanicPuffer extends Omnivorous {
 
     //okreslenie ile punktow jedzenia dostanie za zjedzenie przeciwnika
     @Override
-    public int calculateGain(Animal animal) {
+    public int calculateGain(Animal animal) {  //polymorphism
         return switch (animal.getName()) {
             case "Crab" -> 25;
             default -> 0;
@@ -98,7 +99,7 @@ public class OceanicPuffer extends Omnivorous {
 
 
     @Override
-    public void eat(Tile tile, World world) {
+    public void eat(Tile tile, World world) {  //polymorphism
         int gain = switch (tile.getFoodType()) {
             case PLANKTON -> 10;
             case ALGAE -> 15;
@@ -155,5 +156,4 @@ public class OceanicPuffer extends Omnivorous {
         imageView.setFitWidth(Main.getTileSize() * scale);
         imageView.setFitHeight(Main.getTileSize() * scale);
     }
-
 }

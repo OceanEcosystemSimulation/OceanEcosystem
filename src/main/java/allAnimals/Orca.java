@@ -15,8 +15,9 @@ import java.util.Objects;
 
 import static body.AnimalCombatUtils.randomMove;
 
-
+//inheritance from Carnivorous
 public class Orca extends Carnivorous {
+    //encapsulation
     private int boostTurns = 0;//przyspieszenie ile zostalo
     private int boostWaiting = 0; //odpoczynek po booscie
 
@@ -45,7 +46,7 @@ public class Orca extends Carnivorous {
 
 
     @Override
-    public void update(World world) {
+    public void update(World world) {  //polymorphism
         processLifeCycle(world);
         updateOrcaGraphics();
         if (!isAlive()) { return; }
@@ -59,7 +60,7 @@ public class Orca extends Carnivorous {
 
 
     @Override
-    public Animal giveBirth(Coord position, Animal parent1, Animal parent2) {
+    public Animal giveBirth(Coord position, Animal parent1, Animal parent2) {  //polymorphism
         return new Orca(position, parent1, parent2);
     }
 
@@ -75,7 +76,7 @@ public class Orca extends Carnivorous {
 
 
     @Override
-    public int calculateGain(Animal animal) {
+    public int calculateGain(Animal animal) {  //polymorphism
         return switch (animal.getName()) {
             case "Nemo" -> 30;
             case "Shark" -> 40;
@@ -86,7 +87,7 @@ public class Orca extends Carnivorous {
 
     //mechanika ruchu
     @Override
-    public void move(World world) {
+    public void move(World world) {  //polymorphism
         int speed = getGenes().getSpeed();
 
         boolean preyNearby = false;

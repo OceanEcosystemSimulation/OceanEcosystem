@@ -4,7 +4,9 @@ import javafx.scene.image.ImageView;
 import map.Coord;
 import ocean.World;
 
+//abstract class
 public abstract class WorldObject {
+    //encapsulation
     private Coord position; //aggregation
 
     public WorldObject(Coord position) {

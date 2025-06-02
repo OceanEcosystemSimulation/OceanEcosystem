@@ -86,6 +86,8 @@ public class WorldSetup {
         return tilesX * tilesY;
     }
 
+
+
     /* -------------------------------ZWIERZĘTA------------------------------- */
 
     //dodaje okreslona liczbe dowolnych (rarity) zwierząt do listy w losowych pozycjach
@@ -137,6 +139,8 @@ public class WorldSetup {
         };
     }
 
+
+
     /* -------------------------------JEDZENIE------------------------------- */
 
     //losowo rozmieszcza jedzenie
@@ -167,6 +171,8 @@ public class WorldSetup {
             SimulationStatsManager.writeToFile("\nnotification,Successfully added only " + added + " from " + noFood + " food\n");
         }
     }
+
+
 
     /* -------------------------------KOORDYNATY------------------------------- */
 

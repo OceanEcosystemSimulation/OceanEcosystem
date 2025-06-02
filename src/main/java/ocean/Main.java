@@ -24,13 +24,13 @@ import soundEffects.SoundPlayerLoop;
 
 
 public class Main extends Application {
-    private static int tileSize; //piksele
+    private static int tileSize; //piksele  //encapsulation
     static int width, height, noFood, noCoral, noAnimals, noTicks; //parametry wejsciowe
     static long seed;
 
     public World world; //deklaracja objektu world
-    private Rectangle[][] tilesTab; //tablica kafelków
-    private GridPane grid; //deklaracja grid
+    private Rectangle[][] tilesTab; //tablica kafelków   //encapsulation
+    private GridPane grid; //deklaracja grid   //encapsulation
 
     public static void main(String[] args) {
         SimulationStatsManager.writeToFile("\n\n>>> NEW SIMULATION BEGINS <<<\n\n"); //tak tylko by widzieć przy sprawdzaniu
@@ -85,9 +85,9 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        world = new World(width, height, noFood, noCoral, noAnimals);
+        world = new World(width, height, noFood, noCoral, noAnimals);  //composition
 
-        SimulationDisplayManager displayManager = new SimulationDisplayManager(width, height, tileSize);
+        SimulationDisplayManager displayManager = new SimulationDisplayManager(width, height, tileSize);  //composition
 
         displayManager.setupGrid();
 
@@ -106,7 +106,7 @@ public class Main extends Application {
         primaryStage.show();
 
         //uruchamianie osobnego wątku symulacji (w tle by działało gładko????) który co X ms wykonuje nowy cykl i odświeża interfejs
-        new SimulationThread(this, displayManager.getStatsLabel(), displayManager.getSpeedSlider()).start();
+        new SimulationThread(this, displayManager.getStatsLabel(), displayManager.getSpeedSlider()).start();   //composition
     }
 
 

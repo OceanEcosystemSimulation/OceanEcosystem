@@ -15,7 +15,7 @@ import java.awt.*;
 import java.util.Objects;
 
 
-
+//inheritance from Herbivorous
 public class Star extends Herbivorous {
     public Star(Coord position) {
         super(position, generateGenes());
@@ -44,7 +44,7 @@ public class Star extends Herbivorous {
 
     /* -------------------------------LIFE------------------------------- */
 
-    public void update(World world) {
+    public void update(World world) {  //polymorphism
         processLifeCycle(world);
         updateStarGraphics();
         if (!isAlive()) { return;}
@@ -58,16 +58,14 @@ public class Star extends Herbivorous {
 
 
     @Override
-    public Animal giveBirth(Coord position, Animal parent1, Animal parent2) {
+    public Animal giveBirth(Coord position, Animal parent1, Animal parent2) {  //polymorphism
         return new Star(position, parent1, parent2);
     }
 
 
-    /* -------------------------------EATING------------------------------- */
 
-    //zjada o ile nie byłoby ponad 100 napchane
     @Override
-    public void eat(Tile tile, World world) {
+    public void eat(Tile tile, World world) {  //polymorphism
         int gain = switch (tile.getFoodType()) {
             case PLANKTON -> 10;
             case ALGAE -> 15;

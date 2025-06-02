@@ -2,6 +2,7 @@ package body;
 
 import ocean.SimulationStatsManager;
 
+//obsługa efektów - poison/ink
 public class AnimalEffectsManager {
     //aktualizacja efektu poison
     static void applyPoisonEffect(Animal animal) {

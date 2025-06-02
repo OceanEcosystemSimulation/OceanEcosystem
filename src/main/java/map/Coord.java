@@ -7,7 +7,7 @@ import java.util.*;
 
 // reprezentacja współrzędnych
 public class Coord {
-    private int x, y;
+    private int x, y;  //encapsulation
     public static int allAtempts = 0;
 
     //inicjalizacja współrzędnych

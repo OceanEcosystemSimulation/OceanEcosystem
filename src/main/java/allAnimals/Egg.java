@@ -11,6 +11,7 @@ import ocean.World;
 import java.awt.*;
 import java.util.Objects;
 
+//inheritance from Animal
 public class Egg extends Animal {
     //encapsulation
     private int hatching;
@@ -28,7 +29,7 @@ public class Egg extends Animal {
     /* -------------------------------MECHANICS------------------------------- */
 
     @Override
-    public void update(World world) {
+    public void update(World world) {  //polymorphism
         hatching--;
         if (hatching == 0) {
             Animal baby = giveBirth(getPosition(), mother, mother.getFatherDuringPregnancy());

@@ -10,7 +10,9 @@ import ocean.World;
 import java.awt.*;
 import java.util.Objects;
 
+//inheritance from WorldObject
 public class Skeleton extends WorldObject {
+    //encapsulation
     private int decompositionTime = 5; // czas w turach, wyznaczający ile czasu będzie się wyświetlał szkielet
 
     /* -------------------------------KONSTUKTOR------------------------------- */
@@ -24,7 +26,8 @@ public class Skeleton extends WorldObject {
     /* -------------------------------MECHANIKA------------------------------- */
 
     @Override
-    public void update(World world) { // czas rozkładu szkieletu, co turę się zmniejsza, finalnie się usunie
+    public void update(World world) {   //polymorphism
+        // czas rozkładu szkieletu, co turę się zmniejsza, finalnie się usunie
         decompositionTime--; // dekrementacja
         if (decompositionTime == 0) {
             world.removeObject(this); // usunięcie szkieletu

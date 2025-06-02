@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Objects;
 
 
+//inheritance from Carnivorous
 public class Dolphin extends Carnivorous {
     public Dolphin(Coord position) {
         super(position, generateGenes());
@@ -45,7 +46,7 @@ public class Dolphin extends Carnivorous {
     /* -------------------------------LIFE------------------------------- */
 
     @Override
-    public void update(World world) {
+    public void update(World world) {  //polymorphism
         processLifeCycle(world);
         updateDolphinGraphics();
         AnimalEffectsManager.updateInkEffect(this);
@@ -61,7 +62,7 @@ public class Dolphin extends Carnivorous {
 
 
     @Override
-    public Animal giveBirth(Coord position, Animal parent1, Animal parent2) {
+    public Animal giveBirth(Coord position, Animal parent1, Animal parent2) {  //polymorphism
         return new Dolphin(position, parent1, parent2);
     }
 
@@ -76,7 +77,7 @@ public class Dolphin extends Carnivorous {
 
 
     @Override
-    public int calculateGain(Animal animal) {
+    public int calculateGain(Animal animal) {  //polymorphism
         return switch (animal.getName()) {
             case "Nemo" -> 30;
             case "Shark" -> 55;
@@ -88,7 +89,7 @@ public class Dolphin extends Carnivorous {
 
     /* -------------------------------MOVE------------------------------- */
 
-    private boolean stunned = false; //czy jest zatrzymany
+    private boolean stunned = false; //czy jest zatrzymany //encapsulation
 
     public boolean isStunned() {
         return stunned;
@@ -99,7 +100,7 @@ public class Dolphin extends Carnivorous {
     }
 
     @Override
-    public void move(World world) {
+    public void move(World world) {  //polymorphism
         if (isStunned()) {
             SimulationStatsManager.writeToFile("Dolphin," + getId() + ",is stunned and cannot move\n");
             return;

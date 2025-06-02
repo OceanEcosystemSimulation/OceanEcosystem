@@ -10,6 +10,7 @@ public enum FoodType {
     PLANKTON("/images/Plankton.png"), // grafika planktonu, by mógł być wyświetlany w GUI
     ALGAE("/images/Alga.png"); // grafika algi, by mogła być wyświetlana w GUI
 
+    //encapsulation
     private final Image FoodImage; // grafika jedzenia - przechowywanie
 
     // pętla eliminująca przypadek 'null' i dobierająca ścieżkę grafiki
@@ -27,10 +28,9 @@ public enum FoodType {
         }
     }
 
-    // getter
-    public Image getFoodImage() {
-        return FoodImage; // getter do grafiki
-    }
 
+    public Image getFoodImage() {
+        return FoodImage;
+    }
 }
 
