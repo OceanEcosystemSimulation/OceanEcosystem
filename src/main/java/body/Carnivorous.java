@@ -28,13 +28,6 @@ public abstract class Carnivorous extends Animal implements IFight, IMove, IMate
             if (preyPos != null) {
                 setPosition(preyPos); //skok do ofiary
                 return;
-            } else if (getFoodLevel() < 30) { //jeżeli nie ma ofiary i jest super głodny
-                Tile foodTile = WorldSearch.nearestFood(world, getPosition(), getGenes().getSpeed()); //szuka najbliższe jedzenie
-                if (foodTile != null) {
-                    Coord foodPos = new Coord(foodTile.getX(), foodTile.getY());
-                    setPosition(foodPos); //skok do jedzenia
-                    return;
-                }
             }
         }
         randomMove(world, this); //randomowo gdy nie głodny lub brak jedzenia i ofiary

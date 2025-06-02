@@ -25,33 +25,29 @@ public abstract class Omnivorous extends Animal implements IEat, IFight, IMate, 
                 (tile.getFoodType() == FoodType.ALGAE || tile.getFoodType() == FoodType.PLANKTON);
     }
 
+
     //mechanika ruchu
     @Override
     public void move(World world) {  //polymorphism
         if (getFoodLevel() < 70) {
-            //szuka ofiary
-            Coord preyPos = WorldSearch.nearestPrey(world, getPosition(), getGenes().getSpeed(), this);
+            Coord preyPos = WorldSearch.nearestPrey(world, getPosition(), getGenes().getSpeed(), this); //szuka ofiary najblizszej
             if (preyPos != null) {
-                setPosition(preyPos);
+                setPosition(preyPos); //skok do ofiary
                 return;
-            }
-
-            //jak nie ma w poblizu ofiary to szuka roslinek i poziom jedzenia jest nizszy niz 30
-            if (getFoodLevel() < 30) {
-                Tile foodTile = WorldSearch.nearestFood(world, getPosition(), getGenes().getSpeed());
+            } else if (getFoodLevel() < 30) { //jeżeli nie ma ofiary i jest super głodny
+                Tile foodTile = WorldSearch.nearestFood(world, getPosition(), getGenes().getSpeed()); //szuka najbliższe jedzenie
                 if (foodTile != null) {
                     Coord foodPos = new Coord(foodTile.getX(), foodTile.getY());
-                    if (!world.isOccupied(foodPos)) {
-                        setPosition(foodPos);
+                    if (!world.isOccupied(foodPos)) { //jeśli miejsce wolne
+                        setPosition(foodPos); //skok do jedzenia
                         return;
                     }
                 }
             }
         }
-
-        //nie potrzebuje jesc
-        randomMove(world, this);
+        randomMove(world, this); //randomowo gdy nie głodny lub brak jedzenia i ofiary
     }
+
 
     //mechanika ataku
     @Override
