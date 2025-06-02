@@ -10,7 +10,7 @@ import ocean.WorldSearch;
 import static body.AnimalCombatUtils.randomMove;
 
 
-public abstract class Omnivorous extends Animal implements IEat, IFight, IMate {
+public abstract class Omnivorous extends Animal implements IEat, IFight, IMate, IMove {
     public Omnivorous(Coord position, Genes genes) {
         super(position, genes);
     }
@@ -25,7 +25,7 @@ public abstract class Omnivorous extends Animal implements IEat, IFight, IMate {
                 (tile.getFoodType() == FoodType.ALGAE || tile.getFoodType() == FoodType.PLANKTON);
     }
 
-
+    @Override
     public void move(World world) {
         if (getFoodLevel() < 70) {
             //szuka ofiary
