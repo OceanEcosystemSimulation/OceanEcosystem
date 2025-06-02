@@ -84,21 +84,5 @@ public class SimulationStatsManager {
             e.printStackTrace();
         }
     }
-
-
-
-    /*   >> ŚCIĄGA DO PRINTÓW <<
-    a1_species,a1_id,action,a2_species,a2_id,addition
-
-    przykłady:
-
-    SimulationStatsManager.writeToFile(this.getName() + "," + this.getId() + ",eats,,," + tile.foodType + "\n");
-    SimulationStatsManager.writeToFile(this.getName() + "," + this.getId() + ",jumped to,,,[" + this.getPosition().x + ";" + this.getPosition().y + "]\n");
-    SimulationStatsManager.writeToFile(female.getName() + "," + female.getId() + ",get pregnant with," + male.getName() + "," + male.getId() + "\n");
-    SimulationStatsManager.writeToFile(prey.getName() + "," + prey.getId() + ",escape from," + this.getName() + "," + this.getId() + "\n");
-    SimulationStatsManager.writeToFile("notification,Successfully added only" + maxNoFood + " from " + noFood + " food\n");
-    SimulationStatsManager.writeToFile(this.getName() + "," + this.getId() + ",killed," + prey.getName() + "," + prey.getId() + "\n");
-
-     */
 }
 

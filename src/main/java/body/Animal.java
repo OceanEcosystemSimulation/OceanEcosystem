@@ -6,11 +6,14 @@ import ocean.SimulationStatsManager;
 import ocean.World;
 import soundEffects.SoundPlayer;
 
+
+//abstract class inheriting from WorldObject - defines the general characteristics and behaviors of all animals;
 public abstract class Animal extends WorldObject {
+    //encapsulation – characteristic fields are private and accessible only through methods
     private int foodLevel, age, loneliness;
     private int energy, health;
-    private final Genes genes; //przechowuje geny - także raczej się nie zmienia po ustawieniu
-    private final Gender gender; //przechowuje płeć - niezmienne po ustawieniu
+    private final Genes genes;  //composition – Animal has Genes as its element (it is part of the internal structure)
+    private final Gender gender;
     private boolean alive = true;
     private String name;
     private final int id;
@@ -19,6 +22,7 @@ public abstract class Animal extends WorldObject {
     private int pregnancyCounter = 0;
     private Animal fatherDuringPregnancy = null;
     private boolean lonelinessReseted = false; //do sprawdzania czy w danej turze wyzerowano loneliness poprzez inne zwierze
+
 
     /* -------------------------------KONSTRUKTORY------------------------------- */
 
@@ -40,7 +44,9 @@ public abstract class Animal extends WorldObject {
     }
 
 
+    //polymorphism - this method is overridden in animals and its body is added specifically for each animal
     public abstract Animal giveBirth(Coord pos, Animal parent1, Animal parent2);
+
 
     public void die(World world) {
         alive = false;
@@ -49,10 +55,10 @@ public abstract class Animal extends WorldObject {
         SoundPlayer.playSound("sounds/oof.wav");
     }
 
-    //zostawiam to tutaj bo za wykładzie było że fajnie robić chyba takie pomiędzy a nie 1 do 1 połączenia
     protected void processLifeCycle(World world) {
         AnimalLifeManager.lifeCycle(world, this);
     }
+
 
     /* -------------------------------ZATRUCIE OD OCEANIC PUFFER------------------------------- */
 
@@ -88,12 +94,13 @@ public abstract class Animal extends WorldObject {
     public Animal getFatherDuringPregnancy() {return fatherDuringPregnancy;}
     public boolean getLonelinessReseted() {return lonelinessReseted;}
 
+
     /* -------------------------------SETTERY------------------------------- */
 
     @Override
     public void setPosition(Coord newPosition) {
         super.setPosition(newPosition);
-        SimulationStatsManager.writeToFile(this.getName() + "," + this.getId() + ",jumped to,,,[" + this.getPosition().x + ";" + this.getPosition().y + "]\n");
+        SimulationStatsManager.writeToFile(this.getName() + "," + this.getId() + ",jumped to,,,[" + this.getPosition().getX() + ";" + this.getPosition().getY() + "]\n");
     }
 
     public void setFoodLevel(int foodLevel) {this.foodLevel = foodLevel;}

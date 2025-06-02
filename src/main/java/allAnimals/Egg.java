@@ -12,13 +12,11 @@ import java.awt.*;
 import java.util.Objects;
 
 public class Egg extends Animal {
-
-    /* -------------------------------STAŁE------------------------------- */
-
+    //encapsulation
     private int hatching;
     private Animal mother;
 
-    /* -------------------------------KONSTUKTOR------------------------------- */
+    /* -------------------------------CONSTRUCTOR------------------------------- */
 
     public Egg(Coord position, Genes genes, int hatching) {
         super(position, genes);
@@ -26,11 +24,36 @@ public class Egg extends Animal {
         settings();
     }
 
-    /* -------------------------------GRAFIKI------------------------------- */
+
+    /* -------------------------------MECHANICS------------------------------- */
+
+    @Override
+    public void update(World world) {
+        hatching--;
+        if (hatching == 0) {
+            Animal baby = giveBirth(getPosition(), mother, mother.getFatherDuringPregnancy());
+            world.addObject(baby);
+            world.removeObject(this);
+        }
+    }
+
+    @Override
+    public Animal giveBirth(Coord position, Animal parent1, Animal parent2) {  //polymorphism – calling giveBirth will invoke the method specific to the mother's species
+        return mother.giveBirth(position, parent1, parent2);
+    }
+
+    public void setMother(Animal mother) {
+        this.mother = mother;
+    }
+
+
+    /* -------------------------------GRAPHICS------------------------------- */
 
     private static Image EggImage;
 
     private final ImageView imageView = new ImageView();
+    @Override
+    public ImageView getImageView() { return imageView; }
 
     private static void loadImagesIfNeeded() {
         if (EggImage == null) {
@@ -47,30 +70,5 @@ public class Egg extends Animal {
         imageView.setPreserveRatio(true);
         imageView.setFitWidth(Main.getTileSize() * 0.9); // zmniejszenie - szerokosc
         imageView.setFitHeight(Main.getTileSize() * 0.9); // zmniejszenie - wysokosc
-    }
-
-    @Override
-    public ImageView getImageView() { return imageView; }
-
-
-    /* -------------------------------MECHANIKA------------------------------- */
-
-    @Override
-    public void update(World world) {
-        hatching--;
-        if (hatching == 0) {
-            Animal baby = giveBirth(getPosition(), mother, mother.getFatherDuringPregnancy());
-            world.addObject(baby);
-            world.removeObject(this);
-        }
-    }
-
-    @Override
-    public Animal giveBirth(Coord position, Animal parent1, Animal parent2) {
-        return mother.giveBirth(position, parent1, parent2);
-    }
-
-    public void setMother(Animal mother) {
-        this.mother = mother;
     }
 }

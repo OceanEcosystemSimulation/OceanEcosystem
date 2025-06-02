@@ -5,7 +5,7 @@ import map.Coord;
 import ocean.World;
 
 public abstract class WorldObject {
-    private Coord position; //aktualne współrzędne w świecie
+    private Coord position; //aggregation
 
     public WorldObject(Coord position) {
         this.position = position;

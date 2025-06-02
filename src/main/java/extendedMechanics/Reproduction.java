@@ -13,9 +13,6 @@ import java.util.List;
 
 
 public class Reproduction {
-
-    /* -------------------------------CONSTANTS------------------------------- */
-
     public static final int MINIMAL_AGE_TO_GET_PREGNANT = 18;
     public static final double ENERGY_NEEDED = 0.8; // 80% * MaxEnergy
     public static final int PREGNANCY_DURATION = 9; // 9 MONTHS - 9 TURNS
@@ -32,7 +29,7 @@ public class Reproduction {
 
     /* -------------------------------DISTANCE NEEDED------------------------------- */
 
-    // MUSZĄ BYĆ MAKSYMALNIE KRATKĘ OD SIEBIE, BY KOBITKA MOGŁA ZAJŚĆ W CIĄŻĘ
+    //czy są oddalone od siebie o kratkę
     public static boolean isDistanceOne(Animal animal1, Animal animal2) {
         Coord pos1 = animal1.getPosition();
         Coord pos2 = animal2.getPosition();
@@ -44,7 +41,7 @@ public class Reproduction {
     public static boolean moveToMate(Animal self, Animal mate, World world) {
         List<Coord> neighbour = Coord.getAdjacentCoords(mate.getPosition()); //tworzy liste pól wokół mate
         for (Coord coord : neighbour) { //iteruje po każdnym
-            if (world.inBounds(coord.x, coord.y) && !world.isOccupied(coord)) { //jeżeli jest w granicach i nie zajęte
+            if (world.inBounds(coord) && !world.isOccupied(coord)) { //jeżeli jest w granicach i nie zajęte
                 self.setPosition(coord);
                 return true;
             }
@@ -135,7 +132,6 @@ public class Reproduction {
     public static boolean isAreaSafe(World world, Animal animal, Genes genes) {
         // funkcja sprawdza, czy "na wysokości wzorku ryby", ogólniej mówiąc w zadanym promieniu znajduje się drapieżnik
         // jeśli się znajduje, rozmnażanie jest niemożliwe
-
         Tile tile = world.getTile(animal.getPosition());
         if (tile!=null && tile.getMapType() == MapType.CORAL) {
             return true;
@@ -157,13 +153,14 @@ public class Reproduction {
         return true; // mogą się rozmnażać - brak drapieżników
     }
 
-    public static Coord findFreeTile(World world, Coord pos) { //szuka wolnego miejsca, by złożyć jajo
+    //szuka wolnego miejsca, by złożyć jajo
+    public static Coord findFreeTile(World world, Coord pos) {
         int[][] directions = {{1,0}, {-1,0}, {0,1}, {0,-1}}; // kierunki: prawo, lewo, góra, dół
 
         List<Coord> possibleTiles = new ArrayList<>(); //lista pól, na których może złożyć jajo
         for (int[] d: directions) {
             Coord coord = new Coord(pos.getX() + d[0], pos.getY() + d[1]); //pobiera aktualne wolne miejsca
-            if (world.inBounds(coord.x, coord.y) && !world.isOccupied(coord)) { // jeśli znajduje się w granicach świata
+            if (world.inBounds(coord) && !world.isOccupied(coord)) { // jeśli znajduje się w granicach świata
                 possibleTiles.add(coord); // dodaje do listy
             }
         }

@@ -20,9 +20,6 @@ public class AnimalCombatUtils {
         return getEffectiveStrength(animal) * 0.7 + getEffectiveSpeed(animal) * 0.3;
     }
 
-    public static Coord getPosition(Animal animal) {
-        return animal.getPosition();
-    }
 
     static void takeDamage(World world, Animal animal, double amount) {
         int newHealth = (int)(animal.getHealth() - amount);
@@ -45,16 +42,17 @@ public class AnimalCombatUtils {
         } else { //gdy nie ma rafy to losowy kierunek ucieczki na pełną odległość dlatego nie randomMove
             int dx = World.random.nextBoolean() ? distance : -distance;
             int dy = World.random.nextBoolean() ? distance : -distance;
-            Coord escapePos = new Coord(pos.x + dx, pos.y + dy);
+            Coord escapePos = new Coord(pos.getX() + dx, pos.getY() + dy);
 
             //jesli w granicach i nikogo tam nie ma to skacze na pełną odl w innym wypadku losowo
-            if (world.inBounds(escapePos.x, escapePos.y) && !world.isOccupied(escapePos)) {
+            if (world.inBounds(escapePos) && !world.isOccupied(escapePos)) {
                 animal.setPosition(escapePos);
             } else {
                 randomMove(world, animal);
             }
         }
     }
+
 
     //losowy ruch w zasięgu speed
     public static void randomMove(World world, Animal animal) {

@@ -30,9 +30,8 @@ public class Octopus extends Carnivorous {
         settings();
     }
 
-    /* -------------------------------GENES------------------------------- */
 
-    //do tworzenia genów w nowych
+    //tworzenie genów
     private static Genes generateGenes() {
         Genes genes = new Genes();
         genes.setStrength(Genes.mutate(40));
@@ -43,9 +42,11 @@ public class Octopus extends Carnivorous {
         return genes;
     }
 
-    /* -------------------------------INK------------------------------- */
-    private void releaseInk(World world) {
 
+
+    /* -------------------------------INK------------------------------- */
+
+    private void releaseInk(World world) {
         if (inkCooldown > 0) return; //nie może jeszcze wypuscic chmurki
 
         //sprwdza zwierzeta w promieniu dwoch kratek
@@ -77,10 +78,12 @@ public class Octopus extends Carnivorous {
 
     @Override
     public void update(World world) {
-        if(inkCooldown>0) inkCooldown--;
-        processLifeCycle(world); //duperele o życiu
+        if(inkCooldown>0) {
+            inkCooldown--;
+        }
+        processLifeCycle(world);
         updateOctopusGraphics();
-        if (!isAlive()) return;
+        if (!isAlive()) { return; }
 
         Reproduction.pregnancyTick(world, this);
 
@@ -125,9 +128,9 @@ public class Octopus extends Carnivorous {
     private static final int AGE_OLD = 18; // one turn = one month
 
     private final ImageView imageView = new ImageView();
-    public ImageView getImageView() { return imageView; } // getter
+    @Override
+    public ImageView getImageView() { return imageView; }
 
-    /* -------------------------------GUI------------------------------- */
 
     private static void loadImagesIfNeeded() {
         if (babyOctopus == null || Octopus == null) {
@@ -153,7 +156,5 @@ public class Octopus extends Carnivorous {
         imageView.setFitWidth(Main.getTileSize() * scale);
         imageView.setFitHeight(Main.getTileSize() * scale);
     }
-
-
 }
 

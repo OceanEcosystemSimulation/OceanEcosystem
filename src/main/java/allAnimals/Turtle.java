@@ -14,7 +14,6 @@ import java.util.List;
 import java.util.Objects;
 
 public class Turtle extends Omnivorous {
-
     public Turtle(Coord position) {
         super(position, generateGenes());
         setName("Turtle");
@@ -28,6 +27,7 @@ public class Turtle extends Omnivorous {
         settings();
     }
 
+
     private static Genes generateGenes() {
         Genes genes = new Genes();
         genes.setStrength(Genes.mutate(30));
@@ -38,16 +38,18 @@ public class Turtle extends Omnivorous {
         return genes;
     }
 
+
     @Override
     public Animal giveBirth(Coord position, Animal parent1, Animal parent2) {
         return new Turtle(position, parent1, parent2);
     }
 
+
     @Override
     public void update(World world) {
         processLifeCycle(world);
         updateTurtleGraphics();
-        if (!isAlive()) return;
+        if (!isAlive()) { return; }
 
         Reproduction.pregnancyTick(world, this);
 
@@ -57,7 +59,7 @@ public class Turtle extends Omnivorous {
         tryToAttack(world, this);
     }
 
-    //jedzenie
+
     //lista ofiar
     private static final List<String> animalPrey = List.of("Octopus", "Crab");
 
@@ -69,18 +71,19 @@ public class Turtle extends Omnivorous {
             case PLANKTON -> 10;
             default -> 0;
         };
-
         if (getFoodLevel() + gain <= 100) {
             setFoodLevel(getFoodLevel() + gain);
-            SimulationStatsManager.writeToFile(this.getName() + "," + this.getId() + ",eats,,," + tile.foodType + "\n");
+            SimulationStatsManager.writeToFile(this.getName() + "," + this.getId() + ",eats,,," + tile.getFoodType() + "\n");
             tile.clearFood(world);
         }
     }
+
 
     @Override
     public boolean canAttack(Animal other) {
         return other != null && animalPrey.contains(other.getName());
     }
+
 
     @Override
     public int calculateGain(Animal animal) {
@@ -91,14 +94,18 @@ public class Turtle extends Omnivorous {
         };
     }
 
-    //grafika
+
+
+    /* -------------------------------GRAPHICS------------------------------- */
 
     private static Image babyImage;
     private static Image adultImage;
     private static final int AGE_OLD = 20;
 
     private final ImageView imageView = new ImageView();
+    @Override
     public ImageView getImageView() { return imageView; }
+
 
     private static void loadImagesIfNeeded() {
         if (babyImage == null || adultImage == null) {

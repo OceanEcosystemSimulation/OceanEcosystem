@@ -50,7 +50,7 @@ public class Main extends Application {
             }
         } catch (Exception e) {
             System.out.println("File error");
-            e.printStackTrace(); //wyswietla szczegóły błędu???? szczerze nie pamietam czy niezbędne
+            e.printStackTrace(); //wyswietla szczegóły błędu????
             return;
         }
 
@@ -98,7 +98,7 @@ public class Main extends Application {
 
         Scene scene = displayManager.createScene(); //wszystkie ustawienia elementów aplikacji - tworzenie sceny
 
-        primaryStage.setWidth(tileSize * width + 250); //ustawia szerokość okna aplikacji - POPIEPRZONE WIEC UWAGA
+        primaryStage.setWidth(tileSize * width + 250); //ustawia szerokość okna aplikacji
         primaryStage.setHeight(tileSize * height + 110); //ustawia wysokość okna aplikacji
         primaryStage.setScene(scene); //przypisuje scene do Stage - ustawia główną zawartość okna - określa co ma byc wyświetlane
         primaryStage.setTitle("Ocean Ecosystem Simulation"); //tytuł
@@ -132,7 +132,9 @@ public class Main extends Application {
         grid.getChildren().removeAll(toRemove); // usuwa wszystkie grafiki
 
 
+
         /* -------------------------------OTOCZENIE - ŚRODOWISKO------------------------------- */
+
         Image CoralReefImage = null;
         URL imageUrl = getClass().getResource("/images/CoralReef.png");
         if (imageUrl != null) { CoralReefImage = new Image(imageUrl.toExternalForm()); }
@@ -156,6 +158,7 @@ public class Main extends Application {
         }
 
 
+
         /* -------------------------------GRAFIKI JEDZENIA------------------------------- */
 
         for (int x = 0; x < width; x++) {
@@ -163,7 +166,7 @@ public class Main extends Application {
 
                 Tile tile = world.getTile(new Coord(x, y)); // pobiera kafalek
                 if (tile.hasFood()) { // sprawdza, czy znajduje sie na nim jedzenie
-                    Image FoodImage = tile.foodType.getFoodImage(); // pobiera grafike z Enum FoodType
+                    Image FoodImage = tile.getFoodType().getFoodImage(); // pobiera grafike z Enum FoodType
                     if (FoodImage != null) { // jesli to faktycznie jedzenie, to je ustawia
                         ImageView food = new ImageView(FoodImage);
                         food.setPreserveRatio(true); // proporcja
@@ -181,6 +184,8 @@ public class Main extends Application {
                 }
             }
         }
+
+
 
         /* -------------------------------GRAFIKI ZWIERZĄT------------------------------- */
 

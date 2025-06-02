@@ -15,7 +15,6 @@ import java.awt.*;
 import java.util.Objects;
 
 
-
 public class Shrimp extends Herbivorous {
     public Shrimp(Coord position) {
         super(position, generateGenes());
@@ -31,10 +30,6 @@ public class Shrimp extends Herbivorous {
     }
 
 
-    /* -------------------------------GENES------------------------------- */
-
-    //do tworzenia genów w nowych - zakresy w losowych wartościah do zmiany
-    //nie może potrzebować objektu by dzialac bo to ma tworzyć konstruktor (objekt) a nie byc uzywanym przez niego wiec static
     private static Genes generateGenes() {
         Genes genes = new Genes();
         genes.setStrength(Genes.mutate(5));
@@ -49,9 +44,9 @@ public class Shrimp extends Herbivorous {
     /* -------------------------------LIFE------------------------------- */
 
     public void update(World world) {
-        processLifeCycle(world); //duperele o życiu
+        processLifeCycle(world);
         updateShrimpGraphics();
-        if (!isAlive()) return;
+        if (!isAlive()) { return; }
 
         Reproduction.pregnancyTick(world, this);
 
@@ -67,19 +62,16 @@ public class Shrimp extends Herbivorous {
     }
 
 
-    /* -------------------------------EATING------------------------------- */
-
-    //zjada o ile nie byłoby ponad 100 napchane
     @Override
     public void eat(Tile tile, World world) {
-        int gain = switch (tile.foodType) {
+        int gain = switch (tile.getFoodType()) {
             case PLANKTON -> 10;
             case ALGAE -> 15;
             default -> 0; //NONE
         };
-        if (getFoodLevel()+gain <= 100){
+        if (getFoodLevel()+gain <= 100){ //zjada o ile nie byłoby ponad 100 napchane
             setFoodLevel(getFoodLevel() + gain); //je
-            SimulationStatsManager.writeToFile(this.getName() + "," + this.getId() + ",eats,,," + tile.foodType + "\n");
+            SimulationStatsManager.writeToFile(this.getName() + "," + this.getId() + ",eats,,," + tile.getFoodType() + "\n");
             tile.clearFood(world);
         }
     }
@@ -90,14 +82,13 @@ public class Shrimp extends Herbivorous {
 
     private static Image babyShrimp;
     private static Image adultShrimp;
-    private static final int AGE_OLD = 18; // one turn = one month
+    private static final int AGE_OLD = 18;
 
 
     private final ImageView imageView = new ImageView();
-    public ImageView getImageView() { return imageView; } // getter
+    @Override
+    public ImageView getImageView() { return imageView; }
 
-
-    /* -------------------------------GUI------------------------------- */
 
     private static void loadImagesIfNeeded() {
         if (babyShrimp == null || adultShrimp == null) {

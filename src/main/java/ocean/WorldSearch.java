@@ -18,8 +18,8 @@ public class WorldSearch {
 
         for (int dx=-radius; dx<=radius; dx++) { //iteracja po promieniu
             for (int dy=-radius; dy<=radius; dy++) {
-                Coord candidate = new Coord(position.x + dx, position.y + dy); //wspołrzedne kandydata na ofiarę
-                if (world.inBounds(candidate.x, candidate.y)) { //czy współrzędne w granicach mapy
+                Coord candidate = new Coord(position.getX() + dx, position.getY() + dy); //wspołrzedne kandydata na ofiarę
+                if (world.inBounds(candidate)) { //czy współrzędne w granicach mapy
                     Tile tile = world.getTile(candidate); //pobranie pola
                     if (tile != null && tile.hasFood() && !world.isOccupied(candidate)) { //sprawdza czy jest na nim jedzenie i czy ktos tam jest
                         int dist = position.distance(candidate); //odległość od candidate
@@ -80,14 +80,14 @@ public class WorldSearch {
 
         for (int dx=-radius; dx<=radius; dx++) {  //iteracja po polach w promieniu
             for (int dy=-radius; dy<=radius; dy++) {
-                Coord newPos = new Coord(position.x + dx, position.y + dy); //wspołrzedne kandydata
-                if (world.inBounds(newPos.x, newPos.y)) {   //czy w granicach
+                Coord newPos = new Coord(position.getX() + dx, position.getY() + dy); //wspołrzedne kandydata
+                if (world.inBounds(newPos)) {   //czy w granicach
                     Tile tile = world.getTile(newPos);  //pobranie pola
                     if (tile!=null && tile.getMapType()==MapType.CORAL && !world.isOccupied(newPos)) { //sprawdza czy to jest coral i czy ktoś tam jest
                         int dist = position.distance(newPos);  //odległość od pola coral
                         if (dist < minDist) {
                             minDist = dist;
-                            nearestCoral = new Coord(newPos.x, newPos.y);
+                            nearestCoral = new Coord(newPos.getX(), newPos.getY());
                         }
                     }
                 }
@@ -99,7 +99,7 @@ public class WorldSearch {
     
     public static boolean isWhaleNearby(World world, Animal animal) {
         for (Coord neighbor : Coord.getAdjacentCoords(animal.getPosition())) { //przeszukuje najblizsze pola zwierzaka
-            if (world.inBounds(neighbor.x, neighbor.y)) {
+            if (world.inBounds(neighbor)) {
                 List<Animal> nearbyAnimals = world.getNearbyAnimals(neighbor, 0);
                 for (Animal nearbyAnimal : nearbyAnimals) {
                     if (nearbyAnimal.getName() != null && nearbyAnimal.getName().equals("Whale")) {

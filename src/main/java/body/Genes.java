@@ -11,8 +11,6 @@ public class Genes {
     private int maxEnergy;
 
 
-    /* -------------------------------INHERIT------------------------------- */
-
     //geny potomstwa
     public static Genes inherit(Genes g1, Genes g2) {
         Genes genes = new Genes();
@@ -24,6 +22,16 @@ public class Genes {
         return genes;
     }
 
+
+    //losowa mutacja do genów
+    public static int mutate(int value) {
+        if (World.random.nextDouble() < 0.05) { //nie zawsze (losowo) zachodzi - 5%
+            return Math.max(1, value + World.random.nextInt(5) - 2); //mutuje w zakresie +-2
+        }
+        return Math.max(1, value);
+    }
+
+
     public void setSpeed(int baseSpeed) {
         if (World.minMapSize < 2) {
             this.speed = Math.max(1, mutate((int)(baseSpeed * (double) World.minMapSize / 20)));
@@ -32,16 +40,8 @@ public class Genes {
         }
     }
 
-    //losowa mutacja do genów
-    public static int mutate(int value) {
-        if (World.random.nextDouble() < 0.1) { //nie zawsze (losowo) zachodzi - X%
-            return Math.max(1, value + World.random.nextInt(5) - 2); //mutuje w zakresie +-2
-        }
-        return Math.max(1, value);
-    }
 
-
-        /* -------------------------------GETTERY------------------------------- */
+    /* -------------------------------GETTERY------------------------------- */
 
     public int getStrength() {return strength;}
     public int getSpeed() {return speed;}

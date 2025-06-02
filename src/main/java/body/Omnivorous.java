@@ -25,6 +25,7 @@ public abstract class Omnivorous extends Animal implements IEat, IFight, IMate, 
                 (tile.getFoodType() == FoodType.ALGAE || tile.getFoodType() == FoodType.PLANKTON);
     }
 
+    //mechanika ruchu
     @Override
     public void move(World world) {
         if (getFoodLevel() < 70) {
@@ -52,7 +53,7 @@ public abstract class Omnivorous extends Animal implements IEat, IFight, IMate, 
         randomMove(world, this);
     }
 
-    //atak
+    //mechanika ataku
     @Override
     public boolean attack(Animal prey, World world) {
         double attackerSpeed = AnimalCombatUtils.getEffectiveSpeed(this);

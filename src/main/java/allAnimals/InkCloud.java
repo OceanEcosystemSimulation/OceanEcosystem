@@ -13,13 +13,8 @@ import java.awt.*;
 import java.util.Objects;
 
 public class InkCloud extends WorldObject {
-    private static Image inkImage;
-    private final ImageView imageView = new ImageView();
     private int remainingTime = 2; //znika po 2 turach
     private final Animal target;
-    public Animal getTarget() { //getter
-        return target;
-    }
 
 
     public InkCloud(Coord position, Animal target) {
@@ -31,19 +26,6 @@ public class InkCloud extends WorldObject {
         setupGraphics();
     }
 
-
-    private void setupGraphics() {
-        //sprawdza czy jest srodowisko graficzne
-        if (inkImage == null && !GraphicsEnvironment.isHeadless()) {
-            inkImage = new Image(Objects.requireNonNull(InkCloud.class.getResource("/images/Ink.png")).toExternalForm());
-        }
-
-        imageView.setImage(inkImage);
-        imageView.setOpacity(0.6); //półprzeźroczystość
-        imageView.setFitWidth(Main.getTileSize());//dopasowanie do kratki
-        imageView.setFitHeight(Main.getTileSize());
-        imageView.setPreserveRatio(true);//zachowanie proporcji
-    }
 
     @Override
     public void update(World world) {
@@ -59,7 +41,30 @@ public class InkCloud extends WorldObject {
     }
 
 
-    public ImageView getImageView() {
-        return imageView;
+    public Animal getTarget() {
+        return target;
+    }
+
+
+
+    /* -------------------------------GRAPHICS------------------------------- */
+
+    private static Image inkImage;
+
+    private final ImageView imageView = new ImageView();
+    @Override
+    public ImageView getImageView() { return imageView; }
+
+
+    private void setupGraphics() {
+        if (inkImage == null && !GraphicsEnvironment.isHeadless()) {  //sprawdza czy jest srodowisko graficzne
+            inkImage = new Image(Objects.requireNonNull(InkCloud.class.getResource("/images/Ink.png")).toExternalForm());
+        }
+
+        imageView.setImage(inkImage);
+        imageView.setOpacity(0.6); //półprzeźroczystość
+        imageView.setFitWidth(Main.getTileSize());//dopasowanie do kratki
+        imageView.setFitHeight(Main.getTileSize());
+        imageView.setPreserveRatio(true);//zachowanie proporcji
     }
 }

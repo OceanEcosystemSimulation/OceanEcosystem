@@ -41,6 +41,21 @@ public class World {
 
     //główna symulacja świata - w każdym cyklu aktualizuje zwierzęta - dead alive
     public void runSimulation(int tick) {
+        //sprawdzenie czy ktoś jeszzcze zyje
+        System.out.println("Animal count: " + animals.size());
+        boolean anyoneAlive = false;
+        for (Animal animal : animals) {
+            System.out.println(animal.getName() + animal.getId() + " alive? " + animal.isAlive());
+            if (animal.isAlive()) {
+                anyoneAlive = true; //jeśli chociaz 1 żyje do symulacja trwa
+                break;
+            }
+        }
+        if (!anyoneAlive) { //jeśli nie to się kończy
+            endSimulation();
+            SimulationStatsManager.writeToFile("notification,Simulation ended because all animals are dead\n");
+        }
+
         addTralaleroTralala(); // próbuje dodac tralalero ale rarity to 1%, więc co tick
         List<WorldObject> currentObjects = new ArrayList<>(objects); //tworzenie kopii by nie aktualizować m.in. dopiero co urodzonych
         Coord.allAtempts = 0;
@@ -60,19 +75,6 @@ public class World {
                 removeObject(animal); //usuwa je
             }
         }
-
-        //sprawdzenie czy ktoś jeszzcze zyje
-        boolean anyoneAlive = false;
-        for (Animal animal : animals) {
-            if (animal.isAlive()) {
-                anyoneAlive = true; //jeśli chociaz 1 żyje do symulacja trwa
-                break;
-            }
-        }
-        if (!anyoneAlive) { //jeśli nie to się kończy
-            endSimulation();
-            SimulationStatsManager.writeToFile("notification,Simulation ended because all animals are dead\n");
-        }
     }
 
 
@@ -86,8 +88,7 @@ public class World {
     private boolean tralaleroSpawned = false;
 
     private void addTralaleroTralala() {
-        if (!tralaleroSpawned && random.nextInt(100) == 0) { // 1% szans
-        //if (tick == 30) { // <- do zobaczenia bossa bo tak to mała szansa że się trafi
+        if (!tralaleroSpawned && random.nextInt(1000) == 0) { // 0.1% szans
             tralaleroSpawned = true;
 
             //tworzenie listy wolnych pól na mapie które nie są rafą
@@ -101,8 +102,6 @@ public class World {
                     }
                 }
             }
-
-// TODO: test czy dobrze sprawdza warunki i się pojawia jeśli sie da taki zrobić
 
             //dodawanie bossa jeśli jest miejsce
             if (!freeCoords.isEmpty()) {
@@ -145,12 +144,12 @@ public class World {
 
     //zwraca komórkę jeśli jest w granicach
     public Tile getTile(Coord coord) {
-        return inBounds(coord.x, coord.y) ? grid[coord.x][coord.y] : null;
+        return inBounds(coord) ? grid[coord.getX()][coord.getY()] : null;
     }
 
     //sprawdza czy dane pole jest w zasięgu mapy
-    public boolean inBounds(int x, int y) {
-        return x >= 0 && x < width && y >= 0 && y < height;
+    public boolean inBounds(Coord coord) {
+        return coord.getX() >= 0 && coord.getX() < width && coord.getY() >= 0 && coord.getY() < height;
     }
 
     //sprawdza czy dane pole jest zajete, zwraca true jeśli not empty
@@ -168,7 +167,7 @@ public class World {
     }
 
 
-    //usuwa objekty z lisy - potrzebuje ale może póżniej się da jakoś inaczej to załatwić
+    //usuwa objekty z lisy
     public void removeObject(WorldObject object) {
         if (object instanceof Animal animal && !animal.isAlive()) { //tylko zwierzeta
             animals.remove(animal);

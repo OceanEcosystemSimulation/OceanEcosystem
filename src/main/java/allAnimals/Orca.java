@@ -17,7 +17,6 @@ import static body.AnimalCombatUtils.randomMove;
 
 
 public class Orca extends Carnivorous {
-
     private int boostTurns = 0;//przyspieszenie ile zostalo
     private int boostWaiting = 0; //odpoczynek po booscie
 
@@ -48,10 +47,8 @@ public class Orca extends Carnivorous {
     @Override
     public void update(World world) {
         processLifeCycle(world);
-
         updateOrcaGraphics();
-
-        if (!isAlive()) return;
+        if (!isAlive()) { return; }
 
         Reproduction.pregnancyTick(world, this);
 
@@ -87,6 +84,7 @@ public class Orca extends Carnivorous {
     }
 
 
+    //mechanika ruchu
     @Override
     public void move(World world) {
         int speed = getGenes().getSpeed();
@@ -122,16 +120,16 @@ public class Orca extends Carnivorous {
         randomMove(world, this);
     }
 
-    //grafika
 
-    // wiek kiedy orka sie robi dorosla
+
+    /* -------------------------------GRAPHICS------------------------------- */
+
     private static final int AGE_OLD = 18;
-
-    //laduje baby i adult orke
     private static Image BabyOrca;
     private static Image AdultOrca;
 
     private final ImageView imageView = new ImageView();
+    @Override
     public ImageView getImageView() {
         return imageView;
     }

@@ -8,7 +8,8 @@ import ocean.WorldSearch;
 
 import static body.AnimalCombatUtils.randomMove;
 
-
+//abstract class inheriting from Animal, which is further inherited by specific animal species
+//interface implementation – enforces this class (or its descendants) to implement the methods contained in these interfaces
 public abstract class Herbivorous extends Animal implements IEat, IMove, IMate {
     public Herbivorous(Coord position, Genes genes) {
         super(position, genes);
@@ -20,7 +21,7 @@ public abstract class Herbivorous extends Animal implements IEat, IMove, IMate {
 
 
     @Override
-    public boolean canEat(Tile tile) { //whatever, przykład, chociaż tak bym zostawiła bo to herbivore
+    public boolean canEat(Tile tile) { //co mogą jeść
         return tile.getFoodType() == FoodType.PLANKTON || tile.getFoodType() == FoodType.ALGAE;
     }
 

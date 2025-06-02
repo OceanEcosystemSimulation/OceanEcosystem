@@ -1,8 +1,8 @@
 ﻿//musi tu byc przerwa
-width,30
-height,30
+width,20
+height,20
 noFood,5
 noCoral,12
-noAnimals,30
-ticks,100
-seed,222
+noAnimals,10
+ticks,200
+seed,555

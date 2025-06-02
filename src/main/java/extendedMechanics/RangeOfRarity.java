@@ -3,7 +3,6 @@ package extendedMechanics;
 import ocean.World;
 
 public class RangeOfRarity {
-
     public Rarity animalsDrawingByRarity () {
         int max = 100;
         int min = 1;

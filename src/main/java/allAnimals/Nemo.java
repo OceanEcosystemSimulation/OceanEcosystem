@@ -50,7 +50,7 @@ public class Nemo extends Herbivorous {
     public void update(World world) {
         processLifeCycle(world); //duperele o życiu
         updateNemoGraphics();
-        if (!isAlive()) return;
+        if (!isAlive()) { return; }
 
         Reproduction.pregnancyTick(world, this);
 
@@ -71,14 +71,14 @@ public class Nemo extends Herbivorous {
     //zjada o ile nie byłoby ponad 100 napchane
     @Override
     public void eat(Tile tile, World world) { //przykładowe jak pisać
-        int gain = switch (tile.foodType) {
+        int gain = switch (tile.getFoodType()) {
             case PLANKTON -> 10;
             case ALGAE -> 15;
             default -> 0; //NONE
         };
         if (getFoodLevel()+gain <= 100){
             setFoodLevel(getFoodLevel() + gain); //je
-            SimulationStatsManager.writeToFile(this.getName() + "," + this.getId() + ",eats,,," + tile.foodType + "\n");
+            SimulationStatsManager.writeToFile(this.getName() + "," + this.getId() + ",eats,,," + tile.getFoodType() + "\n");
             tile.clearFood(world);
         }
     }
@@ -89,14 +89,13 @@ public class Nemo extends Herbivorous {
 
     private static Image YoungNemo;
     private static Image OldNemo;
-    private static final int AGE_OLD = 18; // one turn = one month
+    private static final int AGE_OLD = 18;
 
 
     private final ImageView imageView = new ImageView();
-    public ImageView getImageView() { return imageView; } // getter
+    @Override
+    public ImageView getImageView() { return imageView; }
 
-
-    /* -------------------------------GUI------------------------------- */
 
     private static void loadImagesIfNeeded() {
         if (YoungNemo == null || OldNemo == null) {

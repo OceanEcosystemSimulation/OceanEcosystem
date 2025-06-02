@@ -13,8 +13,9 @@ import java.awt.*;
 import java.util.List;
 import java.util.Objects;
 
-public class Crab extends Omnivorous {
 
+//Crab - inherits (dziedziczy) from Omnivorous - omnivore
+public class Crab extends Omnivorous {
     public Crab(Coord position) {
         super(position, generateGenes());
         setName("Crab");
@@ -28,6 +29,8 @@ public class Crab extends Omnivorous {
         settings();
     }
 
+
+    //tworzenie genów
     private static Genes generateGenes() {
         Genes genes = new Genes();
         genes.setStrength(Genes.mutate(10));
@@ -38,16 +41,18 @@ public class Crab extends Omnivorous {
         return genes;
     }
 
+
     @Override
     public Animal giveBirth(Coord position, Animal parent1, Animal parent2) {
         return new Crab(position, parent1, parent2);
     }
 
+
     @Override
     public void update(World world) {
         processLifeCycle(world);
         updateCrabGraphics();
-        if (!isAlive()) return;
+        if (!isAlive()) { return; }
 
         Reproduction.pregnancyTick(world, this);
 
@@ -57,7 +62,6 @@ public class Crab extends Omnivorous {
         tryToAttack(world, this);
     }
 
-    //jedzenie
 
     private static final List<String> animalPrey = List.of("Nemo");
 
@@ -69,22 +73,21 @@ public class Crab extends Omnivorous {
             case PLANKTON -> 8;
             default -> 0;
         };
-
         if (getFoodLevel() + gain <= 100) {
             setFoodLevel(getFoodLevel() + gain);
-            SimulationStatsManager.writeToFile(this.getName() + "," + this.getId() + ",eats,,," + tile.foodType + "\n");
+            SimulationStatsManager.writeToFile(this.getName() + "," + this.getId() + ",eats,,," + tile.getFoodType() + "\n");
             tile.clearFood(world);
         }
     }
 
-    //TODO: check czy nie trzeba tego przeniesc bo wszedzie takie samo
 
-    //atakuje jak nie jest to zweirze tego samego gatunku i jest to zwierze ktora jest "ofiara" tego gatunku
+    //czy może zaatakować ten organizm
     @Override
     public boolean canAttack(Animal other) {
-        return other != null && animalPrey.contains(other.getName());
+        return other != null && animalPrey.contains(other.getName()); //atakuje jak nie jest to zweirze tego samego gatunku i jest to zwierze ktore jest "ofiarą" tego gatunku
     }
 
+    //ile otrzyma za zjedzenie
     @Override
     public int calculateGain(Animal animal) {
         return switch (animal.getName()) {
@@ -93,13 +96,15 @@ public class Crab extends Omnivorous {
         };
     }
 
-    //grafika
+
+    /* -------------------------------GRAPHICS------------------------------- */
 
     private static Image babyImage;
     private static Image adultImage;
     private static final int AGE_OLD = 15;
 
     private final ImageView imageView = new ImageView();
+    @Override
     public ImageView getImageView() { return imageView; }
 
     private static void loadImagesIfNeeded() {

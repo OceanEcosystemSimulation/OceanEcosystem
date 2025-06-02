@@ -17,7 +17,6 @@ import java.util.List;
 import java.util.Objects;
 
 public class TralaleroTralala extends Animal {
-
     public TralaleroTralala(Coord position) {
         super(position, generateGenes());
         setName("TralaleroTralala");
@@ -48,8 +47,8 @@ public class TralaleroTralala extends Animal {
         int distance = this.getGenes().getSpeed();
         int dx = World.random.nextBoolean() ? distance : -distance; //losowanie +-speed
         int dy = World.random.nextBoolean() ? distance : -distance;
-        int newX = Math.min(Math.max(0, this.getPosition().x + dx), world.getWidth() - 1); //granice
-        int newY = Math.min(Math.max(0, this.getPosition().y + dy), world.getHeight() - 1);
+        int newX = Math.min(Math.max(0, this.getPosition().getX() + dx), world.getWidth() - 1); //granice
+        int newY = Math.min(Math.max(0, this.getPosition().getY() + dy), world.getHeight() - 1);
         Coord newPos = new Coord(newX, newY);
         this.setPosition(newPos); //przesuwa się
 
@@ -67,6 +66,9 @@ public class TralaleroTralala extends Animal {
         }
     }
 
+    @Override
+    public Animal giveBirth(Coord pos, Animal parent1, Animal parent2) { return null; }
+
 
 
     /* -------------------------------GRAPHICS------------------------------- */
@@ -74,10 +76,9 @@ public class TralaleroTralala extends Animal {
     private static Image boss;
 
     private final ImageView imageView = new ImageView();
+    @Override
     public ImageView getImageView() { return imageView; } // getter
 
-
-    /* -------------------------------GUI------------------------------- */
 
     private static void loadImagesIfNeeded() {
         if (boss == null) {
@@ -100,8 +101,5 @@ public class TralaleroTralala extends Animal {
         imageView.setFitWidth(Main.getTileSize() * 3);
         imageView.setFitHeight(Main.getTileSize() * 3);
     }
-
-    @Override
-    public Animal giveBirth(Coord pos, Animal parent1, Animal parent2) { return null; }
 }
 

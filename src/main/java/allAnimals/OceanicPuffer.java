@@ -48,7 +48,7 @@ public class OceanicPuffer extends Omnivorous {
     public void update(World world) {
         processLifeCycle(world);
         updatePufferGraphics();
-        if (!isAlive()) return;
+        if (!isAlive()) { return; }
 
         Reproduction.pregnancyTick(world, this);
 
@@ -62,30 +62,27 @@ public class OceanicPuffer extends Omnivorous {
     private static final List<String> preyList = List.of("Crab");
 
 
-
-    //walka
-    //atakuje jak nie jest to zweirze tego samego gatunku i jest to zwierze ktora jest "ofiara" tego gatunku
+    //czy może atakować
     @Override
     public boolean canAttack(Animal other) {
         return other != null && other.getName() != null && preyList.contains(other.getName());
     }
 
+
+    //mechanika ataku
     @Override
     public boolean attack(Animal target, World world) {
         double attackerPower = AnimalCombatUtils.getCombatPower(this);
         double targetPower = AnimalCombatUtils.getCombatPower(target);
 
-        if (attackerPower > targetPower) {
-            //wygrywa pufferfish
+        if (attackerPower > targetPower) { //wygrywa pufferfish
             target.die(world);
             SimulationStatsManager.writeToFile(getName() + "," + getId() + ",killed," + target.getName() + "," + target.getId() + "\n");
             return true;
         } else {
             this.die(world); //Pufferfish ginie
             SimulationStatsManager.writeToFile(target.getName() + "," + target.getId() + ",killed," + getName() + "," + getId() + "\n");
-
-            //zatruwa przeciwnika
-            AnimalEffectsManager.poisonTarget(target);
+            AnimalEffectsManager.poisonTarget(target); //zatruwa przeciwnika
             return false;
         }
     }
@@ -107,21 +104,23 @@ public class OceanicPuffer extends Omnivorous {
             case ALGAE -> 15;
             default -> 0;
         };
-
         if (getFoodLevel() + gain <= 100) {
             setFoodLevel(getFoodLevel() + gain);
-            SimulationStatsManager.writeToFile(this.getName() + "," + this.getId() + ",eats,,," + tile.foodType + "\n");
+            SimulationStatsManager.writeToFile(this.getName() + "," + this.getId() + ",eats,,," + tile.getFoodType() + "\n");
             tile.clearFood(world);
         }
     }
 
 
-    //grafika
+
+    /* -------------------------------GRAPHICS------------------------------- */
+
     private static Image babyImage;
     private static Image adultImage;
     private static final int AGE_OLD = 18;
 
     private final ImageView imageView = new ImageView();
+    @Override
     public ImageView getImageView() { return imageView; }
 
 

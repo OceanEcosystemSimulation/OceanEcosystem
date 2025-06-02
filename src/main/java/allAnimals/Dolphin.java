@@ -30,9 +30,7 @@ public class Dolphin extends Carnivorous {
     }
 
 
-    /* -------------------------------GENES------------------------------- */
-
-    //do tworzenia genów w nowych
+    //tworzenie genów
     private static Genes generateGenes() {
         Genes genes = new Genes();
         genes.setStrength(Genes.mutate(40));
@@ -48,11 +46,11 @@ public class Dolphin extends Carnivorous {
 
     @Override
     public void update(World world) {
-        processLifeCycle(world); //duperele o życiu
+        processLifeCycle(world);
         updateDolphinGraphics();
         AnimalEffectsManager.updateInkEffect(this);
 
-        if (!isAlive()) return;
+        if (!isAlive()) { return; }
 
         Reproduction.pregnancyTick(world, this);
 
@@ -82,12 +80,14 @@ public class Dolphin extends Carnivorous {
         return switch (animal.getName()) {
             case "Nemo" -> 30;
             case "Shark" -> 55;
-            case "Orca" -> 90; // bo raczej nie wygra
+            case "Orca" -> 90;
             default -> 0;
         };
     }
 
+
     /* -------------------------------MOVE------------------------------- */
+
     private boolean stunned = false; //czy jest zatrzymany
 
     public boolean isStunned() {
@@ -104,8 +104,7 @@ public class Dolphin extends Carnivorous {
             SimulationStatsManager.writeToFile("Dolphin," + getId() + ",is stunned and cannot move\n");
             return;
         }
-        //jak nie jest spowolniony to ruch bez zmian
-        super.move(world);
+        super.move(world); //jak nie jest spowolniony to ruch bez zmian
     }
 
 
@@ -113,12 +112,12 @@ public class Dolphin extends Carnivorous {
 
     private static Image babyDolphin;
     private static Image dolphin;
-    private static final int AGE_OLD = 18; // one turn = one month
+    private static final int AGE_OLD = 18;
 
     private final ImageView imageView = new ImageView();
-    public ImageView getImageView() { return imageView; } // getter
+    @Override
+    public ImageView getImageView() { return imageView; }
 
-    /* -------------------------------GUI------------------------------- */
 
     private static void loadImagesIfNeeded() {
         if (babyDolphin == null || dolphin == null) {

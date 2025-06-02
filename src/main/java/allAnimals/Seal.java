@@ -15,7 +15,6 @@ import java.util.Objects;
 
 
 public class Seal extends Carnivorous {
-
     public Seal(Coord position) {
         super(position, generateGenes());
         setName("Seal");
@@ -39,19 +38,37 @@ public class Seal extends Carnivorous {
         return genes;
     }
 
+
+    @Override
+    public void update(World world) {
+        processLifeCycle(world);
+        scareNearbySharks(world);
+        updateSealGraphics();
+        if (!isAlive()) { return; }
+
+        Reproduction.pregnancyTick(world, this);
+
+        tryToMate(world);
+        tryToAttack(world, this);
+        move(world);
+    }
+
+
     @Override
     public Animal giveBirth(Coord position, Animal parent1, Animal parent2) {
         return new Seal(position, parent1, parent2);
     }
 
+
     //lista ofiar
     private static final List<String> preyList = List.of("Nemo", "Crab");
 
-    //atakuje jak nie jest to zweirze tego samego gatunku i jest to zwierze ktora jest "ofiara" tego gatunku
+
     @Override
     public boolean canAttack(Animal other) {
         return other != null && preyList.contains(other.getName());
     }
+
 
     @Override
     public int calculateGain(Animal animal) {
@@ -61,6 +78,7 @@ public class Seal extends Carnivorous {
             default -> 0;
         };
     }
+
 
     //straszy rekiny w zasięgu 3 kratek
     private void scareNearbySharks(World world) {
@@ -76,27 +94,14 @@ public class Seal extends Carnivorous {
 
 
 
-    @Override
-    public void update(World world) {
-        processLifeCycle(world);
-        scareNearbySharks(world);
-        updateSealGraphics();
-        if (!isAlive()) return;
-
-        Reproduction.pregnancyTick(world, this);
-
-        tryToMate(world);
-        tryToAttack(world, this);
-        move(world);
-    }
-
-    /* ---------- GRAFIKA ---------- */
+    /* -------------------------------GRAPHICS------------------------------- */
 
     private static final int AGE_OLD = 18;
     private static Image babySeal;
     private static Image adultSeal;
 
     private final ImageView imageView = new ImageView();
+    @Override
     public ImageView getImageView() {
         return imageView;
     }

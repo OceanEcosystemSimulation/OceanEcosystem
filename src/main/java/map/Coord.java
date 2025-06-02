@@ -7,7 +7,7 @@ import java.util.*;
 
 // reprezentacja współrzędnych
 public class Coord {
-    public int x, y;
+    private int x, y;
     public static int allAtempts = 0;
 
     //inicjalizacja współrzędnych
@@ -74,6 +74,5 @@ public class Coord {
     public int getY() {
         return y;
     }
-
 }
 

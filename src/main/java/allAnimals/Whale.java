@@ -30,10 +30,6 @@ public class Whale extends Herbivorous {
     }
 
 
-    /* -------------------------------GENY------------------------------- */
-
-    //do tworzenia genów w nowych - zakresy w losowych wartościah do zmiany
-    //nie może potrzebować objektu by dzialac bo to ma tworzyć konstruktor (objekt) a nie byc uzywanym przez niego wiec static
     private static Genes generateGenes() {
         Genes genes = new Genes();
         genes.setStrength(Genes.mutate(50));
@@ -50,7 +46,7 @@ public class Whale extends Herbivorous {
     public void update(World world) {
         processLifeCycle(world); //duperele o życiu
         updateWhaleGraphics();
-        if (!isAlive()) return;
+        if (!isAlive()) { return; }
 
         Reproduction.pregnancyTick(world, this);
 
@@ -59,39 +55,38 @@ public class Whale extends Herbivorous {
         move(world); //wywołanie mechaniki ruchu
     }
 
+
     @Override
     public Animal giveBirth(Coord position, Animal parent1, Animal parent2) {
         return new Whale(position, parent1, parent2);
     }
 
 
-    /* -------------------------------MECHANIKA JEDZENIA------------------------------- */
-
-    //zjada o ile nie byłoby ponad 100 napchane
     @Override
-    public void eat(Tile tile, World world) { //przykładowe jak pisać
-        int gain = switch (tile.foodType) {
+    public void eat(Tile tile, World world) {
+        int gain = switch (tile.getFoodType()) {
             case PLANKTON -> 10;
             case ALGAE -> 15;
             default -> 0; //NONE
         };
         if (getFoodLevel()+gain <= 100){
             setFoodLevel(getFoodLevel() + gain); //je
-            SimulationStatsManager.writeToFile(this.getName() + "," + this.getId() + ",eats,,," + tile.foodType + "\n");
+            SimulationStatsManager.writeToFile(this.getName() + "," + this.getId() + ",eats,,," + tile.getFoodType() + "\n");
             tile.clearFood(world);
         }
     }
 
-    /* -------------------------------GRAFIKI------------------------------- */
+
+
+    /* -------------------------------GRAPHICS------------------------------- */
 
     private static Image youngWhale;
     private static Image oldWhale;
-    private static final int AGE_OLD = 18; // one turn = one month
+    private static final int AGE_OLD = 18;
 
     private final ImageView imageView = new ImageView();
-    public ImageView getImageView() { return imageView; } // getter
-
-    /* -------------------------------GUI------------------------------- */
+    @Override
+    public ImageView getImageView() { return imageView; }
 
 
     private static void loadImagesIfNeeded() {
@@ -117,6 +112,5 @@ public class Whale extends Herbivorous {
         double scale = isYoung ? 0.8 : 1.0;
         imageView.setFitWidth(Main.getTileSize() * 3 * scale);
         imageView.setFitHeight(Main.getTileSize() * 3 * scale);
-
     }
 }

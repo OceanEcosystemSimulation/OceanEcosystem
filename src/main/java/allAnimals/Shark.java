@@ -29,9 +29,7 @@ public class Shark extends Carnivorous {
     }
 
 
-    /* -------------------------------GENES------------------------------- */
-
-    //do tworzenia genów w nowych
+    //tworzenie genów
     private static Genes generateGenes() {
         Genes genes = new Genes();
         genes.setStrength(Genes.mutate(40));
@@ -47,9 +45,9 @@ public class Shark extends Carnivorous {
 
     @Override
     public void update(World world) {
-        processLifeCycle(world); //duperele o życiu
+        processLifeCycle(world);
         updateSharkGraphics();
-        if (!isAlive()) return;
+        if (!isAlive()) { return; }
 
         Reproduction.pregnancyTick(world, this);
 
@@ -58,16 +56,14 @@ public class Shark extends Carnivorous {
         tryToAttack(world, this); //wywołanie mechaniki ataku
     }
 
-    // tylko tata, bo kobieta rodzi
+
     @Override
     public Animal giveBirth(Coord position, Animal parent1, Animal parent2) {
         return new Shark(position, parent1, parent2);
     }
 
 
-
-    //stwierdziłam że dam tak bo bez sensu sie ma robić ciągle od nowa jak jest niezmienna
-    private static final List<String> preyList = List.of("Nemo"); //lista kogo atakuje - do zmiany wartości (dodawane po przecinku jak coś)
+    private static final List<String> preyList = List.of("Nemo"); //lista kogo atakuje
 
 
     @Override
@@ -75,13 +71,11 @@ public class Shark extends Carnivorous {
         return other != null && other.getName() != null && preyList.contains(other.getName());
     }
 
-    //przykładowe to wpisywania ile jakie jedzenie daje
-    //można zrobić ifem jak wcześniej było jak wam nie pasuje takie
+
     @Override
     public int calculateGain(Animal animal) {
         return switch (animal.getName()) {
             case "Nemo" -> 30;
-            //itd inne
             default -> 0;
         };
     }
@@ -91,12 +85,12 @@ public class Shark extends Carnivorous {
 
     private static Image YoungShark;
     private static Image OldShark;
-    private static final int AGE_OLD = 18; // one turn = one month
+    private static final int AGE_OLD = 18;
 
     private final ImageView imageView = new ImageView();
-    public ImageView getImageView() { return imageView; } // getter
+    @Override
+    public ImageView getImageView() { return imageView; }
 
-    /* -------------------------------GUI------------------------------- */
 
     private static void loadImagesIfNeeded() {
         if (YoungShark == null || OldShark == null) {
@@ -122,7 +116,5 @@ public class Shark extends Carnivorous {
         imageView.setFitWidth(Main.getTileSize() * scale);
         imageView.setFitHeight(Main.getTileSize() * scale);
     }
-
-
 }
 

@@ -41,6 +41,7 @@ public abstract class Carnivorous extends Animal implements IFight, IMove, IMate
     }
 
 
+    //machanika ataku
     public boolean attack(Animal prey, World world) {
         double attackerSpeed = AnimalCombatUtils.getEffectiveSpeed(this); //predator speed
         double preySpeed = AnimalCombatUtils.getEffectiveSpeed(prey); //prey speed
@@ -81,6 +82,7 @@ public abstract class Carnivorous extends Animal implements IFight, IMove, IMate
         }
         return false; //nikt nie został zabity w walce
     }
+
 
     @Override
     public void tryToMate(World world) {

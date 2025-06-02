@@ -10,7 +10,7 @@ class SimulationThread extends Thread {
     private final Slider speedSlider;
     private int actualTick = 0;
 
-    // szczerze już nwm co robię, teoretycznie przekazuje referencję do obiektu main żeby wątek miał dostęp do metod i danych
+
     public SimulationThread(Main mainInstance, Label statsLabel, Slider speedSlider) {
         this.mainInstance = mainInstance;
         this.statsLabel = statsLabel;

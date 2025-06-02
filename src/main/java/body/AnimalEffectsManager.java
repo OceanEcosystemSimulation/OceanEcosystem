@@ -3,8 +3,7 @@ package body;
 import ocean.SimulationStatsManager;
 
 public class AnimalEffectsManager {
-
-    //wczesniej poison() w Animal
+    //aktualizacja efektu poison
     static void applyPoisonEffect(Animal animal) {
         if (animal.getPoisonTicks() > 0) {
             animal.setHealth(animal.getHealth() - 5); // odejmuje 5HP co turę
@@ -12,15 +11,15 @@ public class AnimalEffectsManager {
         }
     }
 
-    //wczesniej w attack() w puffer
+
+    //zatruwa zwierze
     public static void poisonTarget(Animal target) {
         target.setPoisonTicks(4); //ustawia na ile jest poisoned
         SimulationStatsManager.writeToFile(target.getName() + " id: " + target.getId() + " is poisoned");
     }
 
 
-
-    //wczesniej updateSlowEffect() w Animal
+    //aktualizacja ink
     public static void updateInkEffect(Animal self) {
         if (self.getSlowCounter() > 0) {
             self.setSlowCounter(self.getSlowCounter() - 1);
