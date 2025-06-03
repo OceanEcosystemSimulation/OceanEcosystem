@@ -8,10 +8,19 @@ import movement.IFight;
 
 import java.util.List;
 
-//wszystkie przeszukiwania mapy
+/**
+ * Provides various search methods for locating food, prey, mates, and coral tiles within the world.
+ */
 public class WorldSearch {
 
-    //znajdywanie alg lub planktonu w okreslonym promieniu
+    /**
+     * Finds the nearest food source (algae or plankton) within the given radius.
+     * Searches for tiles containing food that are not occupied.
+     * @param world The simulation world in which it happens.
+     * @param position The central position.
+     * @param radius The search radius.
+     * @return The nearest tile containing food, or null if there is none found.
+     */
     public static Tile nearestFood(World world, Coord position, int radius) {
         Tile nearestFood = null; //zmenna z najblizszym jedzeniem
         int minDist = Integer.MAX_VALUE; //najmniejsza odległość od pozycji tego co je
@@ -36,7 +45,15 @@ public class WorldSearch {
 
 
 
-    //szuka najbliższego organizmu do zjedzenia (ofiarę)
+    /**
+     * Searches for the nearest prey within the specified radius.
+     * Ensures can attack it and it's not near a whale.
+     * @param world The world in which the animals exists.
+     * @param position The position of the predator.
+     * @param radius The search radius.
+     * @param predator The predator performing this search.
+     * @return The coordinates of the nearest prey, or null if there is none found.
+     */
     public static Coord nearestPrey(World world, Coord position, int radius, IFight predator) {
         Animal nearestPrey = null; //zmenna z najblizszą ofiarą
         int minDist = Integer.MAX_VALUE; //najmniejsza odległość od pozycji
@@ -55,7 +72,14 @@ public class WorldSearch {
     }
 
 
-    //znajduje zwierze w pobliżu - prawdopodobnie mozna to połączyć z nearestPrey <-- do zmiany póżniej moze
+    /**
+     * Finds the nearest mating partner of the same species within the given radius.
+     * @param world The world in which the animals exists.
+     * @param position The position of the searcher.
+     * @param radius The search radius.
+     * @param self The animal searching for a mate.
+     * @return The nearest compatible mate, or null if there is none found.
+     */
     public static Animal nearestMate(World world, Coord position, int radius, Animal self) {
         Animal nearestMate = null; //zmenna z najblizszym mate
         int minDist = Integer.MAX_VALUE; //najmniejsza odległość od pozycji
@@ -73,7 +97,13 @@ public class WorldSearch {
     }
 
 
-    //szuka najblizszego pola CORAL w promieniu
+    /**
+     * Finds the nearest coral reef tile within the specified radius.
+     * @param world The simulation world in which it happens.
+     * @param position The central position.
+     * @param radius The search radius.
+     * @return The coordinates of the nearest coral reef tile, or null if there is none found.
+     */
     public static Coord nearestCoral(World world, Coord position, int radius) {
         Coord nearestCoral = null; //zmienna do przechowywania coords tego pola
         int minDist = Integer.MAX_VALUE; //najmniejsza odległość od pozycji
@@ -95,8 +125,14 @@ public class WorldSearch {
         }
         return nearestCoral; //zwaca najbliższe pole z coral
     }
-    
-    
+
+
+    /**
+     * Checks if a whale is located near the given animal.
+     * @param world The world in which the animals exists.
+     * @param animal The animal to check if it's close to Whale.
+     * @return True if a Whale is nearby, otherwise false.
+     */
     public static boolean isWhaleNearby(World world, Animal animal) {
         for (Coord neighbor : Coord.getAdjacentCoords(animal.getPosition())) { //przeszukuje najblizsze pola zwierzaka
             if (world.inBounds(neighbor)) {

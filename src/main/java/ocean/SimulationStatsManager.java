@@ -9,11 +9,17 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-
+/**
+ * Manages simulation statistics, including tracking species counts, updating live stats, and logging data to a file.
+ */
 public class SimulationStatsManager {
     private static final Map<String, Integer> speciesCount = new HashMap<>(); //tworzy HashMap: gatunek->ilość
 
-    //liczenie zwierzat
+    /**
+     * Updates the count of living animals in the world.
+     * Clears previous data and recalculates based on currently alive animals.
+     * @param world The world in which the animal exists.
+     */
     public static void updateSpeciesCount(World world) {
         speciesCount.clear();  //czyści mapę - można jak będzie dużo rzeczy to zmienić to na jesli nie zywe to -1 i usuwa (zmienic z runSimulation) ale przy kilkuset podobno powinno byc git
         for (Animal animal : world.getAnimals()) {
@@ -26,7 +32,10 @@ public class SimulationStatsManager {
     }
 
 
-    //tekst do statystyk
+    /**
+     * Generates a text representation of the species count and logs it.
+     * @return Formatted statistics of animal species and their counts.
+     */
     private static String animalStatsText() {
         String statsText = "";
         String speciesNames = "\n";
@@ -41,7 +50,12 @@ public class SimulationStatsManager {
     }
 
 
-    //statystyki w kazdej turze
+    /**
+     * Updates the simulation statistics each round, displaying information about eaten food, dead animals, and species counts.
+     * @param world The simulation world in which it happens.
+     * @param statsLabel The label displaying stats.
+     * @param actualTick The current simulation tick.
+     */
     public static void updateStats(World world, Label statsLabel, int actualTick) {
         updateSpeciesCount(world);
 
@@ -54,7 +68,13 @@ public class SimulationStatsManager {
         writeToFile("\na1_species,a1_id,action,a2_species,a2_id,addition\n"); //nagłówek do akcji w turze w logach
     }
 
-    //statystyki końcowe
+
+    /**
+     * Displays final simulation statistics at the end of the simulation.
+     * @param world The simulation world in which it happens.
+     * @param statsLabel The label displaying stats.
+     * @param finalTick  The total number of ticks completed.
+     */
     public static void showEndStats(World world, Label statsLabel, int finalTick) {
         String statsText = ">>> KONIEC SYMULACJI <<<";
         if (world.isSimulationEnded()) { //kiedy wymuszono koniec symulacji
@@ -73,7 +93,10 @@ public class SimulationStatsManager {
     }
 
 
-    //zapis logów do pliku
+    /**
+     * Writes log data to a CSV file.
+     * @param line The log entry to be written.
+     */
     public static void writeToFile(String line) {
         try {
             FileWriter writer = new FileWriter("logi.csv", true); //true dopisuje na końcu a nie początku

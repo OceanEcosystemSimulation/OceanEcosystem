@@ -4,6 +4,11 @@ import javafx.application.Platform;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 
+
+/**
+ * Handles the simulation execution in a separate thread.
+ * Runs the simulation cycles, updates GUI, and manages speed adjustments.
+ */
 class SimulationThread extends Thread {
     //encapsulation
     private final Main mainInstance; //instancja main <-> przechowuje referencje do main bo potrzeba jej parametrów
@@ -19,7 +24,10 @@ class SimulationThread extends Thread {
     }
 
 
-    //odpowiada za przeprowadzenie symulacji
+    /**
+     * Runs the simulation loop.
+     * Executes simulation steps, updates GUI, and applies speed settings.
+     */
     @Override
     public void run() {  //run() odpala się zawsze chyba w wątku po wywołaniu start()
         SimulationStatsManager.writeToFile("\na1_species,a1_id,action,a2_species,a2_id,addition\n"); //nagłówek do akcji w turze w logach

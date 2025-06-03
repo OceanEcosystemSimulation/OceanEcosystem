@@ -9,6 +9,9 @@ import javafx.scene.shape.Rectangle;
 
 import java.net.URL;
 
+/**
+ * Manages the graphical display of the simulation, including the grid, statistics panel, speed slider, and background styles.
+ */
 public class SimulationDisplayManager {
     //encapsulation
     private final int width, height, tileSize;
@@ -24,7 +27,9 @@ public class SimulationDisplayManager {
     }
 
 
-    //ustawienia siatki
+    /**
+     * Sets up the grid for the simulation - initializing tiles.
+     */
     void setupGrid() {
         //GridPane pozwala na organizację elementów w formie siatki a nie jakiś węzłów więc to wzięłam ale nwm szczerze co robię XD
         grid = new GridPane(); //tworzenie układu siatki na której będą wyświetlane kafelki
@@ -64,7 +69,10 @@ public class SimulationDisplayManager {
     }
 
 
-    //ustawienia panelu ze statami
+    /**
+     * Sets up the statistics panel.
+     * @return "Box" containing simulation statistics.
+     */
     private VBox setupStatsPanel() {
         statsPanel = new VBox(); //tworzy taki kontener?? strukturę??? (VBox układa rzeczy jeden pod drugim)
         statsPanel.setTranslateY(5); //przesuwa statsPanel o 5px niżej
@@ -78,7 +86,10 @@ public class SimulationDisplayManager {
     }
 
 
-    //ustawienia slidera
+    /**
+     * Sets up the simulation speed control slider.
+     * @return The slider for controlling simulation speed.
+     */
     private Slider setupSpeedSlider() {
         speedSlider = new Slider();
         speedSlider.setMin(100);
@@ -95,7 +106,10 @@ public class SimulationDisplayManager {
     }
 
 
-    //ustawienia tła
+    /**
+     * Applies background styles from CSS file to the given scene.
+     * @param scene The scene where the styles will be applied.
+     */
     private void applyBackgroundStyles(Scene scene) {
         URL cssUrl = getClass().getResource("/style.css");
         if (cssUrl != null) {
@@ -106,7 +120,10 @@ public class SimulationDisplayManager {
     }
 
 
-    //tworzenie sceny
+    /**
+     * Creates the simulation scene containing the grid, statistics panel, and speed slider.
+     * @return The simulation scene.
+     */
     public Scene createScene() {
         VBox statsPanel = setupStatsPanel();
         Slider speedSlider = setupSpeedSlider();

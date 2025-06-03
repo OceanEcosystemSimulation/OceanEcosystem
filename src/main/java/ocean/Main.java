@@ -23,6 +23,10 @@ import java.util.List;
 import soundEffects.SoundPlayerLoop;
 
 
+/**
+ * The main entry point for the Ocean Ecosystem Simulation.
+ * This class initializes simulation parameters, sets up the graphical interface and manages the simulation cycle.
+ */
 public class Main extends Application {
     private static int tileSize; //piksele  //encapsulation
     static int width, height, noFood, noCoral, noAnimals, noTicks; //parametry wejsciowe
@@ -32,6 +36,11 @@ public class Main extends Application {
     private Rectangle[][] tilesTab; //tablica kafelków   //encapsulation
     private GridPane grid; //deklaracja grid   //encapsulation
 
+
+    /**
+     * The main method, starts all these simulation.
+     * Loads parameters from a CSV file, initializes settings and launches JavaFX.
+     */
     public static void main(String[] args) {
         SimulationStatsManager.writeToFile("\n\n>>> NEW SIMULATION BEGINS <<<\n\n"); //tak tylko by widzieć przy sprawdzaniu
 
@@ -83,6 +92,10 @@ public class Main extends Application {
 
 
 
+    /**
+     * Initializes and starts the simulation, setting up the world and graphical interface.
+     * @param primaryStage The main window of the application.
+     */
     @Override
     public void start(Stage primaryStage) {
         world = new World(width, height, noFood, noCoral, noAnimals);  //composition
@@ -111,7 +124,9 @@ public class Main extends Application {
 
 
 
-    //aktualizuje wyglad kafelków
+    /**
+     * Updates graphical representation of the world by refreshing tile visuals, clearing outdated images, and rendering environment elements, food, and animals.
+     */
     void updateGrid() {
         for (int x = 0; x < width; x++) { //przechodzi przez kazdy kafelek w siatce
             for (int y = 0; y < height; y++) {

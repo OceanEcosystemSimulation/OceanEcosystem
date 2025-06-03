@@ -10,6 +10,10 @@ import java.util.*;
 
 import static ocean.WorldSetup.*;
 
+/**
+ * Represents simulations world containing animals, terrain, and food sources.
+ * Handles simulation logic such as adding objects and running simulation cycles.
+ */
 public class World {
     //encapsulation (poza map size)
     private final int width, height; //powirzchnia mapy
@@ -40,7 +44,10 @@ public class World {
 
 
 
-    //główna symulacja świata - w każdym cyklu aktualizuje zwierzęta - dead alive
+    /**
+     * Runs the simulation step, updating objects, processing food, and checking for alive animals.
+     * @param tick The current simulation tick.
+     */
     public void runSimulation(int tick) {
         addTralaleroTralala(); // próbuje dodac tralalero ale rarity to 0.5%, więc co tick
         List<WorldObject> currentObjects = new ArrayList<>(objects); //tworzenie kopii by nie aktualizować m.in. dopiero co urodzonych
@@ -77,7 +84,9 @@ public class World {
     }
 
 
-    //kończy symulacje
+    /**
+     * Forces the simulation to end.
+     */
     public void endSimulation() {
         simulationEnded = true;
     }
@@ -86,6 +95,10 @@ public class World {
 
     private boolean tralaleroSpawned = false;  //encapsulation
 
+
+    /**
+     * Attempts to spawn the legendary boss entity "TralaleroTralala" with a 0.5% probability.
+     */
     private void addTralaleroTralala() {
         if (!tralaleroSpawned && random.nextInt(200) == 0) { // 0.5% szans
             tralaleroSpawned = true;
@@ -119,7 +132,12 @@ public class World {
 
 
 
-    //zwraca listę zwierząt które znajdują się w pobliżu określonych współrzędnych Coord
+    /**
+     * Returns a list of animals near the specified coordinates within a given radius.
+     * @param coord  The central coordinate.
+     * @param radius The radius to check for nearby animals.
+     * @return List of nearby animals.
+     */
     public List<Animal> getNearbyAnimals(Coord coord, int radius) {
         List<Animal> result = new ArrayList<>(); //lista do przechowywania zwierzat w okolicy
         for (Animal animal : animals) {
@@ -141,21 +159,38 @@ public class World {
     public boolean isSimulationEnded() { return simulationEnded; }
 
 
-    //zwraca komórkę jeśli jest w granicach
+    /**
+     * Retrieves the tile at the given coordinates, ensuring it's within bounds.
+     * @param coord The coordinate to check.
+     * @return The tile at the given location, or null if out of bounds.
+     */
     public Tile getTile(Coord coord) {
         return inBounds(coord) ? grid[coord.getX()][coord.getY()] : null;
     }
 
-    //sprawdza czy dane pole jest w zasięgu mapy
+
+    /**
+     * Checks if a coordinate is within the world boundaries.
+     * @param coord The coordinate to check.
+     * @return True if within bounds, otherwise false.
+     */
     public boolean inBounds(Coord coord) {
         return coord.getX() >= 0 && coord.getX() < width && coord.getY() >= 0 && coord.getY() < height;
     }
 
-    //sprawdza czy dane pole jest zajete, zwraca true jeśli not empty
+    /**
+     * Determines if a tile is occupied by an animal.
+     * @param coord The coordinate to check.
+     * @return True if occupied, otherwise false.
+     */
     public boolean isOccupied(Coord coord) { return !getNearbyAnimals(coord, 0).isEmpty(); }
 
 
-    //dodaje objekty do listy
+    /**
+     * Adds an object to the world.
+     * If the object is an alive animal, it's also added to the animal list.
+     * @param object The object to add.
+     */
     public void addObject(WorldObject object) {
         if (object == null) { return; }
 
@@ -166,7 +201,11 @@ public class World {
     }
 
 
-    //usuwa objekty z lisy
+    /**
+     * Removes an object from the world.
+     * If the object is a dead animal, it's removed from both the animal list and the object list.
+     * @param object The object to remove.
+     */
     public void removeObject(WorldObject object) {
         if (object instanceof Animal animal && !animal.isAlive()) { //tylko zwierzeta
             animals.remove(animal);

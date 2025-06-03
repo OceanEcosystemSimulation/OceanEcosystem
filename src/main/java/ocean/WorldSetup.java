@@ -8,11 +8,18 @@ import map.FoodType;
 import map.MapType;
 import map.Tile;
 
+/**
+ * Handles the initial setup of the simulation world, including terrain, animals, and food distribution.
+ */
 public class WorldSetup {
 
     /* -------------------------------RAFY KORALOWE------------------------------- */
 
-    //inicjuje pola mapy jako NORMAL i losuje miejsca raf
+    /**
+     * Initializes the map tiles and randomly generates coral reefs.
+     * @param world The simulation world in which it happens.
+     * @param noCoral The number of coral reefs to generate.
+     */
     static void initTiles(World world, int noCoral) {
         Tile[][] grid = world.getGrid();
         int width = world.getWidth();
@@ -76,6 +83,13 @@ public class WorldSetup {
         }
     }
 
+
+    /**
+     * Calculates the maximum number of coral reefs possible based on map size.
+     * @param width The map width.
+     * @param height The map height.
+     * @return The maximum number of coral reefs that can be placed.
+     */
     static int maxCountOnMap(int width, int height) {
         int maxHeight = (int) (height * 0.35);
         int spawningAreaHeight = height - maxHeight;
@@ -90,7 +104,12 @@ public class WorldSetup {
 
     /* -------------------------------ZWIERZĘTA------------------------------- */
 
-    //dodaje okreslona liczbe dowolnych (rarity) zwierząt do listy w losowych pozycjach
+
+    /**
+     * Randomly spawns animals in the simulation world based on rarity.
+     * @param world The simulation world in which it happens.
+     * @param count The number of animals to spawn.
+     */
     static void spawnAnimals(World world, int count) {
         int added = 0; //ile zwierzat dodano pomyślnie
         int maxCount = Math.min(count, world.getHeight() * world.getWidth()); //jeśli count jest wiecej niz pól dodaje ile może
@@ -119,7 +138,12 @@ public class WorldSetup {
     }
 
 
-    //tworzenie zwierząt
+    /**
+     * Creates an animal instance based on its type name.
+     * @param name The name of the animal type.
+     * @param position The position where the animal should be created.
+     * @return A new animal instance, or null if invalid.
+     */
     static Animal createAnimalFromName(String name, Coord position) {
         return switch (name) {
             case "Nemo" -> new Nemo(position);
@@ -143,7 +167,11 @@ public class WorldSetup {
 
     /* -------------------------------JEDZENIE------------------------------- */
 
-    //losowo rozmieszcza jedzenie
+    /**
+     * Spawns food sources at random locations in the world.
+     * @param world The simulation world in which it happens.
+     * @param noFood The number of food sources to generate.
+     */
     static void spawnFood(World world, int noFood) {
         int maxNoFood = Math.min(noFood, world.getHeight() * world.getWidth()); //jeśli count jest wiecej niz pól dodaje ile może
         int added = 0; //ile pomyślnie dodano
@@ -177,6 +205,11 @@ public class WorldSetup {
     /* -------------------------------KOORDYNATY------------------------------- */
 
     //generuje losowe współrzedne Coord na swiecie - w granicach ofc bo random.nextInt(bound) zawsze zwraca liczbę w zakresie [0, bound)
+    /**
+     * Generates random coordinates within the world boundaries.
+     * @param world  The simulation world in which it happens.
+     * @return A randomly generated coordinate.
+     */
     static Coord randomCoord(World world) {
         return new Coord(World.random.nextInt(world.getWidth()), World.random.nextInt(world.getHeight()));
     }
