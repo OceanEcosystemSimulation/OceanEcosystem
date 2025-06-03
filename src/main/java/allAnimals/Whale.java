@@ -15,6 +15,9 @@ import java.awt.*;
 import java.util.Objects;
 
 //inheritance from Herbivorous
+/**
+ * Represents a Whale, inheriting from Herbivorous.
+ */
 public class Whale extends Herbivorous {
     public Whale(Coord position) {
         super(position, generateGenes());
@@ -30,6 +33,10 @@ public class Whale extends Herbivorous {
     }
 
 
+    /**
+     * Generates default genetic attributes.
+     * @return The genes object containing attributes.
+     */
     private static Genes generateGenes() {
         Genes genes = new Genes();
         genes.setStrength(50);
@@ -87,6 +94,9 @@ public class Whale extends Herbivorous {
     public ImageView getImageView() { return imageView; }
 
 
+    /**
+     * Loads animal images if not already loaded or if there is graphic environment.
+     */
     private static void loadImagesIfNeeded() {
         if (youngWhale == null || oldWhale == null) {
             if (!GraphicsEnvironment.isHeadless()) { //sprawdza czy jest srodowisko graficzne (testy go nie mają)
@@ -96,11 +106,17 @@ public class Whale extends Herbivorous {
         }
     }
 
+    /**
+     * Initializes graphical settings.
+     */
     private void settings() {
         imageView.setPreserveRatio(true);
         updateWhaleGraphics();
     }
 
+    /**
+     * Updates the graphical representation of the animal based on its age.
+     */
     private void updateWhaleGraphics() {
         loadImagesIfNeeded();
 

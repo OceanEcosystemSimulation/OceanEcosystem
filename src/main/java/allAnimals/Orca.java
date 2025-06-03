@@ -16,6 +16,9 @@ import java.util.Objects;
 import static body.AnimalCombatUtils.randomMove;
 
 //inheritance from Carnivorous
+/**
+ * Represents an Orca, inheriting from Carnivorous.
+ */
 public class Orca extends Carnivorous {
     //encapsulation
     private int boostTurns = 0;//przyspieszenie ile zostalo
@@ -34,6 +37,10 @@ public class Orca extends Carnivorous {
         settings();
     }
 
+    /**
+     * Generates default genetic attributes.
+     * @return The genes object containing attributes.
+     */
     private static Genes generateGenes() {
         Genes genes = new Genes();
         genes.setStrength(70);
@@ -85,7 +92,13 @@ public class Orca extends Carnivorous {
     }
 
 
-    //mechanika ruchu
+    /**
+     * Handles the movement of the Orca, considering speed, prey, and temporary boosts.
+     * If prey is nearby, the animal accelerates for a short duration.
+     * After using a speed boost, the animal requires a cooldown before boosting again.
+     * If food level is below 70, it prioritizes moving toward prey, otherwise it moves randomly.
+     * @param world The world in which the animal exists.
+     */
     @Override
     public void move(World world) {  //polymorphism
         int speed = getGenes().getSpeed();
@@ -134,6 +147,9 @@ public class Orca extends Carnivorous {
         return imageView;
     }
 
+    /**
+     * Loads animal images if not already loaded or if there is graphic environment.
+     */
     private static void loadImagesIfNeeded() {
         if (BabyOrca == null || AdultOrca == null) {
             if (!GraphicsEnvironment.isHeadless()) { //sprawdza czy jest srodowisko graficzne (testy go nie mają)
@@ -143,11 +159,17 @@ public class Orca extends Carnivorous {
         }
     }
 
+    /**
+     * Initializes graphical settings.
+     */
     private void settings() {
         imageView.setPreserveRatio(true);
         updateOrcaGraphics();
     }
 
+    /**
+     * Updates the graphical representation of the animal based on its age.
+     */
     private void updateOrcaGraphics() {
         loadImagesIfNeeded();
 

@@ -15,6 +15,9 @@ import java.util.Objects;
 
 
 //inheritance from Carnivorous
+/**
+ * Represents a Dolphin, inheriting from Carnivorous.
+ */
 public class Dolphin extends Carnivorous {
     public Dolphin(Coord position) {
         super(position, generateGenes());
@@ -31,7 +34,10 @@ public class Dolphin extends Carnivorous {
     }
 
 
-    //tworzenie genów
+    /**
+     * Generates default genetic attributes.
+     * @return The genes object containing attributes.
+     */
     private static Genes generateGenes() {
         Genes genes = new Genes();
         genes.setStrength(40);
@@ -99,6 +105,12 @@ public class Dolphin extends Carnivorous {
         this.stunned = stunned;
     }
 
+
+    /**
+     * Handles the movement of the Dolphin.
+     * If stunned, movement is prevented and logged, otherwise normal movement occurs.
+     * @param world The world in which the animal exists.
+     */
     @Override
     public void move(World world) {  //polymorphism
         if (isStunned()) {
@@ -119,6 +131,9 @@ public class Dolphin extends Carnivorous {
     public ImageView getImageView() { return imageView; }
 
 
+    /**
+     * Loads Dolphin images if not already loaded or if there is graphic environment.
+     */
     private static void loadImagesIfNeeded() {
         if (babyDolphin == null || dolphin == null) {
             if (!GraphicsEnvironment.isHeadless()) { //sprawdza czy jest srodowisko graficzne (testy go nie mają)
@@ -128,11 +143,18 @@ public class Dolphin extends Carnivorous {
         }
     }
 
+    /**
+     * Initializes graphical settings for the Dolphin.
+     */
     private void settings() {
         imageView.setPreserveRatio(true);
         updateDolphinGraphics();
     }
 
+
+    /**
+     * Updates the graphical representation of the Crab based on its age.
+     */
     private void updateDolphinGraphics() {
         loadImagesIfNeeded();
 

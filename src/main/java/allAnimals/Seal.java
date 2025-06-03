@@ -14,6 +14,9 @@ import java.util.List;
 import java.util.Objects;
 
 //inheritance from Carnivorous
+/**
+ * Represents a Seal, inheriting from Carnivorous.
+ */
 public class Seal extends Carnivorous {
     public Seal(Coord position) {
         super(position, generateGenes());
@@ -28,6 +31,10 @@ public class Seal extends Carnivorous {
         settings();
     }
 
+    /**
+     * Generates default genetic attributes.
+     * @return The genes object containing attributes.
+     */
     private static Genes generateGenes() {
         Genes genes = new Genes();
         genes.setStrength(40);
@@ -80,7 +87,11 @@ public class Seal extends Carnivorous {
     }
 
 
-    //straszy rekiny w zasięgu 3 kratek
+    /**
+     * Causes nearby sharks within a radius of 3 tiles to flee.
+     * Logs the event and triggers an escape mechanism for affected sharks.
+     * @param world The world in which the animal exists.
+     */
     private void scareNearbySharks(World world) {
         List<Animal> nearbyAnimals = world.getNearbyAnimals(getPosition(), 3); //bierze zwierzeta w zasiegu 3
 
@@ -105,6 +116,9 @@ public class Seal extends Carnivorous {
         return imageView;
     }
 
+    /**
+     * Loads animal images if not already loaded or if there is graphic environment.
+     */
     private static void loadImagesIfNeeded() {
         if (babySeal == null || adultSeal == null) {
             if (!GraphicsEnvironment.isHeadless()) {
@@ -114,11 +128,17 @@ public class Seal extends Carnivorous {
         }
     }
 
+    /**
+     * Initializes graphical settings.
+     */
     private void settings() {
         imageView.setPreserveRatio(true);
         updateSealGraphics();
     }
 
+    /**
+     * Updates the graphical representation of the animal based on its age.
+     */
     private void updateSealGraphics() {
         loadImagesIfNeeded();
 

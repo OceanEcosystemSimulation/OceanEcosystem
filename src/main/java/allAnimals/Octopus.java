@@ -13,6 +13,9 @@ import java.util.List;
 import java.util.Objects;
 
 //inheritance from Carnivorous
+/**
+ * Represents an Octopus, inheriting from Carnivorous.
+ */
 public class Octopus extends Carnivorous {
     //encapsulation
     private int inkCooldown = 0; //ile tur zostało do odnowienia chmurki
@@ -32,7 +35,10 @@ public class Octopus extends Carnivorous {
     }
 
 
-    //tworzenie genów
+    /**
+     * Generates default genetic attributes.
+     * @return The genes object containing attributes.
+     */
     private static Genes generateGenes() {
         Genes genes = new Genes();
         genes.setStrength(40);
@@ -47,6 +53,13 @@ public class Octopus extends Carnivorous {
 
     /* -------------------------------INK------------------------------- */
 
+
+    /**
+     * Releases an ink cloud if the cooldown has expired.
+     * The ink affects nearby Dolphins within a radius of 2 tiles.
+     * Ensures that no duplicate ink clouds are created for the same target.
+     * @param world The simulation world in which it happens.
+     */
     private void releaseInk(World world) {
         if (inkCooldown > 0) return; //nie może jeszcze wypuscic chmurki
 
@@ -131,7 +144,9 @@ public class Octopus extends Carnivorous {
     @Override
     public ImageView getImageView() { return imageView; }
 
-
+    /**
+     * Loads animal images if not already loaded or if there is graphic environment.
+     */
     private static void loadImagesIfNeeded() {
         if (babyOctopus == null || Octopus == null) {
             if (!GraphicsEnvironment.isHeadless()) { //sprawdza czy jest srodowisko graficzne (testy go nie mają)
@@ -141,11 +156,17 @@ public class Octopus extends Carnivorous {
         }
     }
 
+    /**
+     * Initializes graphical settings.
+     */
     private void settings() {
         imageView.setPreserveRatio(true);
         updateOctopusGraphics();
     }
 
+    /**
+     * Updates the graphical representation of the animal based on its age.
+     */
     private void updateOctopusGraphics() {
         loadImagesIfNeeded();
 

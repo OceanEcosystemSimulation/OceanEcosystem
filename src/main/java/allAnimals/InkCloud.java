@@ -13,6 +13,10 @@ import java.awt.*;
 import java.util.Objects;
 
 //inheritance from WorldObject
+/**
+ * Represents an ink cloud that temporarily stuns nearby Dolphins.
+ * Inherits from WorldObject.
+ */
 public class InkCloud extends WorldObject {
     //encapsulation
     private int remainingTime = 2; //znika po 2 turach
@@ -29,6 +33,11 @@ public class InkCloud extends WorldObject {
     }
 
 
+    /**
+     * Updates the InkCloud’s lifecycle, decreasing its duration each turn.
+     * When the duration expires, the ink effect is removed and the object disappears.
+     * @param world The simulation world in which it happens.
+     */
     @Override
     public void update(World world) {  //polymorphism
         remainingTime--;
@@ -57,7 +66,9 @@ public class InkCloud extends WorldObject {
     @Override
     public ImageView getImageView() { return imageView; }
 
-
+    /**
+     * Initializes graphical settings for the InkCloud.
+     */
     private void setupGraphics() {
         if (inkImage == null && !GraphicsEnvironment.isHeadless()) {  //sprawdza czy jest srodowisko graficzne
             inkImage = new Image(Objects.requireNonNull(InkCloud.class.getResource("/images/Ink.png")).toExternalForm());

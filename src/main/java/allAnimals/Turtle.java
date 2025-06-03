@@ -14,6 +14,9 @@ import java.util.List;
 import java.util.Objects;
 
 //inheritance from Omnivorous
+/**
+ * Represents a Turtle, inheriting from Omnivorous.
+ */
 public class Turtle extends Omnivorous {
     public Turtle(Coord position) {
         super(position, generateGenes());
@@ -29,6 +32,10 @@ public class Turtle extends Omnivorous {
     }
 
 
+    /**
+     * Generates default genetic attributes.
+     * @return The genes object containing attributes.
+     */
     private static Genes generateGenes() {
         Genes genes = new Genes();
         genes.setStrength(30);
@@ -105,7 +112,9 @@ public class Turtle extends Omnivorous {
     @Override
     public ImageView getImageView() { return imageView; }
 
-
+    /**
+     * Loads animal images if not already loaded or if there is graphic environment.
+     */
     private static void loadImagesIfNeeded() {
         if (babyImage == null || adultImage == null) {
             if (!GraphicsEnvironment.isHeadless()) {
@@ -115,11 +124,17 @@ public class Turtle extends Omnivorous {
         }
     }
 
+    /**
+     * Initializes graphical settings.
+     */
     private void settings() {
         imageView.setPreserveRatio(true);
         updateTurtleGraphics();
     }
 
+    /**
+     * Updates the graphical representation of the animal based on its age.
+     */
     private void updateTurtleGraphics() {
         loadImagesIfNeeded();
         boolean isYoung = getAge() < getMajority();

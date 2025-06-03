@@ -13,6 +13,9 @@ import java.util.List;
 import java.util.Objects;
 
 //inheritance from Carnivorous
+/**
+ * Represents a Shark, inheriting from Carnivorous.
+ */
 public class Shark extends Carnivorous {
     public Shark(Coord position) {
         super(position, generateGenes());
@@ -29,7 +32,10 @@ public class Shark extends Carnivorous {
     }
 
 
-    //tworzenie genów
+    /**
+     * Generates default genetic attributes.
+     * @return The genes object containing attributes.
+     */
     private static Genes generateGenes() {
         Genes genes = new Genes();
         genes.setStrength(40);
@@ -91,6 +97,9 @@ public class Shark extends Carnivorous {
     public ImageView getImageView() { return imageView; }
 
 
+    /**
+     * Loads animal images if not already loaded or if there is graphic environment.
+     */
     private static void loadImagesIfNeeded() {
         if (YoungShark == null || OldShark == null) {
             if (!GraphicsEnvironment.isHeadless()) { //sprawdza czy jest srodowisko graficzne (testy go nie mają)
@@ -100,11 +109,17 @@ public class Shark extends Carnivorous {
         }
     }
 
+    /**
+     * Initializes graphical settings.
+     */
     private void settings() {
         imageView.setPreserveRatio(true);
         updateSharkGraphics();
     }
 
+    /**
+     * Updates the graphical representation of the animal based on its age.
+     */
     private void updateSharkGraphics() {
         loadImagesIfNeeded();
 

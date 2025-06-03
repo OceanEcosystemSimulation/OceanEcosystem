@@ -16,6 +16,9 @@ import java.util.Objects;
 
 
 //inheritance from Herbivorous
+/**
+ * Represents a Star, inheriting from Herbivorous.
+ */
 public class Star extends Herbivorous {
     public Star(Coord position) {
         super(position, generateGenes());
@@ -31,6 +34,10 @@ public class Star extends Herbivorous {
     }
 
 
+    /**
+     * Generates default genetic attributes.
+     * @return The genes object containing attributes.
+     */
     private static Genes generateGenes() {
         Genes genes = new Genes();
         genes.setStrength(5);
@@ -90,6 +97,9 @@ public class Star extends Herbivorous {
     public ImageView getImageView() { return imageView; }
 
 
+    /**
+     * Loads animal images if not already loaded or if there is graphic environment.
+     */
     private static void loadImagesIfNeeded() {
         if (babyStar == null || adultStar == null) {
             if (!GraphicsEnvironment.isHeadless()) { //sprawdza czy jest srodowisko graficzne (testy go nie mają)
@@ -99,11 +109,17 @@ public class Star extends Herbivorous {
         }
     }
 
+    /**
+     * Initializes graphical settings.
+     */
     private void settings() {
         imageView.setPreserveRatio(true);
         updateStarGraphics();
     }
 
+    /**
+     * Updates the graphical representation of the animal based on its age.
+     */
     private void updateStarGraphics() {
         loadImagesIfNeeded();
 

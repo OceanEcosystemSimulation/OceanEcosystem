@@ -15,6 +15,9 @@ import java.util.Objects;
 
 
 //Crab - inherits (dziedziczy) from Omnivorous
+/**
+ * Represents a Crab, inheriting from Omnivorous.
+ */
 public class Crab extends Omnivorous {
     public Crab(Coord position) {
         super(position, generateGenes());
@@ -30,7 +33,10 @@ public class Crab extends Omnivorous {
     }
 
 
-    //tworzenie genów
+    /**
+     * Generates default genetic attributes.
+     * @return The genes object containing attributes.
+     */
     private static Genes generateGenes() {
         Genes genes = new Genes();
         genes.setStrength(10);
@@ -106,6 +112,9 @@ public class Crab extends Omnivorous {
     @Override
     public ImageView getImageView() { return imageView; }
 
+    /**
+     * Loads animal images if not already loaded or if there is graphic environment.
+     */
     private static void loadImagesIfNeeded() {
         if (babyImage == null || adultImage == null) {
             if (!GraphicsEnvironment.isHeadless()) {
@@ -115,11 +124,17 @@ public class Crab extends Omnivorous {
         }
     }
 
+    /**
+     * Initializes graphical settings.
+     */
     private void settings() {
         imageView.setPreserveRatio(true);
         updateCrabGraphics();
     }
 
+    /**
+     * Updates the graphical representation of the animal based on its age.
+     */
     private void updateCrabGraphics() {
         loadImagesIfNeeded();
         boolean isYoung = getAge() < getMajority();

@@ -15,6 +15,9 @@ import java.awt.*;
 import java.util.Objects;
 
 //inheritance from Herbivorous
+/**
+ * Represents a Shrimp, inheriting from Herbivorous.
+ */
 public class Shrimp extends Herbivorous {
     public Shrimp(Coord position) {
         super(position, generateGenes());
@@ -30,6 +33,10 @@ public class Shrimp extends Herbivorous {
     }
 
 
+    /**
+     * Generates default genetic attributes.
+     * @return The genes object containing attributes.
+     */
     private static Genes generateGenes() {
         Genes genes = new Genes();
         genes.setStrength(5);
@@ -88,6 +95,9 @@ public class Shrimp extends Herbivorous {
     public ImageView getImageView() { return imageView; }
 
 
+    /**
+     * Loads animal images if not already loaded or if there is graphic environment.
+     */
     private static void loadImagesIfNeeded() {
         if (babyShrimp == null || adultShrimp == null) {
             if (!GraphicsEnvironment.isHeadless()) { //sprawdza czy jest srodowisko graficzne (testy go nie mają)
@@ -97,11 +107,17 @@ public class Shrimp extends Herbivorous {
         }
     }
 
+    /**
+     * Initializes graphical settings.
+     */
     private void settings() {
         imageView.setPreserveRatio(true);
         updateShrimpGraphics();
     }
 
+    /**
+     * Updates the graphical representation of the animal based on its age.
+     */
     private void updateShrimpGraphics() {
         loadImagesIfNeeded();
 

@@ -11,6 +11,10 @@ import java.awt.*;
 import java.util.Objects;
 
 //inheritance from WorldObject
+/**
+ * Represents a Skeleton that remains visible for a certain number of simulation turns before decomposing.
+ * Inherits from WorldObject.
+ */
 public class Skeleton extends WorldObject {
     //encapsulation
     private int decompositionTime = 5; // czas w turach, wyznaczający ile czasu będzie się wyświetlał szkielet
@@ -25,6 +29,12 @@ public class Skeleton extends WorldObject {
 
     /* -------------------------------MECHANIKA------------------------------- */
 
+
+    /**
+     * Updates Skeleton's lifecycle each turn.
+     * Gradually decomposes over time and is removed when decomposition time reaches zero.
+     * @param world The simulation world in which it happens.
+     */
     @Override
     public void update(World world) {   //polymorphism
         // czas rozkładu szkieletu, co turę się zmniejsza, finalnie się usunie
@@ -44,6 +54,9 @@ public class Skeleton extends WorldObject {
     public ImageView getImageView() { return imageView; }
 
 
+    /**
+     * Loads skeleton image if not already loaded or if there is graphic environment.
+     */
     private static void loadImagesIfNeeded() {
         if (SkeletonImage == null) {
             if (!GraphicsEnvironment.isHeadless()) { //sprawdza czy jest srodowisko graficzne (testy go nie mają)
@@ -52,7 +65,9 @@ public class Skeleton extends WorldObject {
         }
     }
 
-    // dodanie grafiki
+    /**
+     * Initializes graphical settings.
+     */
     private void settings() {
         loadImagesIfNeeded();
 

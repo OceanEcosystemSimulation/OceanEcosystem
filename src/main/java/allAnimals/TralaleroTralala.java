@@ -17,6 +17,12 @@ import java.util.List;
 import java.util.Objects;
 
 //inheritance from Animal
+/**
+ * Represents the powerful and legendary TralaleroTralala, a special entity in the simulation.
+ * Has exceptionally high stats and eliminates nearby animals while moving.
+ * Inherits from Animal.
+ */
+
 public class TralaleroTralala extends Animal {
     public TralaleroTralala(Coord position) {
         super(position, generateGenes());
@@ -24,6 +30,10 @@ public class TralaleroTralala extends Animal {
         settings();
     }
 
+    /**
+     * Generates default genetic attributes.
+     * @return The genes object containing attributes.
+     */
     private static Genes generateGenes() {
         Genes genes = new Genes();
         genes.setStrength(1000000);
@@ -34,6 +44,13 @@ public class TralaleroTralala extends Animal {
         return genes;
     }
 
+
+    /**
+     * Updates TralaleroTralala's lifecycle in the simulation.
+     * Moves randomly and eliminates nearby animals except those on coral tiles.
+     * Plays a sound effect when an animal is removed.
+     * @param world The world in which the animal exists.
+     */
 
     public void update(World world) {  //polymorphism
         this.setAge(this.getAge() + 1);
@@ -81,6 +98,9 @@ public class TralaleroTralala extends Animal {
     public ImageView getImageView() { return imageView; } // getter
 
 
+    /**
+     * Loads animal images if not already loaded or if there is graphic environment.
+     */
     private static void loadImagesIfNeeded() {
         if (boss == null) {
             if (!GraphicsEnvironment.isHeadless()) { //sprawdza czy jest srodowisko graficzne (testy go nie mają)
@@ -89,11 +109,18 @@ public class TralaleroTralala extends Animal {
         }
     }
 
+
+    /**
+     * Initializes graphical settings.
+     */
     private void settings() {
         imageView.setPreserveRatio(true);
         updateBossGraphics();
     }
 
+    /**
+     * Updates the graphical representation of TralaleroTralala.
+     */
     private void updateBossGraphics() {
         loadImagesIfNeeded();
 

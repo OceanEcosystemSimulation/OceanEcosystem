@@ -14,6 +14,9 @@ import java.util.List;
 import java.util.Objects;
 
 //inheritance from Omnivorous
+/**
+ * Represents a Oceanic Puffer, inheriting from Omnivorous.
+ */
 public class OceanicPuffer extends Omnivorous {
     public OceanicPuffer(Coord position) {
         super(position, generateGenes());
@@ -29,6 +32,10 @@ public class OceanicPuffer extends Omnivorous {
     }
 
 
+    /**
+     * Generates default genetic attributes.
+     * @return The genes object containing attributes.
+     */
     private static Genes generateGenes() {
         Genes genes = new Genes();
         genes.setStrength(20);
@@ -70,7 +77,14 @@ public class OceanicPuffer extends Omnivorous {
     }
 
 
-    //mechanika ataku
+    /**
+     * Executes combat between this animal and a target.
+     * Determines the winner based on combat power and applies effects accordingly.
+     * If the attacker has higher power, the target dies, otherwise the attacker dies and poisons the opponent.
+     * @param target The animal being attacked.
+     * @param world The simulation world in which it happens.
+     * @return True if the target is killed, otherwise false.
+     */
     @Override
     public boolean attack(Animal target, World world) {   //polymorphism
         double attackerPower = AnimalCombatUtils.getCombatPower(this);
@@ -123,7 +137,9 @@ public class OceanicPuffer extends Omnivorous {
     @Override
     public ImageView getImageView() { return imageView; }
 
-
+    /**
+     * Loads animal images if not already loaded or if there is graphic environment.
+     */
     private static void loadImagesIfNeeded() {
         if (babyImage == null || adultImage == null) {
             if (!GraphicsEnvironment.isHeadless()) {
@@ -133,11 +149,17 @@ public class OceanicPuffer extends Omnivorous {
         }
     }
 
+    /**
+     * Initializes graphical settings.
+     */
     private void settings() {
         imageView.setPreserveRatio(true);
         updatePufferGraphics();
     }
 
+    /**
+     * Updates the graphical representation of the animal based on its age.
+     */
     private void updatePufferGraphics() {
         loadImagesIfNeeded();
         boolean isYoung = getAge() < getMajority();
