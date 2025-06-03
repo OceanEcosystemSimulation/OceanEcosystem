@@ -2,7 +2,9 @@ package map;
 
 import ocean.World;
 
-//reprezentacja pól mapy
+/**
+ * Represents a tile on the map.
+ */
 public class Tile {
     //encapsulation
     private final int x, y; //współrzędne
@@ -16,12 +18,19 @@ public class Tile {
     }
 
 
-    //sprawdza czy jest jedzenie
+    /**
+     * Checks if the tile contains food (plankton or algae).
+     * @return True if there is food on the tile, otherwise false.
+     */
     public boolean hasFood() {
         return foodType != FoodType.NONE;
     }
 
-    //usuwanie jedzenia
+
+    /**
+     * Removes food from the tile and updates the world's food consumption statistics.
+     * @param world The simulation world in which it happens.
+     */
     public void clearFood(World world) {
         foodType = FoodType.NONE;
         world.setEatenFoodCounter(world.getEatenFoodCounter() + 1);

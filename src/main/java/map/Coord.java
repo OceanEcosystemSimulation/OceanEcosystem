@@ -5,26 +5,40 @@ import ocean.World;
 import java.util.*;
 
 
-// reprezentacja współrzędnych
+/**
+ * Represents a coordinate in a two-dimensional space.
+ */
 public class Coord {
     private int x, y;  //encapsulation
     public static int allAtempts = 0;
 
-    //inicjalizacja współrzędnych
     public Coord(int x, int y) {
         this.x = x;
         this.y = y;
     }
 
 
-    //odległość - wykorzystuje metrykę maksimum (Czebyszewa) - max różnica w osi x lub y
+    /**
+     * Calculates the distance to another coordinate using the Chebyshev metric.
+     * @param other The target coordinate.
+     * @return The maximum difference in the x or y axis.
+     */
     public int distance(Coord other) {
         int dx = Math.abs(this.x - other.x);
         int dy = Math.abs(this.y - other.y);
         return Math.max(dx, dy);  // max( |x1 - x2|; |y1 - y2| )
     }
 
-    //losuje nowe współrzędne od -speed do +speed (ofc w granicach świata) - jesli juz ktos tam jest to losuje dalej
+
+    /**
+     * Generates a new random adjacent coordinate within a movement range (±speed), ensuring it remains within the map's boundaries.
+     * If the new coordinate is already occupied, it continues attempting to find a valid position (if it's possible).
+     * @param width  The width of the map.
+     * @param height The height of the map.
+     * @param speed  The movement speed determining range.
+     * @param world  The simulation world in which it happens.
+     * @return New coordinate within the movement range, or null if too many failed attempts.
+     */
     public Coord randomAdjacent(int width, int height, int speed, World world) {
         Coord newCoord;
         int attempts = 0;
@@ -52,7 +66,11 @@ public class Coord {
     }
 
 
-    //zwraca sąsiednie pola wokół coord
+    /**
+     * Returns a list of all adjacent coordinates surrounding the given coordinate.
+     * @param coord The central coordinate.
+     * @return A list of adjacent coordinates.
+     */
     public static List<Coord> getAdjacentCoords(Coord coord) {
         int x = coord.getX(); //aktualne x
         int y = coord.getY(); //aktualne y
