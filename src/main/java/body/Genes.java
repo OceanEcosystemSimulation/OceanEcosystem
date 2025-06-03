@@ -4,7 +4,7 @@ import ocean.World;
 
 //geny i ich mechanika
 /**
- * The Genes class represents the genetic traits of an organism.
+ * Genes class represents the genetic traits of an organism.
  */
 public class Genes {
     //encapsulation

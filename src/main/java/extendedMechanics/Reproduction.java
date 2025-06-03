@@ -15,7 +15,7 @@ import java.util.List;
 public class Reproduction {
     public static final int MINIMAL_AGE_TO_GET_PREGNANT = 18;
     public static final double ENERGY_NEEDED = 0.8; // 80% * MaxEnergy
-    public static final int PREGNANCY_DURATION = 9; // 9 MONTHS - 9 TURNS
+    public static final int PREGNANCY_DURATION = 6; // 6 MONTHS - 6 TURNS // skócona ciążą
 
     /* -------------------------------CONDITIONS------------------------------- */
 

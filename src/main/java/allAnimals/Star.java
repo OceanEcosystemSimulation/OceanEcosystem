@@ -84,8 +84,6 @@ public class Star extends Herbivorous {
 
     private static Image babyStar;
     private static Image adultStar;
-    private static final int AGE_OLD = 18;
-
 
     private final ImageView imageView = new ImageView();
     @Override
@@ -109,7 +107,7 @@ public class Star extends Herbivorous {
     private void updateStarGraphics() {
         loadImagesIfNeeded();
 
-        boolean isYoung = getAge() < AGE_OLD;
+        boolean isYoung = getAge() < getMajority();
         imageView.setImage(isYoung ? babyStar : adultStar);
 
         double scale = isYoung ? 0.9 : 1.0;

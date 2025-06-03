@@ -101,8 +101,7 @@ public class Crab extends Omnivorous {
 
     private static Image babyImage;
     private static Image adultImage;
-    private static final int AGE_OLD = 15;
-
+    
     private final ImageView imageView = new ImageView();
     @Override
     public ImageView getImageView() { return imageView; }
@@ -123,7 +122,7 @@ public class Crab extends Omnivorous {
 
     private void updateCrabGraphics() {
         loadImagesIfNeeded();
-        boolean isYoung = getAge() < AGE_OLD;
+        boolean isYoung = getAge() < getMajority();
         imageView.setImage(isYoung ? babyImage : adultImage);
 
         double scale = isYoung ? 0.8 : 1.0;

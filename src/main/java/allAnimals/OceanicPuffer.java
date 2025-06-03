@@ -118,7 +118,6 @@ public class OceanicPuffer extends Omnivorous {
 
     private static Image babyImage;
     private static Image adultImage;
-    private static final int AGE_OLD = 18;
 
     private final ImageView imageView = new ImageView();
     @Override
@@ -141,7 +140,7 @@ public class OceanicPuffer extends Omnivorous {
 
     private void updatePufferGraphics() {
         loadImagesIfNeeded();
-        boolean isYoung = getAge() < AGE_OLD;
+        boolean isYoung = getAge() < getMajority();
         if (isYoung) {
             imageView.setImage(babyImage);
         } else {

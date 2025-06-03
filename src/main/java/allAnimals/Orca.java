@@ -125,7 +125,6 @@ public class Orca extends Carnivorous {
 
     /* -------------------------------GRAPHICS------------------------------- */
 
-    private static final int AGE_OLD = 18;
     private static Image BabyOrca;
     private static Image AdultOrca;
 
@@ -152,7 +151,7 @@ public class Orca extends Carnivorous {
     private void updateOrcaGraphics() {
         loadImagesIfNeeded();
 
-        boolean isYoung = getAge() < AGE_OLD;
+        boolean isYoung = getAge() < getMajority();
         imageView.setImage(isYoung ? BabyOrca : AdultOrca);
 
         double scale = isYoung ? 0.7 : 1.0;

@@ -82,8 +82,6 @@ public class Shrimp extends Herbivorous {
 
     private static Image babyShrimp;
     private static Image adultShrimp;
-    private static final int AGE_OLD = 18;
-
 
     private final ImageView imageView = new ImageView();
     @Override
@@ -107,7 +105,7 @@ public class Shrimp extends Herbivorous {
     private void updateShrimpGraphics() {
         loadImagesIfNeeded();
 
-        boolean isYoung = getAge() < AGE_OLD;
+        boolean isYoung = getAge() < getMajority();
         imageView.setImage(isYoung ? babyShrimp : adultShrimp);
 
         double scale = isYoung ? 0.6 : 0.8;
