@@ -25,7 +25,7 @@ public class Genes {
         Genes genes = new Genes();
         genes.strength = mutate((g1.strength + g2.strength) / 2);
         genes.speed = mutate((g1.speed + g2.speed) / 2);
-        genes.maxAge = mutate((g1.maxAge + g2.maxAge) / 2);
+        genes.maxAge = (g1.maxAge + g2.maxAge) / 2;
         genes.maxLoneliness = mutate((g1.maxLoneliness + g2.maxLoneliness) / 2);
         genes.maxEnergy = mutate((g1.maxEnergy + g2.maxEnergy) / 2);
         return genes;
@@ -43,18 +43,18 @@ public class Genes {
         if (World.random.nextDouble() < 0.05) { //nie zawsze (losowo) zachodzi - 5%
             return Math.max(1, value + World.random.nextInt(5) - 2); //mutuje w zakresie +-2
         }
-        return Math.max(1, value);
+        return Math.min(100, Math.max(1, value)); //nie wychodzi poza 100
     }
 
 
     /**
      * Sets the speed gene value, optionally adjusting it based on the world's minimum map size.
-     * If the map is very small, the speed is scaled.
+     * If the map is smaller than base speed, the speed is scaled.
      * @param baseSpeed The base speed value to set.
      */
     public void setSpeed(int baseSpeed) {
-        if (World.minMapSize < 2) {
-            this.speed = Math.max(1, mutate((int)(baseSpeed * (double) World.minMapSize / 20)));
+        if (World.minMapSize < baseSpeed) {
+            this.speed = Math.max(1, (int)(baseSpeed * World.minMapSize / 20.0));
         } else {
             this.speed = baseSpeed;
         }
