@@ -5,22 +5,44 @@ import ocean.SimulationStatsManager;
 import ocean.World;
 import ocean.WorldSearch;
 
-//narzedzia do mechaniki walki
+/**
+ * AnimalCombatUtils class handles animal combat-related logic in the simulation.
+ */
 public class AnimalCombatUtils {
-
+    /**
+     * Calculates the effective strength of an animal based on its genes and current energy level.
+     * @param animal The animal whose effective strength is to be calculated.
+     * @return The effective strength value
+     */
     static double getEffectiveStrength(Animal animal) {
         return animal.getGenes().getStrength() * (animal.getEnergy()/100.0);
     }
 
+    /**
+     * Calculates the effective speed of an animal based on its genes and current energy level.
+     * @param animal The animal whose effective speed is to be calculated.
+     * @return The effective speed value.
+     */
     static double getEffectiveSpeed(Animal animal) {
         return animal.getGenes().getSpeed() * (animal.getEnergy()/100.0);
     }
 
+    /**
+     * Calculates the overall combat power of an animal using  strength and speed.
+     * @param animal The animal whose combat power is to be calculated.
+     * @return The combat power value.
+     */
     public static double getCombatPower(Animal animal) {
         return getEffectiveStrength(animal) * 0.7 + getEffectiveSpeed(animal) * 0.3;
     }
 
 
+    /**
+     * Applies damage to an animal, reducing its health. If health drops to zero or below, the animal dies.
+     * @param world  The world in which the animal exists.
+     * @param animal The animal taking damage.
+     * @param amount The amount of damage to apply.
+     */
     static void takeDamage(World world, Animal animal, double amount) {
         int newHealth = (int)(animal.getHealth() - amount);
         animal.setHealth(Math.max(newHealth, 0));
@@ -31,7 +53,13 @@ public class AnimalCombatUtils {
     }
 
 
-    //ucieczka z walki
+    /**
+     * Attempts to make the animal escape from combat.
+     * If a coral reef is within range, the animal jumps to it.
+     * Otherwise, it tries to escape in a random direction up to its maximum speed.
+     * @param world  The world in which the animal exists.
+     * @param animal The animal attempting to escape.
+     */
     public static void escape(World world, Animal animal) {
         Coord pos = animal.getPosition();
         int distance = animal.getGenes().getSpeed();
@@ -54,7 +82,12 @@ public class AnimalCombatUtils {
     }
 
 
-    //losowy ruch w zasięgu speed
+    /**
+     * Moves the animal to a random adjacent position within its speed range.
+     * If no valid position is found, the simulation ends.
+     * @param world  The world in which the animal exists.
+     * @param animal The animal to move.
+     */
     public static void randomMove(World world, Animal animal) {
         Coord newPos = animal.getPosition().randomAdjacent(world.getWidth(), world.getHeight(), animal.getGenes().getSpeed(), world); //generuje nową losową pozycję sąsiednią
         if (newPos == null) { //jeśli zwróciło null czyli nie ma już miejcsc

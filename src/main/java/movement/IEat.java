@@ -6,6 +6,11 @@ import ocean.World;
 
 // food - interface
 public interface IEat {
+    /**
+     * Checks if the animal can eat from a given tile - if it's what he eats.
+     * @param tile The tile to check for food.
+     * @return True if food is suitable, otherwise false.
+     */
     boolean canEat(Tile tile); // warunek, kiedy organizm może rozpocząć konspumcję
     void eat(Tile tile, World world); // definiuje jaki pokarm może jeść dany organizm
 

@@ -8,6 +8,10 @@ import soundEffects.SoundPlayer;
 
 
 //abstract class inheriting from WorldObject - defines the general characteristics and behaviors of all animals;
+/**
+ * Abstract class representing an animal in the simulation.
+ * Implements attributes and behaviors shared by all animal types.
+ */
 public abstract class Animal extends WorldObject {
     //encapsulation – characteristic fields are private and accessible only through methods
     private int foodLevel, age, loneliness;
@@ -44,10 +48,21 @@ public abstract class Animal extends WorldObject {
     }
 
 
+    /**
+     * Abstract method to be implemented by subclasses to define how (what) child is created.
+     * @param pos The position of the newborn.
+     * @param parent1 First parent.
+     * @param parent2 Second parent.
+     * @return New Animal instance representing the child.
+     */
     //polymorphism (in animals) - this method is overridden in animals and its body is added specifically for each animal
     public abstract Animal giveBirth(Coord pos, Animal parent1, Animal parent2);
 
 
+    /**
+     * Handles the death of the animal, marking it as dead, updating the world state and playing a sound effect.
+     * @param world The world in which the animal exists.
+     */
     public void die(World world) {
         alive = false;
         world.deadAnimalCounter++;
@@ -55,6 +70,10 @@ public abstract class Animal extends WorldObject {
         SoundPlayer.playSound("sounds/oof.wav");
     }
 
+    /**
+     * Processes the animal's life cycle for actual turn.
+     * @param world The world in which the animal exists.
+     */
     protected void processLifeCycle(World world) {
         AnimalLifeManager.lifeCycle(world, this);
     }

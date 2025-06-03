@@ -12,7 +12,6 @@ import static body.AnimalCombatUtils.randomMove;
 /**
  * Abstract class representing a carnivorous animal in the simulation.
  * Implements movement, mating, and combat behavior specific to predators.
- * Inherits from Animal and implements IFight, IMove, and IMate}.
  */
 //abstract class; inheritance from Animal and implements interfaces IFight, IMove, IMate
 public abstract class Carnivorous extends Animal implements IFight, IMove, IMate {
@@ -27,7 +26,7 @@ public abstract class Carnivorous extends Animal implements IFight, IMove, IMate
 
     /**
      * Moves the carnivorous animal within the world.
-     * If the animal is hungry (food level < 70), it searches for the nearest prey and moves toward it.
+     * If the animal is hungry (food level below 70), it searches for the nearest prey and moves toward it.
      * Otherwise, it performs a random movement.
      * @param world The simulation world in which it happens.
      */

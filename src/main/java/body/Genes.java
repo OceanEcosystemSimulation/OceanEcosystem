@@ -3,6 +3,9 @@ package body;
 import ocean.World;
 
 //geny i ich mechanika
+/**
+ * The Genes class represents the genetic traits of an organism.
+ */
 public class Genes {
     //encapsulation
     private int strength;
@@ -12,7 +15,12 @@ public class Genes {
     private int maxEnergy;
 
 
-    //geny potomstwa
+    /**
+     * Creates a new set of genes for child by averaging the values of two parent gene sets and applying random mutation to each trait.
+     * @param g1 The first parent's genes.
+     * @param g2 The second parent's genes.
+     * @return A new Genes object representing the inherited genes.
+     */
     public static Genes inherit(Genes g1, Genes g2) {
         Genes genes = new Genes();
         genes.strength = mutate((g1.strength + g2.strength) / 2);
@@ -25,6 +33,12 @@ public class Genes {
 
 
     //losowa mutacja do genów
+    /**
+     * Applies a random mutation to a given gene value with a 5% chance.
+     * The mutation changes the value by ±2, ensuring it isn't below 1.
+     * @param value The original gene value.
+     * @return The mutated or unchanged gene value.
+     */
     public static int mutate(int value) {
         if (World.random.nextDouble() < 0.05) { //nie zawsze (losowo) zachodzi - 5%
             return Math.max(1, value + World.random.nextInt(5) - 2); //mutuje w zakresie +-2
@@ -33,6 +47,11 @@ public class Genes {
     }
 
 
+    /**
+     * Sets the speed gene value, optionally adjusting it based on the world's minimum map size.
+     * If the map is very small, the speed is scaled.
+     * @param baseSpeed The base speed value to set.
+     */
     public void setSpeed(int baseSpeed) {
         if (World.minMapSize < 2) {
             this.speed = Math.max(1, mutate((int)(baseSpeed * (double) World.minMapSize / 20)));
