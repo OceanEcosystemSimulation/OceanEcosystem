@@ -83,8 +83,6 @@ public class Nemo extends Herbivorous {
 
     private static Image YoungNemo;
     private static Image OldNemo;
-    private static final int AGE_OLD = 18;
-
 
     private final ImageView imageView = new ImageView();
     @Override
@@ -108,7 +106,7 @@ public class Nemo extends Herbivorous {
     private void updateNemoGraphics() {
         loadImagesIfNeeded();
 
-        boolean isYoung = getAge() < AGE_OLD;
+        boolean isYoung = getAge() < getMajority();
         imageView.setImage(isYoung ? YoungNemo : OldNemo);
 
         double scale = isYoung ? 0.7 : 1.0;

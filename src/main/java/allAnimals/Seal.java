@@ -96,7 +96,6 @@ public class Seal extends Carnivorous {
 
     /* -------------------------------GRAPHICS------------------------------- */
 
-    private static final int AGE_OLD = 18;
     private static Image babySeal;
     private static Image adultSeal;
 
@@ -123,7 +122,7 @@ public class Seal extends Carnivorous {
     private void updateSealGraphics() {
         loadImagesIfNeeded();
 
-        boolean isYoung = getAge() < AGE_OLD;
+        boolean isYoung = getAge() < getMajority();
         if (isYoung) {
             imageView.setImage(babySeal);
         } else {

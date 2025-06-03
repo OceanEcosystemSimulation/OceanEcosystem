@@ -81,7 +81,6 @@ public class Whale extends Herbivorous {
 
     private static Image youngWhale;
     private static Image oldWhale;
-    private static final int AGE_OLD = 18;
 
     private final ImageView imageView = new ImageView();
     @Override
@@ -105,7 +104,7 @@ public class Whale extends Herbivorous {
     private void updateWhaleGraphics() {
         loadImagesIfNeeded();
 
-        boolean isYoung = getAge() < AGE_OLD;
+        boolean isYoung = getAge() < getMajority();
         imageView.setImage(isYoung ? youngWhale : oldWhale);
 
         double scale = isYoung ? 0.8 : 1.0;

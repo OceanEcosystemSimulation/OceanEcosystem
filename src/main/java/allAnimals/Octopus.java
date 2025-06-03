@@ -126,7 +126,6 @@ public class Octopus extends Carnivorous {
 
     private static Image babyOctopus;
     private static Image Octopus;
-    private static final int AGE_OLD = 18; // one turn = one month
 
     private final ImageView imageView = new ImageView();
     @Override
@@ -150,7 +149,7 @@ public class Octopus extends Carnivorous {
     private void updateOctopusGraphics() {
         loadImagesIfNeeded();
 
-        boolean isYoung = getAge() < AGE_OLD;
+        boolean isYoung = getAge() < getMajority();
         imageView.setImage(isYoung ? babyOctopus : Octopus);
 
         double scale = isYoung ? 0.8 : 1.0;

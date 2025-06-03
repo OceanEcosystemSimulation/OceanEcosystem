@@ -113,7 +113,6 @@ public class Dolphin extends Carnivorous {
 
     private static Image babyDolphin;
     private static Image dolphin;
-    private static final int AGE_OLD = 18;
 
     private final ImageView imageView = new ImageView();
     @Override
@@ -137,7 +136,7 @@ public class Dolphin extends Carnivorous {
     private void updateDolphinGraphics() {
         loadImagesIfNeeded();
 
-        boolean isYoung = getAge() < AGE_OLD;
+        boolean isYoung = getAge() < getMajority();
         imageView.setImage(isYoung ? babyDolphin : dolphin);
 
         double scale = isYoung ? 0.8 : 1.0;

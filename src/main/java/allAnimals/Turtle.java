@@ -101,8 +101,6 @@ public class Turtle extends Omnivorous {
 
     private static Image babyImage;
     private static Image adultImage;
-    private static final int AGE_OLD = 20;
-
     private final ImageView imageView = new ImageView();
     @Override
     public ImageView getImageView() { return imageView; }
@@ -124,7 +122,7 @@ public class Turtle extends Omnivorous {
 
     private void updateTurtleGraphics() {
         loadImagesIfNeeded();
-        boolean isYoung = getAge() < AGE_OLD;
+        boolean isYoung = getAge() < getMajority();
         if (isYoung) {
             imageView.setImage(babyImage);
         } else {

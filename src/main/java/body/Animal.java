@@ -22,7 +22,7 @@ public abstract class Animal extends WorldObject {
     private int pregnancyCounter = 0;
     private Animal fatherDuringPregnancy = null;
     private boolean lonelinessReseted = false; //do sprawdzania czy w danej turze wyzerowano loneliness poprzez inne zwierze
-
+    private static final int MAJORITY = 18; // one turn = one month
 
     /* -------------------------------KONSTRUKTORY------------------------------- */
 
@@ -95,6 +95,7 @@ public abstract class Animal extends WorldObject {
     public int getPregnancyCounter() {return pregnancyCounter;}
     public Animal getFatherDuringPregnancy() {return fatherDuringPregnancy;}
     public boolean getLonelinessReseted() {return lonelinessReseted;}
+    public int getMajority() {return MAJORITY;}
 
 
     /* -------------------------------SETTERY------------------------------- */

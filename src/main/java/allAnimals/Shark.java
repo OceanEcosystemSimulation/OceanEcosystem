@@ -85,7 +85,6 @@ public class Shark extends Carnivorous {
 
     private static Image YoungShark;
     private static Image OldShark;
-    private static final int AGE_OLD = 18;
 
     private final ImageView imageView = new ImageView();
     @Override
@@ -109,7 +108,7 @@ public class Shark extends Carnivorous {
     private void updateSharkGraphics() {
         loadImagesIfNeeded();
 
-        boolean isYoung = getAge() < AGE_OLD;
+        boolean isYoung = getAge() < getMajority();
         imageView.setImage(isYoung ? YoungShark : OldShark);
 
         double scale = isYoung ? 0.8 : 1.0;
