@@ -12,6 +12,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+/**
+ * Handles reproduction mechanics, including pregnancy conditions, birth and safe area checks.
+ */
 public class Reproduction {
     public static final int MINIMAL_AGE_TO_GET_PREGNANT = 18;
     public static final double ENERGY_NEEDED = 0.8; // 80% * MaxEnergy
@@ -19,6 +22,12 @@ public class Reproduction {
 
     /* -------------------------------CONDITIONS------------------------------- */
 
+    /**
+     * Checks if an animal is ready for reproduction.
+     * Must be alive, old enough, not already pregnant, and have sufficient energy.
+     * @param animal The animal to check.
+     * @return True if ready, otherwise false.
+     */
     public static boolean IsReady(Animal animal) {
         return
                 animal.isAlive()
@@ -29,7 +38,12 @@ public class Reproduction {
 
     /* -------------------------------DISTANCE NEEDED------------------------------- */
 
-    //czy są oddalone od siebie o kratkę
+    /**
+     * Checks if two animals are within one tile of each other.
+     * @param animal1 First animal.
+     * @param animal2 Second animal.
+     * @return True if they are adjacent, otherwise false.
+     */
     public static boolean isDistanceOne(Animal animal1, Animal animal2) {
         Coord pos1 = animal1.getPosition();
         Coord pos2 = animal2.getPosition();
@@ -37,7 +51,13 @@ public class Reproduction {
     }
 
 
-    //przesuwa się do mate kratkę obok niego
+    /**
+     * Moves the animal to an adjacent tile near its mate.
+     * @param self The animal moving.
+     * @param mate The mate to approach.
+     * @param world The simulation world in which it happens.
+     * @return True if movement was successful, otherwise false.
+     */
     public static boolean moveToMate(Animal self, Animal mate, World world) {
         List<Coord> neighbour = Coord.getAdjacentCoords(mate.getPosition()); //tworzy liste pól wokół mate
         for (Coord coord : neighbour) { //iteruje po każdnym
@@ -52,6 +72,14 @@ public class Reproduction {
 
     /* -------------------------------MECHANICS------------------------------- */
 
+    /**
+     * Handles the reproduction process if the two animals meet all conditions.
+     * Updates energy levels and starts pregnancy.
+     * @param world The simulation world in which it happens.
+     * @param animal1 First animal.
+     * @param animal2 Second animal.
+     * @param genes Genes to inherit.
+     */
     public static void ReproductionProcess(World world, Animal animal1, Animal animal2, Genes genes) {
         //funkcja sprawdza podstawowe warunki, by stwierdzić, czy może dojść do reprodukcji
         // PŁEĆ I GATUNEK
@@ -99,6 +127,14 @@ public class Reproduction {
     }
 
     /* -------------------------------PREGNANCY------------------------------- */
+
+    /**
+     * Decreases the pregnancy counter each turn.
+     * When the counter reaches zero, the animal gives birth.
+     * @param world The simulation world in which it happens.
+     * @param animal The pregnant animal.
+     * @return True if pregnancy is active, otherwise false.
+     */
     public static boolean pregnancyTick(World world, Animal animal) {
         // funkcja zapobiega podwójnej lub miliardowej ciąży, sprawdza czy organizm jest w ciąży, dodaje licznik
         // z biegiem tur go dekrementuje
@@ -114,6 +150,12 @@ public class Reproduction {
 
     /* -------------------------------BIRTH------------------------------- */
 
+    /**
+     * Spawns an egg that hatches after five turns, inheriting genetic traits from both parents.
+     * @param world The simulation world in which it happens.
+     * @param mother The mother animal.
+     * @param father The father animal.
+     */
     public static void spawnBaby(World world, Animal mother, Animal father) {
         // funkcja dodaje jajko, z którego przy zadanym czasie (u nas po 5 turach) wykluje się z niego młody organizm
         // logika niezbyt spójna z faktami, ale dla wizualizacji przyjęłyśmy, że tak jest
@@ -129,6 +171,15 @@ public class Reproduction {
     }
 
     /* -------------------------------SAFE SPACE------------------------------- */
+
+    /**
+     * Checks if the area around an animal is safe for reproduction.
+     * If a predator is nearby, reproduction is blocked.
+     * @param world The simulation world in which it happens.
+     * @param animal The animal attempting to reproduce.
+     * @param genes The animal's genes.
+     * @return True if reproduction can occur, otherwise false.
+     */
     public static boolean isAreaSafe(World world, Animal animal, Genes genes) {
         // funkcja sprawdza, czy "na wysokości wzorku ryby", ogólniej mówiąc w zadanym promieniu znajduje się drapieżnik
         // jeśli się znajduje, rozmnażanie jest niemożliwe
@@ -153,7 +204,12 @@ public class Reproduction {
         return true; // mogą się rozmnażać - brak drapieżników
     }
 
-    //szuka wolnego miejsca, by złożyć jajo
+    /**
+     * Finds an unoccupied tile near the given position for laying an egg.
+     * @param world The simulation world in which it happens.
+     * @param pos The position to search around.
+     * @return A free tile for the egg or null if none is found.
+     */
     public static Coord findFreeTile(World world, Coord pos) {
         int[][] directions = {{1,0}, {-1,0}, {0,1}, {0,-1}}; // kierunki: prawo, lewo, góra, dół
 
