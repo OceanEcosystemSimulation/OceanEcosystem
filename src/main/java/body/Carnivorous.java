@@ -9,6 +9,11 @@ import ocean.WorldSearch;
 
 import static body.AnimalCombatUtils.randomMove;
 
+/**
+ * Abstract class representing a carnivorous animal in the simulation.
+ * Implements movement, mating, and combat behavior specific to predators.
+ * Inherits from Animal and implements IFight, IMove, and IMate}.
+ */
 //abstract class; inheritance from Animal and implements interfaces IFight, IMove, IMate
 public abstract class Carnivorous extends Animal implements IFight, IMove, IMate {
     public Carnivorous(Coord position, Genes genes) {
@@ -20,7 +25,12 @@ public abstract class Carnivorous extends Animal implements IFight, IMove, IMate
     }
 
 
-    //mechanika ruchu
+    /**
+     * Moves the carnivorous animal within the world.
+     * If the animal is hungry (food level < 70), it searches for the nearest prey and moves toward it.
+     * Otherwise, it performs a random movement.
+     * @param world The simulation world in which it happens.
+     */
     @Override
     public void move(World world) {  //polymorphism
         if (getFoodLevel() < 70) {
@@ -34,7 +44,15 @@ public abstract class Carnivorous extends Animal implements IFight, IMove, IMate
     }
 
 
-    //machanika ataku
+    /**
+     * Attempts to attack a prey animal.
+     * If the prey is faster, it escapes. Otherwise, a combat sequence occurs (max 5 rounds).
+     * The outcome depends on combat power and may result in death or escape.
+     * @param prey The animal being attacked.
+     * @param world The simulation world in which it happens.
+     * @return True if the prey is killed, otherwise false.
+     */
+    @Override
     public boolean attack(Animal prey, World world) {  //implementation
         double attackerSpeed = AnimalCombatUtils.getEffectiveSpeed(this); //predator speed
         double preySpeed = AnimalCombatUtils.getEffectiveSpeed(prey); //prey speed
@@ -77,6 +95,12 @@ public abstract class Carnivorous extends Animal implements IFight, IMove, IMate
     }
 
 
+    /**
+     * Attempts to find and mate with a nearby compatible animal.
+     * If a mate is found within range and adjacent, reproduction occurs.
+     * Otherwise, the animal moves toward the mate and tries again.
+     * @param world The simulation world in which it happens.
+    */
     @Override
     public void tryToMate(World world) {  //implementation
         int range = this.getGenes().getSpeed();
