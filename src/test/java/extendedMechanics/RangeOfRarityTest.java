@@ -49,7 +49,7 @@ class RangeOfRarityTest {
         double rare = counts.get(Rarity.RARE) / (double) iterations;
 
         //porównywanie z oczekiwanymi wartościami (błąd +/- deviation)
-        assertEquals(0.04, mythic, deviation);
+        assertEquals(0.05, mythic, deviation);
         assertEquals(0.11, superRare, deviation);
         assertEquals(0.84, rare, deviation);
     }
