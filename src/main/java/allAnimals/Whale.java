@@ -32,10 +32,10 @@ public class Whale extends Herbivorous {
 
     private static Genes generateGenes() {
         Genes genes = new Genes();
-        genes.setStrength(Genes.mutate(50));
+        genes.setStrength(50);
         genes.setSpeed(2);
-        genes.setMaxAge(Genes.mutate(80));
-        genes.setMaxLoneliness(Genes.mutate(70));
+        genes.setMaxAge(80);
+        genes.setMaxLoneliness(70);
         genes.setMaxEnergy(80);
         return genes;
     }

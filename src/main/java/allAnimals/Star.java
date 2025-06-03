@@ -33,10 +33,10 @@ public class Star extends Herbivorous {
 
     private static Genes generateGenes() {
         Genes genes = new Genes();
-        genes.setStrength(Genes.mutate(5));
+        genes.setStrength(5);
         genes.setSpeed(1);
-        genes.setMaxAge(Genes.mutate(99));
-        genes.setMaxLoneliness(Genes.mutate(90));
+        genes.setMaxAge(99);
+        genes.setMaxLoneliness(90);
         genes.setMaxEnergy(80);
         return genes;
     }

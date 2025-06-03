@@ -32,11 +32,11 @@ public class Shrimp extends Herbivorous {
 
     private static Genes generateGenes() {
         Genes genes = new Genes();
-        genes.setStrength(Genes.mutate(5));
+        genes.setStrength(5);
         genes.setSpeed(1);
-        genes.setMaxAge(Genes.mutate(45));
-        genes.setMaxLoneliness(Genes.mutate(30));
-        genes.setMaxEnergy(Genes.mutate(80));
+        genes.setMaxAge(45);
+        genes.setMaxLoneliness(30);
+        genes.setMaxEnergy(80);
         return genes;
     }
 

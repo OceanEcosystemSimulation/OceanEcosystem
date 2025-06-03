@@ -32,11 +32,11 @@ public class Nemo extends Herbivorous {
 
     private static Genes generateGenes() {
         Genes genes = new Genes();
-        genes.setStrength(Genes.mutate(10));
+        genes.setStrength(10);
         genes.setSpeed(2);
-        genes.setMaxAge(Genes.mutate(75));
-        genes.setMaxLoneliness(Genes.mutate(40));
-        genes.setMaxEnergy(Genes.mutate(80));
+        genes.setMaxAge(75);
+        genes.setMaxLoneliness(40);
+        genes.setMaxEnergy(80);
         return genes;
     }
 

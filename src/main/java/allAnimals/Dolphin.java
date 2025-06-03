@@ -34,11 +34,11 @@ public class Dolphin extends Carnivorous {
     //tworzenie genów
     private static Genes generateGenes() {
         Genes genes = new Genes();
-        genes.setStrength(Genes.mutate(40));
+        genes.setStrength(40);
         genes.setSpeed(5);
-        genes.setMaxAge(Genes.mutate(60));
-        genes.setMaxLoneliness(Genes.mutate(30));
-        genes.setMaxEnergy(Genes.mutate(80));
+        genes.setMaxAge(60);
+        genes.setMaxLoneliness(30);
+        genes.setMaxEnergy(80);
         return genes;
     }
 

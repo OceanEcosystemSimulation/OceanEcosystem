@@ -31,10 +31,10 @@ public class Turtle extends Omnivorous {
 
     private static Genes generateGenes() {
         Genes genes = new Genes();
-        genes.setStrength(Genes.mutate(30));
+        genes.setStrength(30);
         genes.setSpeed(4);
         genes.setMaxAge(100);
-        genes.setMaxLoneliness(Genes.mutate(60));
+        genes.setMaxLoneliness(60);
         genes.setMaxEnergy(100);
         return genes;
     }

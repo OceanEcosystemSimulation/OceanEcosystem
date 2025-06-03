@@ -33,10 +33,10 @@ public class Crab extends Omnivorous {
     //tworzenie genów
     private static Genes generateGenes() {
         Genes genes = new Genes();
-        genes.setStrength(Genes.mutate(10));
+        genes.setStrength(10);
         genes.setSpeed(3);
-        genes.setMaxAge(Genes.mutate(40));
-        genes.setMaxLoneliness(Genes.mutate(40));
+        genes.setMaxAge(40);
+        genes.setMaxLoneliness(40);
         genes.setMaxEnergy(100);
         return genes;
     }

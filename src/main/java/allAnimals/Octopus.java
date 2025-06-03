@@ -35,11 +35,11 @@ public class Octopus extends Carnivorous {
     //tworzenie genów
     private static Genes generateGenes() {
         Genes genes = new Genes();
-        genes.setStrength(Genes.mutate(40));
+        genes.setStrength(40);
         genes.setSpeed(3);
-        genes.setMaxAge(Genes.mutate(40));
-        genes.setMaxLoneliness(Genes.mutate(50));
-        genes.setMaxEnergy(Genes.mutate(90));
+        genes.setMaxAge(40);
+        genes.setMaxLoneliness(50);
+        genes.setMaxEnergy(90);
         return genes;
     }
 
